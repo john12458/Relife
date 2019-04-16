@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mis.relife">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Relife"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".pages.home.userInfo.UserInfoActivity"></activity>
+        <activity android:name=".pages.sleep.sleep_plus"></activity>
+        <activity android:name=".pages.sport.Sport_Plus_Activity" />
+        <activity android:name=".pages.sleep.Sleep_Clock_Activity" />
+        <activity
+            android:name=".pages.MainActivity"
+            android:label="Relife">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".pages.eat.eat_week_analysis" />
+        <activity android:name=".pages.eat.eat_day_analysis" />
+        <activity android:name=".pages.eat.eat_new_activity" />
+        <activity
+            android:name=".pages.sport.Sport_Plus_Activity"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".pages.sleep.Sleep_Clock_Activity"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".pages.sleep.sleep_plus"
+            tools:ignore="DuplicateActivity" />
+    </application>
+
+</manifest>

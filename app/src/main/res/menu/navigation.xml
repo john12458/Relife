@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/num"
+        android:title="" >
+    </item>
+
+    <item
+        android:id="@+id/navigation_eat"
+        android:icon="@drawable/num"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_sport"
+        android:icon="@drawable/num"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_sleep"
+        android:icon="@drawable/num"
+        android:title=" "/>
+
+</menu>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">final-2</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string-array name="meal">
+        <item>早餐</item>
+        <item>午餐</item>
+        <item>晚餐</item>
+        <item>宵夜</item>
+        <item>點心</item>
+    </string-array>
+</resources>

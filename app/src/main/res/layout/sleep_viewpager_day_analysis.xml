@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/eat_week_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        android:fadingEdge="none"
+        android:background="#00000000">
+
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+            <ImageButton
+                android:id="@+id/bt_left"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/bt_datepicker"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_bias="0.15"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/play_button_left"
+                android:background="#00000000"
+                android:scaleType="fitXY"/>
+
+            <Button
+                android:id="@+id/bt_datepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.48"
+                android:text="今天"
+                android:textSize="20dp"
+                android:textColor="#000"
+                android:background="#00000000"
+                android:paddingBottom="10dp"
+                />
+
+            <ImageButton
+                android:id="@+id/bt_right"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/bt_datepicker"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.85"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/play_button_right"
+                android:background="#00000000"
+                android:scaleType="fitXY"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_bottom"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cons_bottom"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+            </com.github.mikephil.charting.charts.PieChart>
+
+            <View
+                android:id="@+id/v_line3"
+                app:layout_constraintTop_toBottomOf="@+id/pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:background="#000000"/>
+            //progressbar
+
+            <TextView
+                android:id="@+id/tv_sleep_clock_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/v_line3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="23:07~06:30"
+                android:textColor="#000"
+                app:layout_constraintHorizontal_bias="0.05"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/v_line3"
+                app:layout_constraintRight_toLeftOf="@+id/tv_sleep_clock_time_num"
+                android:src="@drawable/iv_clock"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_clock_time_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/v_line3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="7小時5分"
+                android:textColor="#000"
+                app:layout_constraintHorizontal_bias="0.95"
+                android:layout_marginTop="10dp"/>
+
+            //夢話
+
+            <TextView
+                android:id="@+id/tv_dream_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_sleep_clock_time"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="夢的內容:  "
+                android:textColor="#000"
+                app:layout_constraintHorizontal_bias="0.05"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/et_sleep_dream"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:layout_constraintTop_toTopOf="@+id/tv_dream_content"
+                app:layout_constraintLeft_toRightOf="@+id/tv_dream_content"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/edit_perfect"
+                android:gravity="left"/>
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</LinearLayout>
