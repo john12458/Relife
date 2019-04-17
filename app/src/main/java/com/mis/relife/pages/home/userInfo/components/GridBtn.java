@@ -21,7 +21,7 @@ public class GridBtn{
         initlize();
     }
     private void initlize(){
-        final Context context = activity.getApplicationContext();
+        Context context = activity.getApplicationContext();
         adapter = new BtnsGridAdapter(context,btns);
         userInfoBtns.setAdapter(adapter);
         userInfoBtns.setOnItemClickListener(userInfoModel);

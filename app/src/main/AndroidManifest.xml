@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".pages.home.userInfo.UserInfoActivity"></activity>
-        <activity android:name=".pages.sleep.sleep_plus"></activity>
+        <activity android:name=".pages.home.userInfo.UserInfoActivity" />
+        <activity android:name=".pages.sleep.sleep_plus" />
         <activity android:name=".pages.sport.Sport_Plus_Activity" />
         <activity android:name=".pages.sleep.Sleep_Clock_Activity" />
         <activity
