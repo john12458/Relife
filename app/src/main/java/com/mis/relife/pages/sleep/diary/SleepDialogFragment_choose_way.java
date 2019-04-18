@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -15,15 +15,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mis.relife.R;
+import com.mis.relife.pages.sleep.diary.DiaryEditActivity;
+import com.mis.relife.pages.sleep.diary.SleepClockActivity;
 
 @SuppressLint("ValidFragment")
 public class SleepDialogFragment_choose_way extends DialogFragment {
 
-    Context context;
     private Button bt_byself,bt_clock;
 
-    public SleepDialogFragment_choose_way(Context context){
-        this.context = context;
+    public SleepDialogFragment_choose_way(){
+
     }
 
     @NonNull
@@ -39,7 +40,7 @@ public class SleepDialogFragment_choose_way extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Intent sleep_plus = new Intent();
-                sleep_plus.setClass(context,sleep_plus.class);
+                sleep_plus.setClass(getContext(), DiaryEditActivity.class);
                 startActivity(sleep_plus);
                 dismiss();
             }
@@ -49,7 +50,7 @@ public class SleepDialogFragment_choose_way extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Intent clock = new Intent();
-                clock.setClass(context, Sleep_Clock_Activity.class);
+                clock.setClass(getContext(), SleepClockActivity.class);
                 startActivity(clock);
                 dismiss();
             }

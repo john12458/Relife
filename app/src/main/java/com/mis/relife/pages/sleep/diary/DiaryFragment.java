@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -25,49 +25,33 @@ import com.mis.relife.useful.recyler_item_space;
 import java.util.Calendar;
 
 @SuppressLint("ValidFragment")
-public class sleep_viewpager_diary extends Fragment {
+public class DiaryFragment extends Fragment {
 
     private int create = 0;
 
-    static Context context;
     private RecyclerView recycler_View;
     private ImageButton bt_clock,bt_sleep_plus;
     private TextView bt_datepicker;
 
-    public static recylerview_sleep_adapter recylerview_sleep_adapter = null;
+    public static RecylerviewSleepAdapter recylerview_sleep_adapter = null;
 
     private int mYear,mMonth,mDay;
     private String date,titledate;
     static int i = 0;
     private static int back = 0;
     private int bool = 1;
-    private FragmentManager fm;
 
-    public sleep_viewpager_diary(Context context,FragmentManager fm){
-        this.context = context;
-        this.fm = fm;
-    }
-    public sleep_viewpager_diary(){
+    public DiaryFragment(){
 
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if(isVisibleToUser){
-//            create = 1;
-//        }
-//        if(!isVisibleToUser){
-//            create = 0;
-//        }
-//    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sleep_viewpager_diary,container,false);
 
-//        sleep_tab_viewpager.sleep_adapter.notifyDataSetChanged();
+//        SleepFragment.sleep_adapter.notifyDataSetChanged();
 
 //        if(create == 1) {
             System.out.println("哈哈哈哈哈哈哈哈哈");
@@ -86,7 +70,7 @@ public class sleep_viewpager_diary extends Fragment {
                 i = 2;
             }
             recylerview_sleep_adapter.notifyDataSetChanged();
-            recycler_View.setLayoutManager(new LinearLayoutManager(context));
+            recycler_View.setLayoutManager(new LinearLayoutManager(getContext()));
             recycler_View.addItemDecoration(new recyler_item_space(0, 30));
             recycler_View.setAdapter(recylerview_sleep_adapter);
             //設定點擊功能
@@ -108,8 +92,8 @@ public class sleep_viewpager_diary extends Fragment {
 
         @Override
         public void onClick(View v) {
-            SleepDialogFragment_choose_way sleepDialogFragment_choose_way = new SleepDialogFragment_choose_way(context);
-            sleepDialogFragment_choose_way.show(fm,"dialogment_choose_way");
+            SleepDialogFragment_choose_way sleepDialogFragment_choose_way = new SleepDialogFragment_choose_way();
+            sleepDialogFragment_choose_way.show(getChildFragmentManager(),"dialogment_choose_way");
         }
     };
 
@@ -125,7 +109,7 @@ public class sleep_viewpager_diary extends Fragment {
     private Button.OnClickListener date_pick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     String format = setdiarydateFormat(year,month);
@@ -158,12 +142,12 @@ public class sleep_viewpager_diary extends Fragment {
 
 
     //日記的點擊功能 分為 點及修改 長按刪除
-    private recylerview_sleep_adapter.OnItemClickListener sleep_diary_adapter_click = new recylerview_sleep_adapter.OnItemClickListener() {
+    private RecylerviewSleepAdapter.OnItemClickListener sleep_diary_adapter_click = new RecylerviewSleepAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             String choose_date = setDateFormat(mYear,mMonth,Integer.valueOf(recylerview_sleep_adapter.day.get(position)));
             Intent sleep_edit = new Intent();
-            sleep_edit.setClass(context,sleep_plus.class);
+            sleep_edit.setClass(getContext(), DiaryEditActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("bool",bool);
             bundle.putInt("position",position);
@@ -178,7 +162,7 @@ public class sleep_viewpager_diary extends Fragment {
         @Override
         public void onItemLongClick(View view, int position) {
             SleepDialogFragment_delete sleepDialogFragment_delete = new SleepDialogFragment_delete(position);
-            sleepDialogFragment_delete.show(fm,"dialogment_delete");
+            sleepDialogFragment_delete.show(getChildFragmentManager(),"dialogment_delete");
         }
     };
 }

@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,14 +12,14 @@ import com.mis.relife.R;
 
 import java.util.Calendar;
 
-public class Sleep_Clock_Activity extends Activity {
+public class SleepClockActivity extends Activity {
 
 
     private Long StartTime,hours,minius,seconds;
     private Handler handler = new Handler();
     private TextView tv_clock;
     private Button bt_back;
-    private sleep_viewpager_diary diary;
+    private DiaryFragment diary;
     private String go_bed_time,get_up_time;
     int hour ,minute;
     int bool = 0;
@@ -78,7 +78,7 @@ public class Sleep_Clock_Activity extends Activity {
                 get_up_minute = String.valueOf(back_minute);
             }
             get_up_time = get_up_hour + ":" + get_up_minute ;
-            back_intent.setClass(Sleep_Clock_Activity.this,sleep_plus.class);
+            back_intent.setClass(SleepClockActivity.this, DiaryEditActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("bool",bool);
             bundle.putString("bed",go_bed_time);

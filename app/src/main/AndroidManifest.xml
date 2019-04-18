@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
-        <activity android:name=".pages.sleep.sleep_plus" />
+        <activity android:name=".pages.sleep.diary.DiaryEditActivity" />
         <activity android:name=".pages.sport.Sport_Plus_Activity" />
-        <activity android:name=".pages.sleep.Sleep_Clock_Activity" />
+        <activity android:name=".pages.sleep.diary.SleepClockActivity" />
         <activity
             android:name=".pages.MainActivity"
             android:label="Relife">
@@ -33,10 +33,10 @@
             android:name=".pages.sport.Sport_Plus_Activity"
             tools:ignore="DuplicateActivity" />
         <activity
-            android:name=".pages.sleep.Sleep_Clock_Activity"
+            android:name=".pages.sleep.diary.SleepClockActivity"
             tools:ignore="DuplicateActivity" />
         <activity
-            android:name=".pages.sleep.sleep_plus"
+            android:name=".pages.sleep.diary.DiaryEditActivity"
             tools:ignore="DuplicateActivity" />
     </application>
 

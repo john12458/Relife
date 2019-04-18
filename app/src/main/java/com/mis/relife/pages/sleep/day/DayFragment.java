@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.day;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mis.relife.R;
-import com.mis.relife.pages.sport.recylerview_sportpage_adapter;
+import com.mis.relife.pages.sleep.diary.RecylerviewSleepAdapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class sleep_viewpager_day extends Fragment {
+public class DayFragment extends Fragment {
 
     private PieChart pieChart;
     private Button bt_datepick;
@@ -36,7 +36,6 @@ public class sleep_viewpager_day extends Fragment {
     private  TextView tv_sleep_length;
     private  EditText et_dream;
 
-    Context context;
     private  int mYear,mMonth,mDay;
     private  int ch_year,ch_month,ch_day;
     private  List<PieEntry> entries = new ArrayList<>();
@@ -44,8 +43,8 @@ public class sleep_viewpager_day extends Fragment {
     private  float clear_percent;
     private  int have = 0;
 
-    public sleep_viewpager_day(Context context){
-        this.context = context;
+    public DayFragment() {
+
     }
 
 
@@ -88,20 +87,20 @@ public class sleep_viewpager_day extends Fragment {
         int bed_hour = 0,bed_min = 0,get_hour = 0,get_min = 0;
         float sleephour = 0,sleepmin = 0,sleeptotal = 0,cleartotal = 0;
         //走遍睡眠日記
-        for(int i = 0;i < recylerview_sleep_adapter.day.size();i++){
+        for(int i = 0; i < RecylerviewSleepAdapter.day.size(); i++){
             //如果有找到符合的天 就取出他的就寢時間和起床時間
-            if(day == Integer.valueOf(recylerview_sleep_adapter.day.get(i))){
-                go_bed_time = recylerview_sleep_adapter.go_bed_time.get(i);
+            if(day == Integer.valueOf(RecylerviewSleepAdapter.day.get(i))){
+                go_bed_time = RecylerviewSleepAdapter.go_bed_time.get(i);
                 bed_hour = Integer.valueOf(go_bed_time.substring(0,2));
                 if(bed_hour == 0){bed_hour = 24;}
                 bed_min = Integer.valueOf(go_bed_time.substring(3,5));
 
-                get_up_time = recylerview_sleep_adapter.get_up_time.get(i);
+                get_up_time = RecylerviewSleepAdapter.get_up_time.get(i);
                 get_hour = Integer.valueOf(get_up_time.substring(0,2));
                 if(get_hour == 0){get_hour = 24;}
                 get_min = Integer.valueOf(get_up_time.substring(3,5));
                 tv_sleep_clock_time.setText(go_bed_time + "~" + get_up_time);
-                String dream = recylerview_sleep_adapter.content.get(i);
+                String dream = RecylerviewSleepAdapter.content.get(i);
                 et_dream.setText(dream);
                 have = 1;
                 break;
@@ -176,7 +175,7 @@ public class sleep_viewpager_day extends Fragment {
         @Override
         public void onClick(View v) {
 
-            new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     String format = setDateFormat(year,month,day);
@@ -202,19 +201,12 @@ public class sleep_viewpager_day extends Fragment {
                     else {
                         bt_datepick.setText(format);
                     }
-                    recylerview_sportpage_adapter.inidata_sport_diary("300");
                 }
 
             }, mYear,mMonth, mDay).show();
         }
     };
 
-//    private Button.OnClickListener date_left_right = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//
-//        }
-//    };
 
     //設置日期格式
     private String setDateFormat(int year,int monthOfYear,int dayOfMonth){

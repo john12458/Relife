@@ -14,59 +14,53 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mis.relife.R;
+import com.mis.relife.pages.sleep.day.DayFragment;
+import com.mis.relife.pages.sleep.diary.DiaryFragment;
+import com.mis.relife.pages.sleep.week.WeekFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @SuppressLint("ValidFragment")
-public class sleep_tab_viewpager extends Fragment{
+public class SleepFragment extends Fragment{
 
 
     private TabLayout tb_content;
     public ViewPager vp_content;
-    private List<Fragment> sleep_fragments = new ArrayList<>();
-    private List<String> sleep_tabs = new ArrayList<>();
-    private FragmentManager fm;
-    public static sleep_viewpager_adapter sleep_adapter = null;
-    Context context;
+    private List<Fragment> sleep_fragments;
+    private SleepViewPagerAdapter sleepViewPagerAdapter;
+    private DiaryFragment diaryFragment;
+    private DayFragment dayFragment;
+    private WeekFragment weekFragment;
 
-
-    static int i = 0;
-
-    public sleep_tab_viewpager(Context context){
-        this.context = context;
+    public SleepFragment(){
+        initInstanceObject();
     }
 
-
+    private void initInstanceObject(){
+        sleep_fragments = new ArrayList<Fragment>();
+        diaryFragment = new DiaryFragment();
+        dayFragment = new DayFragment();
+        weekFragment = new WeekFragment();
+        sleep_fragments.add(diaryFragment);
+        sleep_fragments.add(dayFragment);
+        sleep_fragments.add(weekFragment);
+        sleepViewPagerAdapter = new SleepViewPagerAdapter(getChildFragmentManager(),sleep_fragments);
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.sleep_tab_viewpager,container,false);
-        fm = getChildFragmentManager();
-        initData_sleep_tablayout();
+        View view = inflater.inflate(R.layout.sleep_fragment,container,false);
         tb_content = view.findViewById(R.id.tb_content);
         vp_content = view.findViewById(R.id.vp_content);
         tb_content.setTabMode(TabLayout.MODE_FIXED);
-        vp_content.setAdapter(sleep_adapter);
+        vp_content.setAdapter(sleepViewPagerAdapter);
         tb_content.setupWithViewPager(vp_content);
         vp_content.setOffscreenPageLimit(3);
-
         return view;
     }
 
-
-    private void initData_sleep_tablayout() {
-        sleep_tabs.clear();
-        sleep_fragments.clear();
-        sleep_tabs.add("睡眠日記");
-        sleep_tabs.add("每日分析");
-        sleep_tabs.add("每週分析");
-        sleep_fragments.add(new sleep_viewpager_diary(context,fm));
-        sleep_fragments.add(new sleep_viewpager_day(context));
-        sleep_fragments.add(new sleep_viewpager_week(context));
-        sleep_adapter = new sleep_viewpager_adapter(fm,sleep_fragments,sleep_tabs);
-    }
 
 
 

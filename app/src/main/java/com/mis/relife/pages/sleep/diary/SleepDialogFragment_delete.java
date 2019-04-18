@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -33,8 +33,8 @@ public class SleepDialogFragment_delete extends DialogFragment {
         bt_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recylerview_sleep_adapter.delete_sleep_diary(position);
-                sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
+                RecylerviewSleepAdapter.delete_sleep_diary(position);
+                DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
                 dismiss();
             }
         });

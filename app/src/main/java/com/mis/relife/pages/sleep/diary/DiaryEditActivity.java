@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class sleep_plus extends AppCompatActivity {
+public class DiaryEditActivity extends AppCompatActivity {
 
     private TextView tv_date;
     private Button tv_finish;
@@ -92,7 +92,7 @@ public class sleep_plus extends AppCompatActivity {
     private Button.OnClickListener date_pick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new DatePickerDialog(sleep_plus.this, new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(DiaryEditActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     date = setDateFormat(year,month,dayOfMonth);
@@ -124,7 +124,7 @@ public class sleep_plus extends AppCompatActivity {
         get_up_time = bundle.getString("get");
         date = bundle.getString("date");
         position = bundle.getInt("position");
-        mDay = Integer.valueOf(recylerview_sleep_adapter.day.get(position));
+        mDay = Integer.valueOf(RecylerviewSleepAdapter.day.get(position));
         System.out.println("位置 : " + position);
         et_sleep_content.setText(bundle.getString("sleep_content"));
         et_go_bed_time.setText(go_ed_time);
@@ -162,22 +162,22 @@ public class sleep_plus extends AppCompatActivity {
         public void onClick(View v) {
 
             if(et_get_up_time.getText().length() == 0 || et_go_bed_time.getText().length() == 0){
-                Toast.makeText(sleep_plus.this,"請輸入時間",Toast.LENGTH_LONG).show();
+                Toast.makeText(DiaryEditActivity.this,"請輸入時間",Toast.LENGTH_LONG).show();
             }
             else {
                 //兩種模式
                 //第一種 直接新增日記
                 if (bool == 0) {
-                    recylerview_sleep_adapter.insert_sleep_diary(String.valueOf(et_go_bed_time.getText()), String.valueOf(et_get_up_time.getText())
+                    RecylerviewSleepAdapter.insert_sleep_diary(String.valueOf(et_go_bed_time.getText()), String.valueOf(et_get_up_time.getText())
                             , String.valueOf(mDay), String.valueOf(et_sleep_content.getText()));
-//                    sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
+//                    DiaryFragment.RecylerviewSleepAdapter.notifyDataSetChanged();
                 }
                 //第二種  修改日記
                 else if (bool == 1) {
                     String choose_day = String.valueOf(mDay);
-                    recylerview_sleep_adapter.edit_sleep_diary(String.valueOf(et_go_bed_time.getText()), String.valueOf(et_get_up_time.getText())
+                    RecylerviewSleepAdapter.edit_sleep_diary(String.valueOf(et_go_bed_time.getText()), String.valueOf(et_get_up_time.getText())
                             , choose_day, String.valueOf(et_sleep_content.getText()), position);
-//                    sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
+//                    DiaryFragment.RecylerviewSleepAdapter.notifyDataSetChanged();
                 }
                 finish();
             }

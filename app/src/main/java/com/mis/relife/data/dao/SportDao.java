@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class SportDao implements MyDao<Map<String,Sport>, Map<String,Sport>> {
     private DatabaseReference sportRef;
-    public SportDao(int userId){
-        this.sportRef = FirebaseDatabase.getInstance().getReference("user/"+userId+"/sports");
+    public SportDao(int userId,FirebaseDatabase db){
+        this.sportRef = db.getReference("user/"+userId+"/sports");
     }
-    public static SportDao getInstance(int userId){return new SportDao(userId);}
+
 
     @Override
     public Task<Void> insert(Object value) {
@@ -31,7 +31,12 @@ public class SportDao implements MyDao<Map<String,Sport>, Map<String,Sport>> {
     public Task<Void> update(String key, Object value) {
         return sportRef.child(key).setValue(value);
     }
-
+    @Override
+    public Task<Void> delete(String key) {
+        return sportRef.child(key).setValue(null);
+    }
+    @Override
+    public Task<Void> deleteAll() {return sportRef.setValue(null);    }
     @Override
     public void load(String key, Object value, final MyCallBack<Map<String,Sport>> myCallback) {
         Log.d("InfoURL",sportRef.toString());

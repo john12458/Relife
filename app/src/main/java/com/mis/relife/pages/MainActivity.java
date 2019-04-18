@@ -18,15 +18,14 @@ import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.pages.eat.eat_page_activity;
 import com.mis.relife.pages.home.HomeFragment;
-import com.mis.relife.pages.login.LoginDialogFragment;
-import com.mis.relife.pages.sleep.sleep_tab_viewpager;
+import com.mis.relife.pages.sleep.SleepFragment;
 import com.mis.relife.pages.sport.sport_page_activity;
 
 public class MainActivity extends AppCompatActivity{
 
     private FragmentManager fManager;
     private sport_page_activity sportFragment;
-    private sleep_tab_viewpager sleep_page;
+    private SleepFragment sleep_page;
     private eat_page_activity eat_fg4;
     private HomeFragment homeFragment;
     private BottomNavigationView navigation;
@@ -48,11 +47,9 @@ public class MainActivity extends AppCompatActivity{
         homeFragment = new HomeFragment();
         eat_fg4 = new eat_page_activity(this);
         sportFragment = new sport_page_activity(this,fManager);
-        sleep_page = new sleep_tab_viewpager(this);
-
+        sleep_page = new SleepFragment();
         //  firstPage HomeFragment
         fManager.beginTransaction().replace(R.id.ly_content,homeFragment).commit();
-
         //  BottomNavigation
         navigation = findViewById(R.id.navigation);
         for(int i = 0;i < 4;i++){

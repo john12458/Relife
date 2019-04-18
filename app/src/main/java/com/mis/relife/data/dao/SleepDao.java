@@ -17,10 +17,10 @@ import java.util.Map;
 
 public class SleepDao implements MyDao<Map<String,Sleep>,Map<String,Sleep>> {
     private DatabaseReference sleepRef;
-    public SleepDao(int userId){
-        this.sleepRef = FirebaseDatabase.getInstance().getReference("user/"+userId+"/sleeps");
+    public SleepDao(int userId,FirebaseDatabase db){
+        this.sleepRef = db.getReference("user/"+userId+"/sleeps");
     }
-    public static SleepDao getInstance(int userId){return new SleepDao(userId);}
+
     @Override
     public Task<Void> insert(Object value) {return  sleepRef.push().setValue((Sleep)value);}
 
@@ -29,7 +29,14 @@ public class SleepDao implements MyDao<Map<String,Sleep>,Map<String,Sleep>> {
     public Task<Void> update(String key, Object value) {
         return null;
     }
-
+    @Override
+    public Task<Void> delete(String key) {
+        return sleepRef.child(key).setValue(null);
+    }
+    @Override
+    public Task<Void> deleteAll() {
+        return sleepRef.setValue(null);
+    }
     @Override
     public void load(String key, Object value, final MyCallBack<Map<String,Sleep>> myCallback) {
         sleepRef.orderByChild(key).equalTo(String.valueOf(value)).addValueEventListener(new ValueEventListener() {

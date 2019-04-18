@@ -12,7 +12,7 @@ public class GridBtn{
     private BtnsGridAdapter adapter;
     private GridView userInfoBtns;
     private UserInfoActivity activity;
-    private String[] btns={"帳戶設定","綁定帳號","重生"};
+    private String[] btns={"帳戶設定","重生"};
 
     public GridBtn(UserInfoActivity activity, GridView userInfoBtns, UserInfoModel userInfoModel){
         this.activity =  activity;

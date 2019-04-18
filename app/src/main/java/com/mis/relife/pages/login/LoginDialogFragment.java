@@ -25,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-
-@SuppressLint("ValidFragment")
 public class LoginDialogFragment extends DialogFragment {
     private AlertDialog.Builder builder;
     private FragmentLoginDialogBinding binding;
@@ -61,7 +59,6 @@ public class LoginDialogFragment extends DialogFragment {
             }
         });
     }
-
 
     public void onLoginClick() {
         final String account = binding.account.getText().toString();

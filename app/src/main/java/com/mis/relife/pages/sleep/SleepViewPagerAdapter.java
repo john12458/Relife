@@ -7,15 +7,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-public class sleep_viewpager_adapter extends FragmentStatePagerAdapter {
+public class SleepViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> fragments;
-    private List<String> tabs;
+    private final String[] tabs={"睡眠日記","每日分析","每週分析"};
 
-    public sleep_viewpager_adapter(FragmentManager fm, List<Fragment> fragments, List<String> tabs) {
+    public SleepViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
-        this.tabs = tabs;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class sleep_viewpager_adapter extends FragmentStatePagerAdapter {
     }
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabs.get(position);
+        return tabs[position];
     }
 
     @Override

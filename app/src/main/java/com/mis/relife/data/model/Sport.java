@@ -6,6 +6,13 @@ public class Sport {
     public String startTime;
     public String type;
 
+    public Sport(int betweenTime, int cal, String startTime, String type) {
+        this.betweenTime = betweenTime;
+        this.cal = cal;
+        this.startTime = startTime;
+        this.type = type;
+    }
+
     public Sport(){}
 
     @Override

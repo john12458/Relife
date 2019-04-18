@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.diary;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mis.relife.R;
+import com.mis.relife.pages.sleep.SleepFragment;
+import com.mis.relife.pages.sleep.day.DayFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_sleep_adapter.viewholder> {
+public class RecylerviewSleepAdapter extends RecyclerView.Adapter<RecylerviewSleepAdapter.viewholder> {
 
     private LayoutInflater inflater;
     private static Context context;
@@ -24,9 +26,9 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
     public static List<String> go_bed_time = new ArrayList<>();
     public static List<String> get_up_time = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
-    private static sleep_viewpager_day sleep_day = null;
+    private static DayFragment sleep_day = null;
 
-    public recylerview_sleep_adapter(Context context,List<String> day,List<String> go_bed_time,List<String> get_up_time,List<String> content){
+    public RecylerviewSleepAdapter(Context context, List<String> day, List<String> go_bed_time, List<String> get_up_time, List<String> content){
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.day = day;
@@ -36,7 +38,7 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
     }
 
     @Override
-    public recylerview_sleep_adapter.viewholder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecylerviewSleepAdapter.viewholder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view  =LayoutInflater.from(context).inflate(R.layout.sleep_page,viewGroup,false);
         RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,250);
         view.setLayoutParams(params);
@@ -45,7 +47,7 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
     }
 
     @Override
-    public void onBindViewHolder(final recylerview_sleep_adapter.viewholder viewHolder, final int i) {
+    public void onBindViewHolder(final RecylerviewSleepAdapter.viewholder viewHolder, final int i) {
         viewHolder.tv_day.setText(String.valueOf(day.get(i)));
         viewHolder.tv_go_bed_time.setText(go_bed_time.get(i));
         viewHolder.tv_get_up_time.setText(get_up_time.get(i));
@@ -104,7 +106,8 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
         get_up_time.add("07:00");
         content.add("今天很猛");
         content.add("今天很帥");
-        sleep_viewpager_diary.recylerview_sleep_adapter = new recylerview_sleep_adapter(sleep_viewpager_diary.context,day,go_bed_time,get_up_time,content);
+
+        DiaryFragment.recylerview_sleep_adapter = new RecylerviewSleepAdapter(DiaryFragment.context,day,go_bed_time,get_up_time,content);
     }
 
     //手動增加日記
@@ -113,8 +116,8 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
         go_bed_time.add(bed_data);
         day.add(back_day);
         content.add(dream_content);
-        sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
-        sleep_tab_viewpager.sleep_adapter.notifyDataSetChanged();
+        DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
+        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     //刪除點選日記
@@ -123,8 +126,8 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
         go_bed_time.remove(position);
         day.remove(position);
         content.remove(position);
-        sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
-        sleep_tab_viewpager.sleep_adapter.notifyDataSetChanged();
+        DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
+        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     //修改點選日記
@@ -133,8 +136,8 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
         go_bed_time.set(position,bed_data);
         day.set(position,back_day);
         content.set(position,dream_content);
-        sleep_viewpager_diary.recylerview_sleep_adapter.notifyDataSetChanged();
-        sleep_tab_viewpager.sleep_adapter.notifyDataSetChanged();
+        DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
+        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     class viewholder extends RecyclerView.ViewHolder{

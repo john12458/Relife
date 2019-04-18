@@ -37,7 +37,7 @@ public class sport_tab_viewpager extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.sleep_tab_viewpager,container,false);
+        View view = inflater.inflate(R.layout.sleep_fragment,container,false);
         fm = getChildFragmentManager();
         initData_sleep_tablayout();
         tb_content = view.findViewById(R.id.tb_content);

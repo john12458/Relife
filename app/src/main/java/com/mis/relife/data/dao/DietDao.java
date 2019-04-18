@@ -20,11 +20,10 @@ public class DietDao implements MyDao<Map<String,Diet>, Map<String,Diet>> {
     private DatabaseReference dietRef;
     private MyCallBack<List<Diet>> myCallback;
 
-    public DietDao(int userId){
-        this.dietRef = FirebaseDatabase.getInstance().getReference("user/"+userId+"/diets");
+    public DietDao(int userId,FirebaseDatabase db){
+        this.dietRef = db.getReference("user/"+userId+"/diets");
     }
 
-    public static DietDao getInstance(int userId){return new DietDao(userId);}
 
     @Override
     public Task<Void> insert(Object value) { return  dietRef.push().setValue((Diet)value);}
@@ -33,6 +32,17 @@ public class DietDao implements MyDao<Map<String,Diet>, Map<String,Diet>> {
     public Task<Void> update(String key, Object value) {
         return dietRef.child(key).setValue((Diet)value);
     }
+
+    @Override
+    public Task<Void> delete(String key) {
+        return dietRef.child(key).setValue(null);
+    }
+
+    @Override
+    public Task<Void> deleteAll() {
+        return dietRef.setValue(null);
+    }
+
     @Override
     public void load(String key,Object value,final MyCallBack<Map<String,Diet>> myCallback) {
         Log.d("InfoURL",dietRef.toString());

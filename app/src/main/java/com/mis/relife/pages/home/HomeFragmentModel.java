@@ -31,8 +31,10 @@ public class HomeFragmentModel extends BaseViewModel {
         AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
             @Override
             public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                life.set(value.life);
-                account.set(value.account);
+                if(value!=null){
+                    life.set(value.life);
+                    account.set(value.account);
+                }
             }
         });
     }

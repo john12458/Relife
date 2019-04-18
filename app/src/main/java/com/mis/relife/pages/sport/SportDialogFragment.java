@@ -37,15 +37,15 @@ public class SportDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
-        Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(true);
-        Window window = dialog.getWindow();
+
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setContentView(view);
+        getDialog().setCanceledOnTouchOutside(true);
+        Window window = getDialog().getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wlp);
-        return dialog;
+        return getDialog();
     }
 
 }

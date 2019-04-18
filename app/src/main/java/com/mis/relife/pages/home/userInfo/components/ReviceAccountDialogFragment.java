@@ -29,8 +29,6 @@ public class ReviceAccountDialogFragment extends DialogFragment {
     public ReviceAccountDialogFragment(UserInfoModel userInfoModel) {
         this.userInfoModel=  userInfoModel;
     }
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();

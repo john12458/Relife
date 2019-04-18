@@ -1,4 +1,4 @@
-package com.mis.relife.pages.sleep;
+package com.mis.relife.pages.sleep.week;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.mis.relife.pages.sleep.diary.RecylerviewSleepAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class sleep_viewpager_week extends Fragment {
+public class WeekFragment extends Fragment {
 
 //    private int create = 0;
 //    private LinearLayout test1,test2,test3;
@@ -64,42 +65,23 @@ public class sleep_viewpager_week extends Fragment {
 
     private  int have = 0;
 
-    public sleep_viewpager_week(Context context){
+    public WeekFragment(Context context){
         this.context = context;
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if(isVisibleToUser){
-//            create = 1;
-//        }
-//        if(!isVisibleToUser){
-//            create = 0;
-//        }
-//    }
+    public WeekFragment() {
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sleep_viewpager_week_analysis,container,false);
-//        if(create == 1) {
 
             barChart = view.findViewById(R.id.bar_chart);
             tv_sleep_hour_average = view.findViewById(R.id.tv_sleep_time);
             tv_go_bed_average = view.findViewById(R.id.tv_sleep_bed);
             tv_get_up_average = view.findViewById(R.id.tv_sleep_get);
-
-//            test1 = view.findViewById(R.id.linear_sleep_time);
-//            test2 = view.findViewById(R.id.linear_sleep_bed);
-//            test3 = view.findViewById(R.id.linear_sleep_get);
-            //動態更改樣式顏色
-//            GradientDrawable gd1 = (GradientDrawable) test1.getBackground();
-//            GradientDrawable gd2 = (GradientDrawable) test2.getBackground();
-//            GradientDrawable gd3 = (GradientDrawable) test3.getBackground();
-//            gd1.setColor(Color.RED);
-//        gd2.setColor(Color.BLUE);
-//        gd3.setColor(Color.YELLOW);
 
 
             sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -197,17 +179,17 @@ public class sleep_viewpager_week extends Fragment {
             //先將X軸設好七天
             BarEntry barEntry = new BarEntry(i,0);
             //再來比對有對應到日記的日期
-            for(int a = 0;a < recylerview_sleep_adapter.day.size();a++){
-                int gv_day = Integer.valueOf(recylerview_sleep_adapter.day.get(a));
+            for(int a = 0; a < RecylerviewSleepAdapter.day.size(); a++){
+                int gv_day = Integer.valueOf(RecylerviewSleepAdapter.day.get(a));
                 //有對應到就不會是0
                 if(day == gv_day){
-                    go_bed_time = recylerview_sleep_adapter.go_bed_time.get(a);
+                    go_bed_time = RecylerviewSleepAdapter.go_bed_time.get(a);
                     bed_hour = Integer.valueOf(go_bed_time.substring(0,2));
                     if(bed_hour == 0){bed_hour = 24;}
                     bed_min = Integer.valueOf(go_bed_time.substring(3,5));
                     go_bed_average += bed_hour + bed_min/60;
 
-                    get_up_time = recylerview_sleep_adapter.get_up_time.get(a);
+                    get_up_time = RecylerviewSleepAdapter.get_up_time.get(a);
                     get_hour = Integer.valueOf(get_up_time.substring(0,2));
                     if(get_hour == 0){get_hour = 24;}
                     get_min = Integer.valueOf(get_up_time.substring(3,5));

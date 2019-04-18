@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.mis.relife.data.model.Sleep;
+import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.BaseViewModel;
 import com.mis.relife.data.MyCallBack;
 import com.mis.relife.data.AppDbHelper;
@@ -40,7 +42,6 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     }
     //  BackButton
     public void onBackButtonClick() {
-        Toast.makeText(context,"返回",Toast.LENGTH_SHORT).show();
         activity.onBackPressed();
     }
     //  GridBtn
@@ -48,31 +49,23 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch(position) {
             case 0: // 帳戶設定
-                Toast.makeText(context,"帳戶設定",Toast.LENGTH_SHORT).show();
-                new ReviceAccountDialogFragment(this)
-                        .show(activity.getSupportFragmentManager(),"accountSetting");
+//                new ReviceAccountDialogFragment(this)
+//                        .show(activity.getSupportFragmentManager(),"accountSetting");
+                List<Food> list = new  ArrayList<Food>();
+                list.add(new Food("rice",1,300));
+                AppDbHelper.insertDietToFireBase(new Diet(1,"2018-02-03 19:00",list));
+                AppDbHelper.insertInfoToFireBase(new Info(1,"accountssssssss","pass",0));
+                AppDbHelper.insertSleepToFireBase(new Sleep("Hello world!!","happy","2018-02-03 19:00","2018-02-04 00:00"));
+                AppDbHelper.insertSportToFireBase(new Sport(20,300,"2018-02-03 19:00","運動"));
+
                 break;
-            case 1: // 綁定帳號
-                Toast.makeText(context,"修改",Toast.LENGTH_SHORT).show();
-                AppDbHelper.updateInfoToFireBase("life",50)
-                        .addOnSuccessListener(this)
-                        .addOnFailureListener(this);
-
-                List<Food> foods = new ArrayList<Food>();
-                foods.add(new Food("bfefefewfa",1,100));
-                foods.add(new Food("nofefefel",2,300));
-                foods.add(new Food("neeel",2,300));
-                foods.add(new Food("neee",2,300));
-
-                AppDbHelper.updateDietToFireBase(dietMap.keySet().iterator().next(),new Diet(2,"2020-04-03 20:00",foods));
-            break;
-            case 2: // 重生
+            case 1: // 重生
                 Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
-                AppDbHelper.updateInfoToFireBase("life",10)
-                        .addOnSuccessListener(this)
-                        .addOnFailureListener(this);
-
-                break;
+                AppDbHelper.deleteAllInfoToFireBase();
+                AppDbHelper.deleteAllDietToFireBase();
+                AppDbHelper.deleteAllSleepToFireBase();
+                AppDbHelper.deleteAllSportToFireBase();
+            break;
         }
     }
 
@@ -81,25 +74,13 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
         AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
             @Override
             public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                life.set(value.life);
-                account.set(value.account);
-            }
-
-        });
-
-        AppDbHelper.getAllDietFromFireBase(new MyCallBack<Map<String, Diet>>() {
-            @Override
-            public void onCallback(Map<String, Diet> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                dietMap = new HashMap<String, Diet>();
-                dietMap.putAll(value);
-                for (String name: dietMap.keySet()){
-                    String key = name.toString();
-                    String mvalue = dietMap.get(name).toString();
-                    System.out.println(key + " " + mvalue);
+                if(value!=null){
+                    life.set(value.life);
+                    account.set(value.account);
                 }
+
             }
         });
-
     }
 
     @Override

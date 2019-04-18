@@ -15,16 +15,22 @@ import com.google.firebase.database.ValueEventListener;
 public class InfoDao implements MyDao<Info,Info>{
     private DatabaseReference infoRef;
 
-    public InfoDao(int userId){
-        this.infoRef = FirebaseDatabase.getInstance().getReference("user/"+userId+"/info");
+    public InfoDao(int userId,FirebaseDatabase db){
+        this.infoRef = db.getReference("user/"+userId+"/info");
     }
-    public static InfoDao getInstance(int userId){return new InfoDao(userId);}
     @Override
     public Task<Void> insert(Object value) {return infoRef.setValue((Info)value);}
 
     @Override
     public Task<Void> update(String key,Object value) { return infoRef.child(key).setValue(value); }
-
+    @Override
+    public Task<Void> delete(String key) {
+        return infoRef.child(key).setValue(null);
+    }
+    @Override
+    public Task<Void> deleteAll() {
+        return infoRef.setValue(null);
+    }
     @Override
     public void load(String key, Object value, final MyCallBack<Info> myCallback) {
         infoRef.orderByChild(key).equalTo(String.valueOf(value)).addValueEventListener( new ValueEventListener() {
