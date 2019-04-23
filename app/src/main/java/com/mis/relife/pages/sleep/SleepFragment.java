@@ -30,28 +30,29 @@ public class SleepFragment extends Fragment{
     public ViewPager vp_content;
     private List<Fragment> sleep_fragments;
     private SleepViewPagerAdapter sleepViewPagerAdapter;
-    private DiaryFragment diaryFragment;
     private DayFragment dayFragment;
     private WeekFragment weekFragment;
+    private DayFragment diaryFragment;
 
     public SleepFragment(){
         initInstanceObject();
     }
 
     private void initInstanceObject(){
+
+    }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.sleep_fragment,container,false);
         sleep_fragments = new ArrayList<Fragment>();
-        diaryFragment = new DiaryFragment();
+        diaryFragment = new DayFragment();
         dayFragment = new DayFragment();
         weekFragment = new WeekFragment();
         sleep_fragments.add(diaryFragment);
         sleep_fragments.add(dayFragment);
         sleep_fragments.add(weekFragment);
         sleepViewPagerAdapter = new SleepViewPagerAdapter(getChildFragmentManager(),sleep_fragments);
-    }
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.sleep_fragment,container,false);
         tb_content = view.findViewById(R.id.tb_content);
         vp_content = view.findViewById(R.id.vp_content);
         tb_content.setTabMode(TabLayout.MODE_FIXED);

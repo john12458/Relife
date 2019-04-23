@@ -107,7 +107,7 @@ public class RecylerviewSleepAdapter extends RecyclerView.Adapter<RecylerviewSle
         content.add("今天很猛");
         content.add("今天很帥");
 
-        DiaryFragment.recylerview_sleep_adapter = new RecylerviewSleepAdapter(DiaryFragment.context,day,go_bed_time,get_up_time,content);
+        DiaryFragment.recylerview_sleep_adapter = new RecylerviewSleepAdapter(context,day,go_bed_time,get_up_time,content);
     }
 
     //手動增加日記
@@ -117,7 +117,7 @@ public class RecylerviewSleepAdapter extends RecyclerView.Adapter<RecylerviewSle
         day.add(back_day);
         content.add(dream_content);
         DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
-        SleepFragment.sleep_adapter.notifyDataSetChanged();
+//        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     //刪除點選日記
@@ -127,7 +127,7 @@ public class RecylerviewSleepAdapter extends RecyclerView.Adapter<RecylerviewSle
         day.remove(position);
         content.remove(position);
         DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
-        SleepFragment.sleep_adapter.notifyDataSetChanged();
+//        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     //修改點選日記
@@ -137,7 +137,7 @@ public class RecylerviewSleepAdapter extends RecyclerView.Adapter<RecylerviewSle
         day.set(position,back_day);
         content.set(position,dream_content);
         DiaryFragment.recylerview_sleep_adapter.notifyDataSetChanged();
-        SleepFragment.sleep_adapter.notifyDataSetChanged();
+//        SleepFragment.sleep_adapter.notifyDataSetChanged();
     }
 
     class viewholder extends RecyclerView.ViewHolder{

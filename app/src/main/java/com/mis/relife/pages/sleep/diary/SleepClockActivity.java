@@ -28,7 +28,7 @@ public class SleepClockActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme_NoActionBar_DarkBlue);
+        setTheme(R.style.AppTheme_NoActionBar);
         setContentView(R.layout.activity_sleep__clock_);
         String go_bed_hour = "",go_bed_minute = "";
         tv_clock = findViewById(R.id.tv_clock);

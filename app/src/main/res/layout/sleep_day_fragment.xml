@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="dayModel"
+            type="com.mis.relife.pages.sleep.day.DayModel"/>
+    </data>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="#50987654">
 
 
     <android.support.design.widget.AppBarLayout
@@ -43,7 +50,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0.48"
-                android:text="今天"
+                android:onClick="@{()->dayModel.onDatePick()}"
+                android:text="@{dayModel.date}"
                 android:textSize="20dp"
                 android:textColor="#000"
                 android:background="#00000000"
@@ -82,14 +90,14 @@
             xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pie_chart"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             </com.github.mikephil.charting.charts.PieChart>
 
@@ -106,35 +114,35 @@
             <TextView
                 android:id="@+id/tv_sleep_clock_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/v_line3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:text="23:07~06:30"
+                android:layout_height="18dp"
+                android:layout_marginTop="10dp"
+                android:text="@{dayModel.sleepClockTime,default=2700_2400}"
                 android:textColor="#000"
                 app:layout_constraintHorizontal_bias="0.05"
-                android:layout_marginTop="10dp"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_line3" />
 
             <ImageView
+                android:id="@+id/imageView5"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/v_line3"
-                app:layout_constraintRight_toLeftOf="@+id/tv_sleep_clock_time_num"
-                android:src="@drawable/iv_clock"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"/>
+                android:src="@drawable/iv_clock"
+                app:layout_constraintRight_toLeftOf="@+id/tv_sleep_clock_time_num"
+                app:layout_constraintTop_toBottomOf="@+id/v_line3" />
 
             <TextView
                 android:id="@+id/tv_sleep_clock_time_num"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/v_line3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:text="7小時5分"
+                android:layout_height="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="@{dayModel.sleepTimeBetween,default=ohrmin}"
                 android:textColor="#000"
-                app:layout_constraintHorizontal_bias="0.95"
-                android:layout_marginTop="10dp"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_sleep_clock_time" />
 
             //夢話
 
@@ -160,6 +168,7 @@
                 android:layout_marginLeft="80dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/edit_perfect"
+                android:text="@{dayModel.sleep.get().description}"
                 android:gravity="left"/>
 
 
@@ -170,3 +179,4 @@
     </ScrollView>
 
 </LinearLayout>
+</layout>

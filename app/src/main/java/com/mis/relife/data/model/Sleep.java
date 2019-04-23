@@ -8,12 +8,14 @@ import java.util.Map;
 public class Sleep {
     public String description;
     public String mood;
+    public String recordDate;
     public String sleepTime;
     public String wakeTime;
 
-    public Sleep(String description, String mood, String sleepTime, String wakeTime) {
+    public Sleep(String description, String mood, String recordDate, String sleepTime, String wakeTime) {
         this.description = description;
         this.mood = mood;
+        this.recordDate = recordDate;
         this.sleepTime = sleepTime;
         this.wakeTime = wakeTime;
     }
@@ -35,6 +37,7 @@ public class Sleep {
         txt+="\tmood:\t"+mood+"\n";
         txt+="\tsleepTime:\t"+sleepTime+"\n";
         txt+="\twakeTime:\t"+wakeTime+"\n";
+        txt+="\trecordDate:\t"+recordDate+"\n";
         txt+="\t------------\n";
         return txt;
     }
