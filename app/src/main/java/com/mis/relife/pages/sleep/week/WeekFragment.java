@@ -128,6 +128,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
       });
     }
     public void onDataChange(Date pDate){
+        boolean weekSleepsIsNull = true;
          List<Sleep> weekSleeps = new ArrayList<>();
          while(weekSleeps.size()<7) weekSleeps.add(null); //初始化weekSleeps
          List<Date>  weekDateList = getWeekDateList(pDate);
@@ -138,15 +139,19 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
                 Date wDate = weekDateList.get(i);
                 if (dateSdf.format(wDate).equals(value.recordDate)) { //找到選擇的日期就更新畫面
                     weekSleeps.set(i,value);
+                    weekSleepsIsNull =false;
                 }
             }
         }
-
-        try {
-            updateView(weekSleeps);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(weekSleepsIsNull) {
+            try { updateViewWithNoData(weekSleeps); }
+            catch (ParseException e) { e.printStackTrace(); }
         }
+        else{
+            try { updateView(weekSleeps); }
+            catch (ParseException e) { e.printStackTrace(); }
+        }
+
     }
     private List<Date> getWeekDateList(Date date){
         List weekDateList = new ArrayList();
@@ -161,11 +166,18 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         }
         return weekDateList;
     }
+    private void updateViewWithNoData(List<Sleep> weekSleeps) throws ParseException {
+        barDataResume(weekSleeps);
+        tv_go_bed_average.setText("沒有資料");
+        tv_sleep_hour_average.setText("沒有資料");
+        tv_get_up_average.setText("沒有資料");
+    }
     private void updateView(List<Sleep> weekSleeps) throws ParseException { // 畫面更新
         calculateAvg(weekSleeps);
         barDataResume(weekSleeps);
     }
     private void barDataResume(List<Sleep> weekSleeps) throws ParseException {
+        barChart.clear();
         List<BarEntry> entryList = new ArrayList<>();
         int i=0;
         for (Sleep value:weekSleeps){
@@ -191,10 +203,10 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
     }
     private void calculateAvg(List<Sleep> weekSleeps) throws ParseException {
         float sleepAvg =0;
-        float goBedHour =0;
-        float goBedMin=0;
-        float wakeUpHour =0;
-        float wakeUpMin=0;
+        int goBedHour =0;
+        int goBedMin=0;
+        int wakeUpHour =0;
+        int wakeUpMin=0;
         int cnt =0;
         Calendar sleepCal = Calendar.getInstance();
         Calendar wakeCal = Calendar.getInstance();
@@ -226,7 +238,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         wakeUpHour = (wakeUpHour+wakeUpMin/60)/cnt;
         wakeUpMin = (wakeUpMin%60)/cnt;
 
-        tv_go_bed_average.setText(String.valueOf(goBedHour) + ":" + "0" + String.valueOf(goBedMin));
+        tv_go_bed_average.setText(String.format("%02d", goBedHour) + ":" +  String.format("%02d", goBedMin));
         tv_sleep_hour_average.setText(String.format("%.1f", sleepAvg) + "小時");
         tv_get_up_average.setText(String.valueOf(wakeUpHour) + ":" + String.valueOf(wakeUpMin));
     }

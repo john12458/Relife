@@ -96,9 +96,18 @@ public class DayModel {
             if (dateSdf.format(date).equals(value.recordDate)) { //找到選擇的日期就更新畫面
                 try { updateView(value); }
                 catch (ParseException e) { e.printStackTrace(); }
-                break;
+                return;
             }
         }
+        updateViewWithNoData();
+    }
+    private  void updateViewWithNoData(){
+        sleepClockTime.set("今天還沒紀錄喔");
+        sleepTimeBetween.set("");
+        sleepPercent.set((float)0);
+        wakePercent.set((float)0);
+        sleep.set(null);
+        myPieChart.resume(); // 更新pieChart
     }
     private void updateView(Sleep value) throws ParseException { // 畫面更新
             sleep.set(value);
