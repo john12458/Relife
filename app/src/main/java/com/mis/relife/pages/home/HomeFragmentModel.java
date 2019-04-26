@@ -57,15 +57,15 @@ public class HomeFragmentModel extends BaseViewModel implements View.OnTouchList
             case MotionEvent.ACTION_DOWN:// 按下圖片時
                 mx = (int) event.getRawX() ;     //getRawX()：是獲取相對顯示螢幕左上角的座標
                 my = (int) event.getRawY() ;
-                binding.handImage.setX(mx-binding.handImage.getWidth()/2);
-                binding.handImage.setY(my-binding.handImage.getHeight()/2);
+                binding.handImage.setX(mx-binding.handImage.getWidth()/3*2);
+                binding.handImage.setY(my-binding.handImage.getHeight()/5*4);
                 binding.handImage.setVisibility(View.VISIBLE);
                 break;
             case MotionEvent.ACTION_MOVE:// 移動圖片時
                 mx = (int) event.getRawX() ;
                 my = (int) event.getRawY() ;
-                binding.handImage.setX(mx-binding.handImage.getWidth()/2);
-                binding.handImage.setY(my-binding.handImage.getHeight()/2);
+                binding.handImage.setX(mx-binding.handImage.getWidth()/3*2);
+                binding.handImage.setY(my-binding.handImage.getHeight()/5*4);
                 break;
             case MotionEvent.ACTION_UP:
                 binding.handImage.setVisibility(View.GONE);
