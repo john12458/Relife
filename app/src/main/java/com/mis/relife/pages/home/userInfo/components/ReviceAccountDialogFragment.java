@@ -3,6 +3,7 @@ package com.mis.relife.pages.home.userInfo.components;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -18,6 +19,8 @@ import com.mis.relife.databinding.FragmentReviceAccountDialogBinding;
 import com.mis.relife.pages.home.userInfo.UserInfoModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 @SuppressLint("ValidFragment")
@@ -48,8 +51,11 @@ public class ReviceAccountDialogFragment extends DialogFragment {
                                     String account = binding.editname.getText().toString();
                                     String newPassword = binding.newPassword.getText().toString();
                                     AppDbHelper.insertInfoToFireBase(new Info(value.id,account,newPassword,value.life));
-
-                                    userInfoModel.account.set(account);
+                                    SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+                                    pref.edit()
+                                            .putString("pAccount",account)
+                                            .putString("pPassword",newPassword)
+                                            .commit();
                                     new AlertDialog.Builder(getContext())
                                             .setTitle("通知")
                                             .setMessage("更改完成!!")

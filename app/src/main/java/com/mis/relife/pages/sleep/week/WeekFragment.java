@@ -46,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressLint("ValidFragment")
 public class WeekFragment extends Fragment implements Button.OnClickListener {
 
 //    private int create = 0;
@@ -82,10 +81,6 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
     private HashMap<String, Sleep> sleepList;
     private ArrayList<Sleep> weekSleeps;
     private Button bt_datepicker;
-
-    public WeekFragment(Context context){
-        this.context = context;
-    }
 
     public WeekFragment() {
 

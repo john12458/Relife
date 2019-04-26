@@ -6,6 +6,11 @@
         <item name="colorPrimaryDark">#ffd700</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="Dialog.FullScreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

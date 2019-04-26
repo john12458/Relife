@@ -5,8 +5,11 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+
 import com.mis.relife.R;
 import com.mis.relife.databinding.FragmentHomeBinding;
 
@@ -19,9 +22,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentHomeBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
-        vm = new HomeFragmentModel(getActivity());
+        vm = new HomeFragmentModel(getActivity(),binding);
         binding.setHomeFragmentModel(vm);
         View view = binding.getRoot();
+        binding.imageView7.setOnTouchListener(vm);
         return view;
     }
     public HomeFragmentModel getViewModel(){return this.vm;}

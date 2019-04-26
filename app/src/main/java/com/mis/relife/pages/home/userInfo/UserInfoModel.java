@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.mis.relife.pages.home.userInfo.components.ReviceAccountDialogFragment;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -89,29 +90,7 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
         AppDbHelper.deleteAllSportToFireBase();
     }
     private void onAccountChangeClick(){
-        Date date=null;
-        Calendar instance=null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        for (String key:testMap.keySet()) {
-            Sleep sleep = testMap.get(key);
-            System.out.println(sleep.toString());
-
-            try {
-                date = sdf.parse(sleep.sleepTime);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Date:"+date.toString());
-            instance = Calendar.getInstance();
-            instance.setTime(date);
-            System.out.println("Calendar:"+instance.getFirstDayOfWeek());
-        }
-        List<Food> list = new  ArrayList<Food>();
-        list.add(new Food("rice",1,300));
-        AppDbHelper.insertDietToFireBase(new Diet(1,"2018-02-03 19:00",list));
-        AppDbHelper.insertInfoToFireBase(new Info(1,"accountssssssss","pass",0));
-        AppDbHelper.insertSleepToFireBase(new Sleep("erewrewrer!","happy","2018-02-03 19:00",sdf.format(date),"2018-02-04 00:00"));
-        AppDbHelper.insertSportToFireBase(new Sport(20,300,"2018-02-03 19:00","2018-02-03 19:00","運動"));
+        new ReviceAccountDialogFragment(this).show(activity.getSupportFragmentManager(),"Revice");
     }
 
 

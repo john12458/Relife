@@ -9,6 +9,7 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.pages.eat.eat_page_activity;
 import com.mis.relife.pages.home.HomeFragment;
+import com.mis.relife.pages.login.LoginDialogFragment;
 import com.mis.relife.pages.sleep.SleepFragment;
 import com.mis.relife.pages.sport.sport_page_activity;
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity{
 
     private FragmentManager fManager;
     private sport_page_activity sportFragment;
-    private SleepFragment sleep_page;
+    private SleepFragment sleep_page;   
     private eat_page_activity eat_fg4;
     private HomeFragment homeFragment;
     private BottomNavigationView navigation;
@@ -34,14 +36,12 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        new AppDbHelper(1); //  for test
-        myInitlize();   // for test
-//        new LoginDialogFragment().show(getSupportFragmentManager(),"Login");
+        new LoginDialogFragment().show(getSupportFragmentManager(),"Login");
 
     }
     public void myInitlize(){
+
         fManager = getSupportFragmentManager();
         //  Fragments - Home, Eat, Sport, Sleep
         homeFragment = new HomeFragment();
