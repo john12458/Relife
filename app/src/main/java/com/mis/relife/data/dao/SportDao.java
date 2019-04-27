@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class SportDao implements MyDao<Map<String,Sport>, Map<String,Sport>> {
     private DatabaseReference sportRef;
-    public SportDao(int userId,FirebaseDatabase db){
+    public SportDao(String userId,FirebaseDatabase db){
         this.sportRef = db.getReference("user/"+userId+"/sports");
     }
 

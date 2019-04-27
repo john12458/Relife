@@ -9,6 +9,7 @@ public class MyUser {
     public List<Sport> sports;
 
     public MyUser(){}
+    public MyUser(Info info){this.info = info;}
 
     @Override
     public String toString() {

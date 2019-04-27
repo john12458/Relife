@@ -37,10 +37,8 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     private final Context context;
     private final UserInfoActivity activity;
 
-    private  Map<String,Sleep>  testMap;
     public final ObservableField<Integer> life = new ObservableField<>();
     public final ObservableField<String> account = new ObservableField<>();
-
 
     public UserInfoModel(UserInfoActivity activity){
         super();
@@ -56,13 +54,6 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
                     life.set(value.life);
                     account.set(value.account);
                 }
-            }
-        });
-        AppDbHelper.getAllSleepFromFireBase(new MyCallBack<Map<String, Sleep>>() {
-            @Override
-            public void onCallback(Map<String, Sleep> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                testMap = new HashMap<String,Sleep>();
-                testMap.putAll(value);
             }
         });
     }
@@ -84,15 +75,14 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     }
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
-        AppDbHelper.deleteAllInfoToFireBase();
-        AppDbHelper.deleteAllDietToFireBase();
-        AppDbHelper.deleteAllSleepToFireBase();
-        AppDbHelper.deleteAllSportToFireBase();
+//        AppDbHelper.deleteAllInfoToFireBase();
+//        AppDbHelper.deleteAllDietToFireBase();
+//        AppDbHelper.deleteAllSleepToFireBase();
+//        AppDbHelper.deleteAllSportToFireBase();
     }
     private void onAccountChangeClick(){
         new ReviceAccountDialogFragment(this).show(activity.getSupportFragmentManager(),"Revice");
     }
-
 
     @Override
     public void onSuccess(Void aVoid) {

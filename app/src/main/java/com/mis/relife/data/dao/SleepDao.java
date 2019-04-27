@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class SleepDao implements MyDao<Map<String,Sleep>,Map<String,Sleep>> {
     private DatabaseReference sleepRef;
-    public SleepDao(int userId,FirebaseDatabase db){
+    public SleepDao(String userId,FirebaseDatabase db){
         this.sleepRef = db.getReference("user/"+userId+"/sleeps");
     }
 

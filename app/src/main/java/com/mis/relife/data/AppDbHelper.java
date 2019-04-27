@@ -14,14 +14,14 @@ import com.mis.relife.data.model.Sport;
 import java.util.Map;
 
 public class AppDbHelper {
-    private static int userId = 0;
+    private static String userId = "";
     public static FirebaseDatabase mFirebase;
     private static DietDao dietDao;
     private static InfoDao infoDao;
     private static SleepDao sleepDao;
     private static SportDao sportDao;
 
-    public AppDbHelper(int userId){
+    public AppDbHelper(String userId){
         this.userId = userId;
         this.mFirebase = FirebaseDatabase.getInstance();
         this.dietDao = new DietDao(userId,mFirebase);

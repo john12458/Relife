@@ -150,7 +150,8 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_register"
                         android:text="註冊"
-                        android:textColor="@color/colorLogin" />
+                        android:textColor="@color/colorLogin"
+                        android:onClick="@{()->login.onRegisterClick()}"/>
 
                     <Button
                         android:id="@+id/loginButton"

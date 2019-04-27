@@ -12,14 +12,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Info {
 
-    public int id;
+    public String id;
     public String account;
     public String password;
     public int life;
 
     public Info(){}
 
-    public Info(int id, String account, String password, int life) {
+    public Info(String id, String account, String password, int life) {
         this.id = id;
         this.account = account;
         this.password = password;

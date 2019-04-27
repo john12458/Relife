@@ -235,7 +235,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
 
         tv_go_bed_average.setText(String.format("%02d", goBedHour) + ":" +  String.format("%02d", goBedMin));
         tv_sleep_hour_average.setText(String.format("%.1f", sleepAvg) + "小時");
-        tv_get_up_average.setText(String.valueOf(wakeUpHour) + ":" + String.valueOf(wakeUpMin));
+        tv_get_up_average.setText(String.format("%02d", wakeUpHour) + ":" + String.format("%02d", wakeUpMin));
     }
 
 

@@ -20,7 +20,7 @@ public class DietDao implements MyDao<Map<String,Diet>, Map<String,Diet>> {
     private DatabaseReference dietRef;
     private MyCallBack<List<Diet>> myCallback;
 
-    public DietDao(int userId,FirebaseDatabase db){
+    public DietDao(String userId,FirebaseDatabase db){
         this.dietRef = db.getReference("user/"+userId+"/diets");
     }
 

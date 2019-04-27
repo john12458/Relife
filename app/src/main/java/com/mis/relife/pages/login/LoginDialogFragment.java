@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.model.Info;
+import com.mis.relife.data.model.MyUser;
 import com.mis.relife.databinding.FragmentLoginDialogBinding;
 import com.mis.relife.pages.MainActivity;
 
@@ -89,14 +90,23 @@ public class LoginDialogFragment extends DialogFragment {
                 .getString("pAccount", "");
         String pPassword = getActivity().getSharedPreferences("user", MODE_PRIVATE)
                 .getString("pPassword", "");
-        int id = getActivity().getSharedPreferences("user", MODE_PRIVATE)
-                .getInt("id", 0);
-        if(id!=0){
+        String id = getActivity().getSharedPreferences("user", MODE_PRIVATE)
+                .getString("id", "");
+        if(!id.equals("")){
             binding.account.setText(pAccount);
             binding.password.setText(pPassword);
         }
     }
-
+    public void onRegisterClick(){
+        final String account = binding.account.getText().toString();
+        final String password = binding.password.getText().toString();
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = db.getReference("user");
+        String key = userRef.push().getKey();
+        userRef.child(key).setValue(new MyUser(
+                new Info(key,account,password,0)
+        ));
+    }
     public void onLoginClick() {
         final String account = binding.account.getText().toString();
         final String password = binding.password.getText().toString();
@@ -110,10 +120,10 @@ public class LoginDialogFragment extends DialogFragment {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Info info = data.child("info").getValue(Info.class);
                         if(info.password.equals(password)){
-                            int id = info.id;
+                            String id = info.id;
                             SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
                             pref.edit()
-                                    .putInt("id",id)
+                                    .putString("id",id)
                                     .putString("pAccount",info.account)
                                     .putString("pPassword",info.password)
                                     .commit();

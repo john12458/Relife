@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 public class InfoDao implements MyDao<Info,Info>{
     private DatabaseReference infoRef;
 
-    public InfoDao(int userId,FirebaseDatabase db){
+    public InfoDao(String userId,FirebaseDatabase db){
         this.infoRef = db.getReference("user/"+userId+"/info");
     }
     @Override
