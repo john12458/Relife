@@ -73,7 +73,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
     private BarData barData;
 
     private int mYear,mMonth,mDay,monday;
-//    private int bar_mYear,bar_mMonth,bar_mDay;
+    //    private int bar_mYear,bar_mMonth,bar_mDay;
     private String date_format;
     float avgSportTime;
     float avgSportCal;
@@ -116,6 +116,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         }
         //拿到星期一的day
         get_monday();
+        monday = cal.get(Calendar.DAY_OF_MONTH);
 
         //設置圖表
         week_sport_time = 0;
@@ -184,8 +185,8 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         //顯示邊框
         barChart.setDrawBorders(false);
 
-        barChart.animateY(3000);
-        barChart.animateX(3000);
+        barChart.animateY(2000);
+        barChart.animateX(2000);
 
         barChart.setTouchEnabled(false);
 
@@ -221,7 +222,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         int have ;
         List<BarEntry> list = new ArrayList<>();
         float total_sporttime;
-        int day = monday;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
         for (int i = 0; i < maxX; i++) {
             //先將X軸設好七天
             BarEntry barEntry = new BarEntry(i, 0);
@@ -281,13 +282,6 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         date_format = setDateFormat(mYear,mMonth,mDay);
     }
 
-//    private void bar_nowdate(){
-//        Calendar now = Calendar.getInstance();
-//        bar_mYear = now.get(Calendar.YEAR);
-//        bar_mMonth = now.get(Calendar.MONTH);
-//        bar_mDay = now.get(Calendar.DAY_OF_MONTH);
-//    }
-
     //計算星期一是幾號
     private Date getThisWeekMonday(Date date) {
         cal = Calendar.getInstance();
@@ -303,7 +297,6 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         int day = cal.get(Calendar.DAY_OF_WEEK);
         // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
         cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
-        monday = cal.get(Calendar.DAY_OF_MONTH);
         System.out.println("DAY !!!!!!!!!!!!!!!!!!" + cal.get(Calendar.DAY_OF_MONTH));
         return cal.getTime();
     }
@@ -331,12 +324,25 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     date_format = setDateFormat(year,month,day);
                     btPicker.setText(date_format);
+                    get_monday();
+                    System.out.println("monday!!!!!!!!" + monday);
+                    if(cal.get(Calendar.DAY_OF_MONTH) != monday){
+                        monday = cal.get(Calendar.DAY_OF_MONTH);
+                        //設置圖表
+                        week_sport_time = 0;
+                        week_sport_time_cnt = 0;
+                        barData = getBarData();
+                        barChart.setData(barData);
+                        setBarchar();
+
+                        //計算平均time 和 cal
+                        tvSportAvgTime.setText(String.format("%.1f", getAvgSportTime()) + "小時");
+                        tvSportAvgCal.setText(String.valueOf((int)getAvgSportCal()) + "卡路里");
+                        System.out.println("monday!!!!!!!!" + monday);
+                    }
                     mYear = year;
                     mMonth = month;
                     mDay = day;
-//                    bar_mYear = year;
-//                    bar_mMonth = month;
-//                    bar_mDay = day;
                 }
 
             }, mYear,mMonth, mDay).show();

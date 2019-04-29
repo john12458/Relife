@@ -73,43 +73,43 @@ public class sleep_viewpager_diary extends Fragment {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sleep_viewpager_diary,container,false);
-            fm =  getFragmentManager();
-            System.out.println("哈哈哈哈哈哈哈哈哈");
-            bt_clock = view.findViewById(R.id.bt_clock);
-            bt_datepicker = view.findViewById(R.id.bt_datepicker);
-            recycler_View = view.findViewById(R.id.recyler_view);
-            bt_test = view.findViewById(R.id.bt_sleep_plus);
-            bt_test.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(getContext(), ClockActivity.class);
-                    startActivity(intent);
-                }
-            });
+        fm =  getFragmentManager();
+        System.out.println("哈哈哈哈哈哈哈哈哈");
+        bt_clock = view.findViewById(R.id.bt_clock);
+        bt_datepicker = view.findViewById(R.id.bt_datepicker);
+        recycler_View = view.findViewById(R.id.recyler_view);
+        bt_test = view.findViewById(R.id.bt_sleep_plus);
+        bt_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getContext(), ClockActivity.class);
+                startActivity(intent);
+            }
+        });
 
-            Picasso
+        Picasso
                 .with(context)
                 .load(R.drawable.clock)
                 .into(bt_clock);
 
-            //設定今天日期
-            nowdate();
-            date = setDateFormat(mYear, mMonth, mDay);
-            titledate = setdiarydateFormat(mYear, mMonth);
-            bt_datepicker.setText(titledate);
+        //設定今天日期
+        nowdate();
+        date = setDateFormat(mYear, mMonth, mDay);
+        titledate = setdiarydateFormat(mYear, mMonth);
+        bt_datepicker.setText(titledate);
 
-            getNowDate();
-            recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
-            recycler_View.setLayoutManager(new LinearLayoutManager(context));
-            recycler_View.addItemDecoration(new recyler_item_space(0, 30));
-            recycler_View.setAdapter(recylerview_sleep_adapter);
-            //設定點擊功能
-            recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
-            //如題
-            bt_datepicker.setOnClickListener(date_pick);
-            //去睡覺 設鬧鐘
-            bt_clock.setOnClickListener(plus);
+        getNowDate();
+        recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
+        recycler_View.setLayoutManager(new LinearLayoutManager(context));
+        recycler_View.addItemDecoration(new recyler_item_space(0, 30));
+        recycler_View.setAdapter(recylerview_sleep_adapter);
+        //設定點擊功能
+        recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
+        //如題
+        bt_datepicker.setOnClickListener(date_pick);
+        //去睡覺 設鬧鐘
+        bt_clock.setOnClickListener(plus);
         return view;
     }
 
@@ -128,6 +128,8 @@ public class sleep_viewpager_diary extends Fragment {
         for(int i = 0;i < sleepData.record_date.size(); i++){
             //拿到month
             recordMonth = getMonth(recordMonth,sleepData.record_date.get(i));
+            System.out.println("DATE!!!!!" + sleepData.record_date.get(i));
+            System.out.println("recodeMonth!!!!!!!!!!!" + recordMonth);
             //比對到
             if(recordMonth == mMonth){
                 //新增
@@ -179,15 +181,22 @@ public class sleep_viewpager_diary extends Fragment {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     String format = setdiarydateFormat(year,month);
+                    bt_datepicker.setText(format);
+                    System.out.println(mMonth + "!!!!!!!!!!!!!!!!!" + month);
                     if(mMonth != month || mYear != year){
-//                        recylerview_sleep_adapter.initial_sleep_diary("10");
+                        mYear = year;
+                        mMonth = month;
+                        mDay = day;
+                        getNowDate();
+                        recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
                         recycler_View.setAdapter(recylerview_sleep_adapter);
                         recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
                     }
-                    mYear = year;
-                    mMonth = month;
-                    mDay = day;
-                    bt_datepicker.setText(format);
+                    else {
+                        mYear = year;
+                        mMonth = month;
+                        mDay = day;
+                    }
                 }
 
             }, mYear,mMonth, mDay).show();

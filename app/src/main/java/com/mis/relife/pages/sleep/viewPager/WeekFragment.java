@@ -264,6 +264,9 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         //顯示邊框
         barChart.setDrawBorders(false);
 
+        barChart.animateY(2000);
+        barChart.animateX(2000);
+
         /***XY軸的設置***/
         //X軸設置顯示位置在底部
         xAxis = barChart.getXAxis();
