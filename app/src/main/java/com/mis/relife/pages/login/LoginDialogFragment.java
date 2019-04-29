@@ -69,8 +69,6 @@ public class LoginDialogFragment extends DialogFragment {
             }
         });
     }
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -116,6 +114,7 @@ public class LoginDialogFragment extends DialogFragment {
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                userQuery.removeEventListener(this);
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Info info = data.child("info").getValue(Info.class);
@@ -138,13 +137,10 @@ public class LoginDialogFragment extends DialogFragment {
                             imm.hideSoftInputFromWindow(getDialog().getWindow().peekDecorView().getWindowToken(), 0);
                             getDialog().dismiss();
                             ((MainActivity)getActivity()).myInitlize();
-                            userQuery.removeEventListener(this);
-
                             return;
                         }
                     }
                 }
-                userQuery.removeEventListener(this);
                 new AlertDialog.Builder(getContext())
                         .setMessage("Login Failed")
                         .setNegativeButton("Retry", null)

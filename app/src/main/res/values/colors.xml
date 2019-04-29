@@ -6,6 +6,6 @@
     <color name="colorLogin">#FFFFFF</color>
     <color name="colorLoginbg">#9cc3c7</color>
     <color name="colorLoginTitle">#334041</color>
-    <color name="colorHomeStatus">#75FFFFFF</color>
-    <color name="transparent">#51FFFFFF</color>
+    <color name="colorHomeStatus">#B2FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

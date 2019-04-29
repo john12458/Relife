@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new LoginDialogFragment().show(getSupportFragmentManager(),"Login");
+//        new LoginDialogFragment().show(getSupportFragmentManager(),"Login");
 
+        myInitlize();
     }
     public void myInitlize(){
 
