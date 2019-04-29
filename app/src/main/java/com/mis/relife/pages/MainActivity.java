@@ -220,14 +220,17 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
             if(bool == 1){
                 eat_page = new EatTabViewpagerFragment();
                 fManager.beginTransaction().replace(R.id.ly_content,eat_page).commit();
+                changebackgorund_page(R.drawable.background_eat);
             }
             else if(bool == 2){
                 sport_tab_viewpager = new sport_tab_viewpager(this,getSupportFragmentManager());
                 fManager.beginTransaction().replace(R.id.ly_content,sport_tab_viewpager).commit();
+                changebackgorund_page(R.drawable.background_sport);
             }
             else if(bool == 3){
                 sleep_page = new sleep_tab_viewpager(this);
-                fManager.beginTransaction().replace(R.id.ly_content,sleep_page).commit();
+                fManager.beginTransaction().replace(R.id.ly_content, sleep_page).commit();
+                changebackgorund_page(R.drawable.background_sleep);
             }
         }
     }
