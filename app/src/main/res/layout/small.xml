@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/small_window_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <!--<com.lilei.springactionmenu.ActionMenu-->
+        <!--android:id="@+id/actionmenu"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:circleRadius="25dp"-->
+        <!--app:dimens="10dp"-->
+        <!--app:animationDuration="2500"-->
+        <!--app:expandDirect = "expandDirectTop"-->
+        <!--app:buttonNormalColor="#ff5bc0de"-->
+        <!--app:buttonPressColor="#ff39b3d7"-->
+        <!--app:actionMenuIcon="@drawable/add"-->
+        <!--app:actionMenuOnIcon="@drawable/add">-->
+
+    <!--</com.lilei.springactionmenu.ActionMenu>-->
+
+    <ImageView
+        android:id="@+id/pet"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <!--<TextView-->
+        <!--android:id="@+id/percent"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="#ffffff"-->
+        <!--/>-->
+</android.support.constraint.ConstraintLayout>

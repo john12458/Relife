@@ -120,8 +120,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"/>
             <ImageView
                 android:id="@+id/handImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:visibility="gone"
                 app:srcCompat="@drawable/ic_pan_tool_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
