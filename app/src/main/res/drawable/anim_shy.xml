@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+
+    <item android:drawable="@drawable/shy1" android:duration="120"/>
+    <item android:drawable="@drawable/shy2" android:duration="120"/>
+    <item android:drawable="@drawable/shy3" android:duration="120"/>
+    <item android:drawable="@drawable/shy4" android:duration="120"/>
+    <item android:drawable="@drawable/shy5" android:duration="120"/>
+    <item android:drawable="@drawable/shy6" android:duration="120"/>
+    <item android:drawable="@drawable/shy7" android:duration="120"/>
+    <item android:drawable="@drawable/shy8" android:duration="120"/>
+    <item android:drawable="@drawable/shy9" android:duration="120"/>
+    <item android:drawable="@drawable/shy10" android:duration="120"/>
+
+</animation-list>

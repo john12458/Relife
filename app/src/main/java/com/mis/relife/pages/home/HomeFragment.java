@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
                     shy = 0;
-                    //
+                    // hand
                     mx = (int) event.getRawX() ;     //getRawX()：是獲取相對顯示螢幕左上角的座標
                     my = (int) event.getRawY() ;
                     binding.handImage.setX(mx-binding.handImage.getWidth()/3*2);
@@ -243,6 +243,7 @@ public class HomeFragment extends Fragment {
                         anim_shy();
                         shy++;
                     }
+                    // hand
                     mx = (int) event.getRawX() ;
                     my = (int) event.getRawY() ;
                     binding.handImage.setX(mx-binding.handImage.getWidth()/3*2);

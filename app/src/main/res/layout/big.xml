@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/big_window_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.imangazaliev.circlemenu.CircleMenu
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/circle_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:openOnStart="true">
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:colorNormal="#7fffd4"
+            app:colorPressed="#fff"
+            app:hintText="home" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/eat"
+            app:hintText="eat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:colorNormal="#ffff00"
+            app:colorPressed="#fff"
+            />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/run"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:colorNormal="#7fffd4"
+            app:colorPressed="#fff"
+            app:hintText="run" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/sleep"
+            app:hintText="sleep"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:colorNormal="#87cefa"
+            app:colorPressed="#fff" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/close"
+            app:hintText="close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:colorNormal="#87cefa"
+            app:colorPressed="#fff" />
+
+    </com.imangazaliev.circlemenu.CircleMenu>
+</android.support.constraint.ConstraintLayout>

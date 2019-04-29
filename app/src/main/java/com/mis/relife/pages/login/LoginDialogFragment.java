@@ -51,7 +51,6 @@ public class LoginDialogFragment extends DialogFragment {
         myWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         myWindow.setBackgroundDrawableResource(R.color.transparent); //設了就不會有外圍的黑陰影 (不好的用法
 
-        isLoginBefore();
 
         return myDialog;
     }
@@ -83,18 +82,7 @@ public class LoginDialogFragment extends DialogFragment {
             }
          }, 100);
     }
-    private void isLoginBefore(){
-        String pAccount = getActivity().getSharedPreferences("user", MODE_PRIVATE)
-                .getString("pAccount", "");
-        String pPassword = getActivity().getSharedPreferences("user", MODE_PRIVATE)
-                .getString("pPassword", "");
-        String id = getActivity().getSharedPreferences("user", MODE_PRIVATE)
-                .getString("id", "");
-        if(!id.equals("")){
-            binding.account.setText(pAccount);
-            binding.password.setText(pPassword);
-        }
-    }
+
     public void onRegisterClick(){
         final String account = binding.account.getText().toString();
         final String password = binding.password.getText().toString();
@@ -123,8 +111,6 @@ public class LoginDialogFragment extends DialogFragment {
                             SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
                             pref.edit()
                                     .putString("id",id)
-                                    .putString("pAccount",info.account)
-                                    .putString("pPassword",info.password)
                                     .commit();
                             new AlertDialog.Builder(getContext())
                                     .setMessage("Sucess")
