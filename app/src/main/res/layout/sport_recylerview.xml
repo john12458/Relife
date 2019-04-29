@@ -36,6 +36,17 @@
             android:textSize="20dp"
             android:textColor="#000"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/tv_sport_distance"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="5dp"
+            android:text="分"
+            android:textSize="20dp"
+            android:textColor="#000"/>
+
 
         <TextView
             android:id="@+id/tv_sport_cal"

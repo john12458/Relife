@@ -21,10 +21,12 @@ public class eat_new_activity extends AppCompatActivity {
     private eat_new_viewpager_adapter vp_adapter = null;
     Button bt_finish;
     private String eat_name;
+    private EatData eatData = new EatData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.eat_new_main);
         Bundle bundle = getIntent().getExtras();
         eat_name = bundle.getString("eat_name");
@@ -46,11 +48,13 @@ public class eat_new_activity extends AppCompatActivity {
         tabs.add("我的食譜");
         tabs.add("我的最愛");
         tabs.add("最近新增");
-        fragments.add(new eat_new_viewpager_new(this,eat_name));
-        fragments.add(new eat_new_viewpager_recipe(this,eat_name));
-        fragments.add(new eat_new_viewpager_favorite(this,eat_name));
-        fragments.add(new eat_new_viewpager_recent(this,eat_name));
+        fragments.add(new eat_new_viewpager_new(this,eat_name,eatData));
+        fragments.add(new eat_new_viewpager_recipe(this,eat_name,eatData));
+        fragments.add(new eat_new_viewpager_favorite(this,eat_name,eatData));
+        fragments.add(new eat_new_viewpager_recent(this,eat_name,eatData));
     }
+
+
 
     private Button.OnClickListener finish = new Button.OnClickListener(){
 

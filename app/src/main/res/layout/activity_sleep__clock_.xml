@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pages.sleep.diary.SleepClockActivity"
+    tools:context=".pages.sleep.New_Delete.Sleep_Clock_Activity"
     android:background="@drawable/background_gradient_three">
 
     <ImageView

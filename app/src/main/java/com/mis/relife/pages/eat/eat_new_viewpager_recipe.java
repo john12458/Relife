@@ -3,8 +3,6 @@ package com.mis.relife.pages.eat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,31 +11,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mis.relife.R;
+import com.mis.relife.data.model.Food;
+import com.mis.relife.pages.eat.Adapter.recipe_adapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class eat_new_viewpager_recipe extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class eat_new_viewpager_recipe extends Fragment {
 
-    Context context;
+    private Context context;
     private TextView tv_eat;
-    String eat;
-    ImageButton bt_new_recipe;
-    ListView lv_recipe;
-    // ArrayList<String> array_recipe = new ArrayList<String>();
-    SQLiteDatabase db;
+    private String eat;
+    private ImageButton bt_new_recipe;
+    private ListView lv_recipe;
 
-    private List<eat_listview_recipe> mData; // 定義數據
+    private List<Food> recipeData = new ArrayList<>(); // 定義數據
+    private recipe_adapter recipeAdapter;
+    private EatData eatData;
 
-    public eat_new_viewpager_recipe(Context context, String eat){
+    public eat_new_viewpager_recipe(Context context, String eat,EatData eatData){
         this.context = context;
         this.eat = eat;
+        this.eatData = eatData;
     }
 
     @Nullable
@@ -47,48 +49,59 @@ public class eat_new_viewpager_recipe extends Fragment implements View.OnClickLi
         tv_eat = view.findViewById(R.id.tv_eat);
         tv_eat.setText(eat);
         bt_new_recipe = view.findViewById(R.id.bt_new_recipe);
-        bt_new_recipe.setOnClickListener(this);
+        bt_new_recipe.setOnClickListener(recipe_plus);
         lv_recipe = view.findViewById(R.id.listview_recipe);
         // 初始化數據
         initData();
-        lv_recipe.setOnItemClickListener(this);
-        // ArrayAdapter<String> ad_recipe = new ArrayAdapter<>(context, android.R.layout.simple_list_item_checked, array_recipe);
+        //設置刪除和編輯
+        lv_recipe.setOnItemClickListener(recipe_edit);
+        lv_recipe.setOnItemLongClickListener(recipe_delete);
         return view;
     }
 
-    // 初始化数据
+//     初始化数据
     private void initData() {
-        db = context.openOrCreateDatabase("relife", 0, null);
-        mData = new ArrayList<eat_listview_recipe>();
-        Cursor c = db.rawQuery("SELECT * FROM recipe", null);
-        if(c.moveToFirst()){
-            do {
-                eat_listview_recipe record  = new eat_listview_recipe(c.getString(0), c.getInt(1));
-                mData.add(record);
-            } while (c.moveToNext());
-        }
-        //  將布局添加到ListView中
-        LayoutInflater layoutinflater =getLayoutInflater();
-        // 創建自定義Adapter的對象
-        recipe_adapter adapter = new recipe_adapter(layoutinflater,mData);
-        lv_recipe.setAdapter(adapter);
+//        recipeData.clear();
+//        recipeData = eatData.recipe_foods;
+//        System.out.println(eatData.recipe_foods.get(0).food + "!!!!!\n" +eatData.recipe_foods.get(0).cal + "!!!!!\n" +
+//                eatData.recipe_foods.get(0).number);
+        recipeAdapter = new recipe_adapter(context,eatData.recipe_foods);
+        lv_recipe.setAdapter(recipeAdapter);
+
     }
 
+    private Button.OnClickListener recipe_plus = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent it = new Intent(context, eat_new_recipe.class);
+            startActivityForResult(it, 0);
+        }
+    };
     @Override
     public void onResume() {
         super.onResume();
         initData();
     }
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == R.id.bt_new_recipe){
-            Intent it = new Intent(context, eat_new_recipe.class);
-            startActivityForResult(it, 0);
+
+    private AdapterView.OnItemLongClickListener recipe_delete = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            return false;
         }
-    }
+    };
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private AdapterView.OnItemClickListener recipe_edit = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-    }
+//            String key = eatData.get_key(2,recipeAdapter.mData.get(position));
+//            Intent it = new Intent(context, eat_new_recipe.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("food",recipeAdapter.mData.);
+//            bundle.putString("key",key);
+//            startActivity(it);
+        }
+
+    };
+
 }

@@ -3,20 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mis.relife">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.GET_TASKS" />-->
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Relife"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:replace="label">
+        <activity android:name=".pages.sleep.ClockActivity"></activity>
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
-        <activity android:name=".pages.sleep.diary.DiaryEditActivity" />
-        <activity android:name=".pages.sport.Sport_Plus_Activity" />
-        <activity android:name=".pages.sleep.diary.SleepClockActivity" />
+        <activity android:name=".pages.sleep.New_Delete.sleep_plus" />
+        <activity android:name=".pages.sport.New_Delete.Sport_Plus_Activity" />
+        <activity android:name=".pages.sleep.New_Delete.Sleep_Clock_Activity" />
         <activity
             android:name=".pages.MainActivity"
             android:label="Relife">
@@ -26,18 +32,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".pages.eat.eat_week_analysis" />
-        <activity android:name=".pages.eat.eat_day_analysis" />
+        <activity android:name=".pages.eat.eat_new_second" />
+        <activity android:name=".pages.eat.eat_new_recipe" />
         <activity android:name=".pages.eat.eat_new_activity" />
         <activity
-            android:name=".pages.sport.Sport_Plus_Activity"
+            android:name=".pages.sport.New_Delete.Sport_Plus_Activity"
             tools:ignore="DuplicateActivity" />
         <activity
-            android:name=".pages.sleep.diary.SleepClockActivity"
+            android:name=".pages.sleep.New_Delete.Sleep_Clock_Activity"
             tools:ignore="DuplicateActivity" />
         <activity
-            android:name=".pages.sleep.diary.DiaryEditActivity"
+            android:name=".pages.sleep.New_Delete.sleep_plus"
             tools:ignore="DuplicateActivity" />
+
+        <service android:name=".pages.Service.FloatWindowService" />
     </application>
 
 </manifest>
