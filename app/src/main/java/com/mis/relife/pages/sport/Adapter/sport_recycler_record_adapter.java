@@ -89,7 +89,7 @@ public class sport_recycler_record_adapter extends RecyclerView.Adapter<sport_re
         sport_record_name.add("卡路里: ");
         sport_record_info.add("");
         sport_record_info.add("");
-        sport_record_info.add("216");
+        sport_record_info.add("");
 //        Sport_Plus_Activity.choose_type = 2;
     }
 
