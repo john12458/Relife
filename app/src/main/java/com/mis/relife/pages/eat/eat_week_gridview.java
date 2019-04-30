@@ -1,4 +1,4 @@
-package com.mis.relife.pages.eat.Adapter;
+package com.mis.relife.pages.eat;
 
 import android.content.Context;
 import android.view.LayoutInflater;

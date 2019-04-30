@@ -19,12 +19,10 @@ public class eat_new_viewpager_recent extends Fragment {
     Context context;
     private TextView tv_eat;
     String eat;
-    private EatData eatData;
 
-    public eat_new_viewpager_recent(Context context, String eat,EatData eatData){
+    public eat_new_viewpager_recent(Context context, String eat){
         this.context = context;
         this.eat = eat;
-        this.eatData  = eatData;
     }
 
     @Nullable
@@ -34,5 +32,9 @@ public class eat_new_viewpager_recent extends Fragment {
         tv_eat = view.findViewById(R.id.tv_eat);
         tv_eat.setText(eat);
         return view;
+    }
+    // 初始化数据
+    public void initData() {
+
     }
 }
