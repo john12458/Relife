@@ -19,12 +19,10 @@ public class eat_new_viewpager_new  extends Fragment {
     Context context;
     private TextView tv_eat;
     String eat;
-    private EatData eatData;
 
-    public eat_new_viewpager_new(Context context,String eat,EatData eatData) {
+    public eat_new_viewpager_new(Context context,String eat) {
         this.context = context;
         this.eat = eat;
-        this.eatData = eatData;
     }
 
 

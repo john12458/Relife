@@ -175,8 +175,8 @@ public class HomeFragment extends Fragment {
                 case MotionEvent.ACTION_UP:
                     int duration = 0;
                     //如果物件離寵物很近 就執行
-                    if(user_pet.getTop() + 90 < sport.getTop() && user_pet.getLeft() + 90 < sport.getLeft() &&
-                            user_pet.getBottom() - 90 > sport.getBottom() && user_pet.getRight() - 90 > sport.getRight()){
+                    if(user_pet.getTop() + 10 < sport.getTop() && user_pet.getLeft() + 10 < sport.getLeft() &&
+                            user_pet.getBottom() - 10 > sport.getBottom() && user_pet.getRight() - 10 > sport.getRight()){
                         anim_walk();
                         //將物件弄不見
                         sport.setVisibility(View.GONE);
@@ -201,6 +201,7 @@ public class HomeFragment extends Fragment {
                 case MotionEvent.ACTION_DOWN:
                     foodLastRawX = event.getRawX();
                     foodLastRawY = event.getRawY();
+                    anim_shine();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     int dx = (int) (event.getRawX() - foodLastRawX);//相对坐标
@@ -211,8 +212,8 @@ public class HomeFragment extends Fragment {
                     break;
                 case MotionEvent.ACTION_UP:
                     int duration = 0;
-                    if(user_pet.getTop() + 90 < food.getTop() && user_pet.getLeft() + 90 < food.getLeft() &&
-                            user_pet.getBottom() - 90 > food.getBottom() && user_pet.getRight() - 90 > food.getRight()){
+                    if(user_pet.getTop() + 10 < food.getTop() && user_pet.getLeft() + 10 < food.getLeft() &&
+                            user_pet.getBottom() - 10 > food.getBottom() && user_pet.getRight() - 10 > food.getRight()){
                         anim_eat();
                         food.setVisibility(View.GONE);
                         anim_change(duration);
@@ -302,7 +303,15 @@ public class HomeFragment extends Fragment {
         anim = (AnimationDrawable) user_pet.getDrawable();
         anim.start();
     }
-
+    //執行 開心的動畫
+    private void anim_shine(){
+        type = "shine";
+        anim.stop();
+        anim = null;
+        user_pet.setImageResource(R.drawable.anim_shine);
+        anim = (AnimationDrawable) user_pet.getDrawable();
+        anim.start();
+    }
     //執行 原本的動畫
     private void anim_pica(){
         type = "normal";

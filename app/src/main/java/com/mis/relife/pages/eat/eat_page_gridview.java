@@ -1,6 +1,5 @@
-package com.mis.relife.pages.eat.Adapter;
+package com.mis.relife.pages.eat;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,16 @@ import android.widget.TextView;
 import com.mis.relife.pages.MainActivity;
 import com.mis.relife.R;
 
-public class eat_page_gridview_record extends BaseAdapter {
+public class eat_page_gridview extends BaseAdapter {
 
     private LayoutInflater myinflater;
-    private String[] top = {"今日目標","飲食攝取","運動消耗"};
-    private String[] data = {"0","0","0"};
+    private String[] top;
+    private String[] data;
 
-    public eat_page_gridview_record(Context context) {
-        myinflater = LayoutInflater.from(context);
+    public eat_page_gridview(MainActivity mainActivity, String[] data, String[] top) {
+        myinflater = LayoutInflater.from(mainActivity);
+        this.data = data;
+        this.top = top;
     }
 
     @Override

@@ -1,6 +1,5 @@
-package com.mis.relife.pages.eat.Adapter;
+package com.mis.relife.pages.eat;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +9,16 @@ import android.widget.TextView;
 
 import com.mis.relife.pages.MainActivity;
 import com.mis.relife.R;
-import com.squareup.picasso.Picasso;
 
-public class eat_page_gridview_button extends BaseAdapter {
+public class eat_page_gridview2 extends BaseAdapter {
 
     private LayoutInflater myinflater;
-    public String[] menu = {"早餐","午餐","晚餐","宵夜","點心","開水"};
-    public int[] menu_img = {R.drawable.breakfast,R.drawable.lunch,R.drawable.dinner,R.drawable.corn
-            ,R.drawable.pudding,R.drawable.water};
-    private Context context;
-    public eat_page_gridview_button(Context context) {
-        this.context = context;
-        myinflater = LayoutInflater.from(context);
+    private String[] menu;
+    private int[] menu_img;
+    public eat_page_gridview2(MainActivity mainActivity, String[] menu, int[] menu_img) {
+        myinflater = LayoutInflater.from(mainActivity);
+        this.menu = menu;
+        this.menu_img = menu_img;
     }
 
     @Override
@@ -45,10 +42,7 @@ public class eat_page_gridview_button extends BaseAdapter {
         TextView tv_eat = convertView.findViewById(R.id.tv_eat);
         ImageView bt_eat = convertView.findViewById(R.id.bt_eat);
         tv_eat.setText(menu[position]);
-        Picasso
-                .with(context)
-                .load(menu_img[position])
-                .into(bt_eat);
+        bt_eat.setImageResource(menu_img[position]);
         return convertView;
     }
 }

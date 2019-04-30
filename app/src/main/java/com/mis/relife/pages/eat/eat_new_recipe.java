@@ -1,6 +1,10 @@
 package com.mis.relife.pages.eat;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,39 +13,45 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mis.relife.R;
-import com.mis.relife.data.AppDbHelper;
-import com.mis.relife.data.model.Diet;
-import com.mis.relife.data.model.Food;
 
 public class eat_new_recipe extends AppCompatActivity {
     TextView test;
     EditText ed_food, ed_cal;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_recipe);
 
-        test = findViewById(R.id.txv_test);
-        ed_food = findViewById(R.id.ed_food);
-        ed_cal = findViewById(R.id.ed_cal);
+        test = (TextView)findViewById(R.id.txv_test);
+        ed_food = (EditText)findViewById(R.id.ed_food);
+        ed_cal = (EditText)findViewById(R.id.ed_cal);
+        db = openOrCreateDatabase("relife",0,null);
 
     }
     public void cancel(View v){
-        finish();
+        db.close();
+        eat_new_recipe.this.finish();
     }
     public void save(View v){
-        Diet diet_insert = new Diet();
-        Food food_insert = new Food();
-        food_insert.food = ed_food.getText().toString();
-        food_insert.cal = Integer.valueOf(ed_cal.getText().toString());
-        food_insert.number = 1;
-        diet_insert.category = 2;
-        diet_insert.eatDate = "2019/4/27";
-        diet_insert.foods.add(food_insert);
-
-        AppDbHelper.insertDietToFireBase(diet_insert);
-        finish();
+        ContentValues cv = new ContentValues(2);
+        Cursor c = db.rawQuery("SELECT * FROM recipe WHERE name ='" +  ed_food.getText().toString() + "'", null);
+        if(c.moveToFirst()) {
+            Snackbar.make(findViewById(R.id.eat_new_reciipe), "食譜已經存在囉 ! ", Snackbar.LENGTH_SHORT).show();
+        }
+        else {
+            if(ed_food.getText().toString().equals("") || ed_cal.getText().toString().equals("")) {
+                Snackbar.make(findViewById(R.id.eat_new_reciipe), "有欄位未填妥哦 ! ", Snackbar.LENGTH_SHORT).show();
+            }
+            else {
+                cv.put("name", ed_food.getText().toString());
+                cv.put("cal", Double.parseDouble(ed_cal.getText().toString()));
+                db.insert("recipe", null, cv);
+                db.close();
+                eat_new_recipe.this.finish();
+            }
+        }
     }
     public void test(View v){
         Intent intent_new_recipe = new Intent();
