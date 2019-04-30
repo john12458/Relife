@@ -197,6 +197,7 @@ public class HomeFragment extends Fragment {
                 case MotionEvent.ACTION_DOWN:
                     foodLastRawX = event.getRawX();
                     foodLastRawY = event.getRawY();
+                    anim_shine();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     int dx = (int) (event.getRawX() - foodLastRawX);//相对坐标
@@ -298,7 +299,15 @@ public class HomeFragment extends Fragment {
         anim = (AnimationDrawable) user_pet.getDrawable();
         anim.start();
     }
-
+    //執行 開心的動畫
+    private void anim_shine(){
+        type = "shine";
+        anim.stop();
+        anim = null;
+        user_pet.setImageResource(R.drawable.anim_shine);
+        anim = (AnimationDrawable) user_pet.getDrawable();
+        anim.start();
+    }
     //執行 原本的動畫
     private void anim_pica(){
         type = "normal";
