@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 
 public class ClockActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -106,6 +107,7 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                         mAudioRecord.startRecording();
                         short[] buffer = new short[BUFFER_SIZE];
                         while (isGetVoiceRun) {
+                            Calendar now = Calendar.getInstance();
                             //r是实际读取的数据长度，一般而言r会小于buffersize
                             int r = mAudioRecord.read(buffer, 0, BUFFER_SIZE);
                             long v = 0;
@@ -116,10 +118,10 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                             // 平方和除以数据总长度，得到音量大小。
                             double mean = v / (double) r;
                             double volume = 10 * Math.log10(mean);
-                            Log.d(TAG, "分贝值:" + volume);
+                            Log.d(TAG, "分贝值:" + volume + "時間" + now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
                             //寫檔進去
                             try {
-                                bw.write("分贝值:" + volume);
+                                bw.write("分贝值:" + volume + "時間" + now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
                                 bw.newLine();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -127,7 +129,7 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                             // 大概一秒十次
                             synchronized (mLock) {
                                 try {
-                                    mLock.wait(1000);
+                                    mLock.wait(500);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }

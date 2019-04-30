@@ -68,6 +68,7 @@ public class count_cal {
             cal = sport_count_cal_all(sport_min,kg,12.4);
         }
         else if(sport.equals("瑜珈")){
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!瑜珈");
             cal = sport_count_cal_all(sport_min,kg,3);
         }
         else if(sport.equals("跳舞(慢)")){
@@ -131,9 +132,11 @@ public class count_cal {
     }
 
     private int sport_count_cal_all(int sport_min,int kg,double Consumption) {
-        int cal = 0;
-        cal = (int) (Consumption * kg * (sport_min / 60));
-        return cal;
+        int count_cal = 0;
+        double min = (double) sport_min / 60.0;
+        count_cal = (int) (Consumption * kg * min);
+        System.out.println(Consumption + "!!!!!!!!!!!!!!!" +  min + "!!!!!!!!!!!!!!!" + count_cal + "!!!!!!!!!!!!!!!" + kg);
+        return count_cal;
     }
 
 }

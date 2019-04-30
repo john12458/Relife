@@ -77,7 +77,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
     private String date_format;
     float avgSportTime;
     float avgSportCal;
-    private int week_sport_time,week_sport_time_cnt;
+    private int week_sport_time,week_sport_time_cnt,week_sport_cal;
 
     //圖表外觀資料區
     private  String[] week = {"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
@@ -152,7 +152,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             return avgSportCal;
         }
         else {
-            avgSportCal = week_sport_time / 24 / week_sport_time_cnt;
+            avgSportCal = week_sport_cal / week_sport_time_cnt;
             return avgSportCal;
         }
     }
@@ -244,8 +244,10 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 //拿到後可以對應指定的day
                 if (day == record_day) {
                     int sport_time = Integer.valueOf(sportData.sport_time.get(a));
+                    int sport_cal = Integer.valueOf(sportData.sport_cal.get(a));
                     total_sporttime += sport_time;
                     week_sport_time += sport_time;
+                    week_sport_cal += sport_cal;
                     if(have == 0) {
                         week_sport_time_cnt++;
                         have++;
@@ -356,9 +358,11 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 + String.valueOf(dayOfMonth);
     }
 
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("resume!!!!!!!!!!!!!!!!!!!!!");
+    }
 
     /*
     底下是目前沒有用的東西

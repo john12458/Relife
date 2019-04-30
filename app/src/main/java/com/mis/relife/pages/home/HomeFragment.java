@@ -74,9 +74,11 @@ public class HomeFragment extends Fragment {
                 if(food == null){
                     addfood();
                     food.setOnTouchListener(food_ontouch);
+                    System.out.println("null!!!!!!!!!!!!!!!!!!!");
                 }
-                else if(food.getVisibility() == View.INVISIBLE){
+                else if(food.getVisibility() == View.GONE){
                     food.setVisibility(View.VISIBLE);
+                    System.out.println("visible!!!!!!!!!!!!!!!!!!!");
                 }
                 else {
 
@@ -89,9 +91,11 @@ public class HomeFragment extends Fragment {
                 if(sport == null){
                     addsport();
                     sport.setOnTouchListener(sport_ontouch);
+                    System.out.println("null!!!!!!!!!!!!!!!!!!!");
                 }
-                else if(sport.getVisibility() == View.INVISIBLE){
+                else if(sport.getVisibility() == View.GONE){
                     sport.setVisibility(View.VISIBLE);
+                    System.out.println("visible!!!!!!!!!!!!!!!!!!!");
                 }
                 else {
 
@@ -175,7 +179,7 @@ public class HomeFragment extends Fragment {
                             user_pet.getBottom() - 90 > sport.getBottom() && user_pet.getRight() - 90 > sport.getRight()){
                         anim_walk();
                         //將物件弄不見
-                        sport.setVisibility(View.INVISIBLE);
+                        sport.setVisibility(View.GONE);
                         //當動畫跑完後 開始跑原本的
                         anim_change(duration);
                     }
@@ -210,7 +214,7 @@ public class HomeFragment extends Fragment {
                     if(user_pet.getTop() + 90 < food.getTop() && user_pet.getLeft() + 90 < food.getLeft() &&
                             user_pet.getBottom() - 90 > food.getBottom() && user_pet.getRight() - 90 > food.getRight()){
                         anim_eat();
-                        food.setVisibility(View.INVISIBLE);
+                        food.setVisibility(View.GONE);
                         anim_change(duration);
                     }
                     else {

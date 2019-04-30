@@ -18,6 +18,7 @@ import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.Adapter.recyclerview_sport_plus_adapter;
 import com.mis.relife.pages.sport.Adapter.sport_plus_type_gridview;
 import com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter;
+import com.mis.relife.pages.sport.count_cal;
 import com.mis.relife.useful.recyler_item_space;
 
 public class Sport_Plus_Activity extends AppCompatActivity {
@@ -31,10 +32,7 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     public com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter sport_recycler_record_adapter;
 
     private  String[] sport_type = {"跑步","拍類","棒類","球類","武術","水上","健體","工作","騎車","其他"};
-//    private List<String> sport_type_child = new ArrayList<String>();
-
-//    private List<String> sport_record_name = new ArrayList<String>();
-//    private List<String> sport_record_info = new ArrayList<String>();
+    private count_cal count_cal;
 
     private TextView tv_sport_child_name;
     private Button bt_finish;
@@ -51,6 +49,7 @@ public class Sport_Plus_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_sport__plus_);
+        count_cal = new count_cal();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         recyclerView_sport_type = findViewById(R.id.recycler_sport_type);
         gv_sport_type = findViewById(R.id.gv_data2);
@@ -146,7 +145,8 @@ public class Sport_Plus_Activity extends AppCompatActivity {
                 Toast.makeText(Sport_Plus_Activity.this,"請選擇運動長度",Toast.LENGTH_LONG).show();
             }
             else {
-                    cal = sport_recycler_record_adapter.sport_record_info.get(2);
+
+                    cal = String.valueOf(count_cal.if_else_sport(name,Integer.valueOf(time),40));
                     Sport sport_update = new Sport();
                     sport_update.type = name;
                     sport_update.startTime = start;
@@ -186,12 +186,13 @@ public class Sport_Plus_Activity extends AppCompatActivity {
                 Toast.makeText(Sport_Plus_Activity.this,"請選擇運動長度",Toast.LENGTH_LONG).show();
             }
             else {
-                insert_cal = sport_recycler_record_adapter.sport_record_info.get(2);
+                System.out.println(insert_name + "!!!!!!!哈哈!!!!!!!!" + insert_time);
+                insert_cal = String.valueOf(count_cal.if_else_sport(insert_name,Integer.valueOf(insert_time),40));
                 Sport sport_insert = new Sport();
                 sport_insert.type = insert_name;
                 sport_insert.startTime = insert_start;
                 sport_insert.betweenTime = Integer.valueOf(insert_time);
-                sport_insert.cal = 200;
+                sport_insert.cal = Integer.valueOf(insert_cal);
                 sport_insert.recordDate = date;
 
                 AppDbHelper.insertSportToFireBase(sport_insert);
