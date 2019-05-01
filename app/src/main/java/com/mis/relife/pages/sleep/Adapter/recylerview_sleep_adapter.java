@@ -48,7 +48,7 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
     @Override
     public recylerview_sleep_adapter.viewholder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view  =LayoutInflater.from(context).inflate(R.layout.sleep_page,viewGroup,false);
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,250);
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(params);
         viewholder holder = new viewholder(view);
         return holder;

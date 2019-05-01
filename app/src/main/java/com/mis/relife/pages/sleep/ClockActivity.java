@@ -2,12 +2,10 @@ package com.mis.relife.pages.sleep;
 
 import android.Manifest;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
 import android.media.MediaRecorder;
-import android.os.Environment;
-import android.provider.Settings;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,20 +17,21 @@ import android.widget.Toast;
 
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.mis.relife.R;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class ClockActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -50,15 +49,42 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
     private String str;
     File parent = null;
 
+    //linechart
+    private LineChart chart;
+    private LineData data;
+    private ArrayList<String> xVals = new ArrayList<>();
+    private LineDataSet dataSet;
+    private ArrayList<Entry> yVals = new ArrayList<>();
+    private Handler handler;
+
+    int filenumber = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock);
+        chart = findViewById(R.id.linechart1);
         play = findViewById(R.id.play);
         tv = findViewById(R.id.volum);
         stopRecordingButton = findViewById(R.id.stop);
         //設立停止監聽
         stopRecordingButton.setOnClickListener(this);
+
+        //子線程傳資料給主線程 用來更新圖表
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String file = "mychart" + filenumber + ".jpg";
+                dataSet = new LineDataSet(yVals,"分貝圖");
+                dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                data = new LineData(dataSet);
+                chart.setData(data);
+                chart.invalidate();
+                chart.saveToGallery(file, 85);
+                filenumber++;
+                yVals = new ArrayList<>();
+            }
+        };
 
         //要求開啟錄音機權限和寫檔權限
         requestAudio();
@@ -71,6 +97,7 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                 SAMPLE_RATE_IN_HZ, AudioFormat.CHANNEL_IN_DEFAULT,
                 AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
 
+
         //開始錄音的監聽
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +107,7 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    //開始錄製
     public void getNoiseLevel() {
         if (isGetVoiceRun) {
             Log.e(TAG, "还在录着呢");
@@ -95,7 +123,7 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //寫檔動作預備
+                    //寫檔動作預備
                     FileWriter fw = null;
                     try {
                         fw = new FileWriter("/sdcard/output.txt", false);
@@ -106,6 +134,10 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                     //開始錄音
                         mAudioRecord.startRecording();
                         short[] buffer = new short[BUFFER_SIZE];
+
+                        //圖表資料數量初始化
+                        int l = 0;
+
                         while (isGetVoiceRun) {
                             Calendar now = Calendar.getInstance();
                             //r是实际读取的数据长度，一般而言r会小于buffersize
@@ -121,11 +153,26 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                             Log.d(TAG, "分贝值:" + volume + "時間" + now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
                             //寫檔進去
                             try {
+                                //寫進去
                                 bw.write("分贝值:" + volume + "時間" + now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND));
+                                //加一行
                                 bw.newLine();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                            //如果分貝大於零才要放進去 圖表
+                            if(volume >= 0) {
+                                yVals.add(new Entry(l, (int) volume));
+                                l++;
+                            }
+                            //如果圖表內容等於多少就要製作出一個圖表
+                            if(l == 7200){
+                                Message message = Message.obtain();
+                                message.arg1 = 0;
+                                handler.sendMessage(message);
+                                l = 0;
+                            }
+
                             // 大概一秒十次
                             synchronized (mLock) {
                                 try {
@@ -142,9 +189,9 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                 }
                 //錄音停止
-                        mAudioRecord.stop();
-                        mAudioRecord.release();
-                        mAudioRecord = null;
+                mAudioRecord.stop();
+                mAudioRecord.release();
+                mAudioRecord = null;
             }
         }).start();
     }
@@ -158,7 +205,9 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
             PermissionsUtil.requestPermission(this, new PermissionListener() {
                 @Override
                 public void permissionGranted(@NonNull String[] permission) {
-
+                    mAudioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                            SAMPLE_RATE_IN_HZ, AudioFormat.CHANNEL_IN_DEFAULT,
+                            AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
                 }
 
                 @Override
@@ -207,6 +256,12 @@ public class ClockActivity extends AppCompatActivity implements View.OnClickList
         System.out.println("Stop!!!!!!!!!");
         Toast.makeText(ClockActivity.this,"錄製結束",Toast.LENGTH_LONG).show();
         isGetVoiceRun = false;
+        dataSet = new LineDataSet(yVals,"分貝圖");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        data = new LineData(dataSet);
+        chart.setData(data);
+        chart.invalidate();
+        chart.saveToGallery("end.jpg", 85);
     }
 
 }

@@ -59,7 +59,7 @@ public class MyWindowManager {
         if (smallWindow == null) {
             smallWindow = new FloatWindowSmallView(context);
             if (smallWindowParams == null) {
-                smallWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                smallWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                         PixelFormat.TRANSLUCENT);
                 smallWindowParams.format = PixelFormat.RGBA_8888;
@@ -103,7 +103,7 @@ public class MyWindowManager {
         if (bigWindow == null) {
             bigWindow = new FloatWindowBigView(context);
             if (bigWindowParams == null) {
-                bigWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                bigWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                         PixelFormat.TRANSLUCENT);
 //                bigWindowParams.x = screenWidth / 2;
