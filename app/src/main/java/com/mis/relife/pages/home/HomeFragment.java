@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
                     addfood();
                     food.setOnTouchListener(food_ontouch);
                 }
-                else if(food.getVisibility() == View.INVISIBLE){
+                else if(food.getVisibility() == View.GONE){
                     food.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
                     addsport();
                     sport.setOnTouchListener(sport_ontouch);
                 }
-                else if(sport.getVisibility() == View.INVISIBLE){
+                else if(sport.getVisibility() == View.GONE){
                     sport.setVisibility(View.VISIBLE);
                 }
                 else {
@@ -131,7 +131,6 @@ public class HomeFragment extends Fragment {
         food.setLayoutParams(frame);
         test_frame.addView(food);
     }
-
     //picasso 套件 給imageview的
     private void picasso_iv(ImageView imageView,int res){
         Picasso
@@ -175,7 +174,7 @@ public class HomeFragment extends Fragment {
                             user_pet.getBottom() - 90 > sport.getBottom() && user_pet.getRight() - 90 > sport.getRight()){
                         anim_walk();
                         //將物件弄不見
-                        sport.setVisibility(View.INVISIBLE);
+                        sport.setVisibility(View.GONE);
                         //當動畫跑完後 開始跑原本的
                         anim_change(duration);
                     }
@@ -211,7 +210,7 @@ public class HomeFragment extends Fragment {
                     if(user_pet.getTop() + 90 < food.getTop() && user_pet.getLeft() + 90 < food.getLeft() &&
                             user_pet.getBottom() - 90 > food.getBottom() && user_pet.getRight() - 90 > food.getRight()){
                         anim_eat();
-                        food.setVisibility(View.INVISIBLE);
+                        food.setVisibility(View.GONE);
                         anim_change(duration);
                     }
                     else {
