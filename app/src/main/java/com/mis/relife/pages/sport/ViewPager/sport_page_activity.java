@@ -93,9 +93,10 @@ public class sport_page_activity extends Fragment {
         ibv_daily = view.findViewById(R.id.bt_daily);
         ini_img();
 
+        sport_recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
 
         bt_datepicker.setOnClickListener(datepicker);
-        System.out.println("create!!!!!!!!!!!!!!!!!!");
 
 
         if(first == 0) {
@@ -119,8 +120,6 @@ public class sport_page_activity extends Fragment {
                     getNowDate();
 
                     sportpage_adapter = new recylerview_sportpage_adapter(context,recycler_sport_name,recycler_sport_StartTime,recycler_sport_time,recycler_sport_cal);
-                    sport_recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
                     sport_recyclerView.setAdapter(sportpage_adapter);
 
                     totalcal();

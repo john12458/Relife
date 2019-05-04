@@ -111,7 +111,7 @@ public class sleep_viewpager_diary extends Fragment {
             @Override
             public void onCallback(Map<String, Sleep> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
                 getNowDate();
-                recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
+                recylerview_sleep_adapter = new recylerview_sleep_adapter(context,recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
                 recycler_View.setAdapter(recylerview_sleep_adapter);
                 //設定點擊功能
                 recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
