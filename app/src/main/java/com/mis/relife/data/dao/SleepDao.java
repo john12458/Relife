@@ -27,7 +27,7 @@ public class SleepDao implements MyDao<Map<String,Sleep>,Map<String,Sleep>> {
 
     @Override
     public Task<Void> update(String key, Object value) {
-        return null;
+        return sleepRef.child(key).setValue(value);
     }
     @Override
     public Task<Void> delete(String key) {

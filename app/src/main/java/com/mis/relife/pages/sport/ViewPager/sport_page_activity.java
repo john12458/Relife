@@ -20,7 +20,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.Adapter.recylerview_sportpage_adapter;
 import com.mis.relife.pages.sport.SportData;
 import com.mis.relife.pages.sport.New_Delete.SportDialogFragment;
@@ -32,6 +37,7 @@ import com.wajahatkarim3.easyflipview.EasyFlipView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 
 @SuppressLint("ValidFragment")
@@ -43,6 +49,8 @@ public class sport_page_activity extends Fragment {
     public ImageButton bt_sport_plus;
     public String date;
     private int mYear,mMonth,mDay;
+    private int nowmYear,nowmMonth,nowmDay;
+    private String dateFormat;
     public TextView tv_sport_cal;
     public TextView tv_sport_walk;
     public recylerview_sportpage_adapter sportpage_adapter ;
@@ -92,23 +100,35 @@ public class sport_page_activity extends Fragment {
 
         if(first == 0) {
             nowdate();
+            dateFormat = setDateFormat(mYear,mMonth,mDay);
+            bt_datepicker.setText("今天");
             first++;
         }
-        date = setDateFormat(mYear,mMonth,mDay);
-        bt_datepicker.setText(date);
-        getNowDate();
 
-        sportpage_adapter = new recylerview_sportpage_adapter(context,recycler_sport_name,recycler_sport_StartTime,recycler_sport_time,recycler_sport_cal);
-        sport_recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
-        sport_recyclerView.setAdapter(sportpage_adapter);
-
-        totalcal();
-
-        sportpage_adapter.setOnItemClickListener(sport_record_click);
+        myInit();
 
         bt_sport_plus.setOnClickListener(sport_record_plus);
         return view;
+    }
+
+    private void myInit(){
+        AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
+            @Override
+            public void onCallback(Map<String, Sport> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                if(!value.isEmpty()) {
+                    getNowDate();
+
+                    sportpage_adapter = new recylerview_sportpage_adapter(context,recycler_sport_name,recycler_sport_StartTime,recycler_sport_time,recycler_sport_cal);
+                    sport_recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
+                    sport_recyclerView.setAdapter(sportpage_adapter);
+
+                    totalcal();
+
+                    sportpage_adapter.setOnItemClickListener(sport_record_click);
+                }
+            }
+        });
     }
 
     private void picasso_iv (int res,ImageView img){
@@ -139,7 +159,7 @@ public class sport_page_activity extends Fragment {
             Intent intent_sport_plus = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString("choose","diary");
-            bundle.putString("date", (String) bt_datepicker.getText());
+            bundle.putString("date", dateFormat);
             intent_sport_plus.setClass(context, Sport_Plus_Activity.class);
             intent_sport_plus.putExtras(bundle);
             startActivity(intent_sport_plus);
@@ -165,7 +185,7 @@ public class sport_page_activity extends Fragment {
             bundle.putString("sport_time" ,time);
             bundle.putString("sport_cal",cal);
             bundle.putString("key",key);
-            bundle.putString("date", (String) bt_datepicker.getText());
+            bundle.putString("date",  dateFormat);
             bundle.putInt("position",position);
 
             intent_sport_edit.putExtras(bundle);
@@ -192,10 +212,9 @@ public class sport_page_activity extends Fragment {
         recycler_sport_time.clear();
         recycler_sport_cal.clear();
         recycler_sport_recordDate.clear();
-        String date = (String) bt_datepicker.getText();
         System.out.println(date);
         for(int i = 0;i < sportData.sport_recordDate.size(); i++){
-            if(sportData.sport_recordDate.get(i).equals(date)){
+            if(sportData.sport_recordDate.get(i).equals(dateFormat)){
                 System.out.println("right!!!!!!!!!" + date);
                 recycler_sport_name.add(sportData.sport_name.get(i));
                 recycler_sport_StartTime.add(sportData.sport_StartTime.get(i));
@@ -215,11 +234,14 @@ public class sport_page_activity extends Fragment {
             new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int day) {
-                    String format = setDateFormat(year,month,day);
-                    bt_datepicker.setText(format);
+                    dateFormat = setDateFormat(year,month,day);
+                    if(nowmYear == year && nowmMonth == month && nowmDay == day)
+                        bt_datepicker.setText("今天");
+                    else if(nowmYear == year && nowmMonth == month && nowmDay - 1 == day)
+                        bt_datepicker.setText("昨天");
+                    else bt_datepicker.setText(dateFormat);
                     getNowDate();
                     sportpage_adapter.notifyDataSetChanged();
-//                    easyFlipView.flipTheView();
                     totalcal();
                     mYear = year;
                     mMonth = month;
@@ -242,6 +264,9 @@ public class sport_page_activity extends Fragment {
     //得到現在日期
     private void nowdate(){
         Calendar now = Calendar.getInstance();
+        nowmYear = now.get(Calendar.YEAR);
+        nowmMonth = now.get(Calendar.MONTH );
+        nowmDay = now.get(Calendar.DAY_OF_MONTH);
         mYear = now.get(Calendar.YEAR);
         mMonth = now.get(Calendar.MONTH );
         mDay = now.get(Calendar.DAY_OF_MONTH);
@@ -249,9 +274,24 @@ public class sport_page_activity extends Fragment {
 
     //設定日期格式
     private String setDateFormat(int year,int monthOfYear,int dayOfMonth){
+        String month,day;
+        //判斷如果是個位數 日期前面要加個零
+        if(monthOfYear / 10 == 0){
+            month = "0" + String.valueOf(monthOfYear + 1);
+        }
+        else {
+            month = String.valueOf(monthOfYear + 1);
+        }
+        if (dayOfMonth / 10 == 0){
+            day = "0" + String.valueOf(dayOfMonth);
+        }
+        else {
+            day = String.valueOf(dayOfMonth);
+        }
+        //設定日期格式
         return String.valueOf(year) + "/"
-                + String.valueOf(monthOfYear + 1) + "/"
-                + String.valueOf(dayOfMonth);
+                + month + "/"
+                + day;
     }
 
 }

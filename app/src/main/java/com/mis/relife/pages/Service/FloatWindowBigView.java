@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import com.imangazaliev.circlemenu.CircleMenu;
 import com.imangazaliev.circlemenu.CircleMenuButton;
 import com.mis.relife.R;
@@ -29,7 +28,6 @@ public class FloatWindowBigView  extends ConstraintLayout {
     private CircleMenuButton home,run,sleep,eat,close;
     private Context context;
 
-
     public FloatWindowBigView(final Context context) {
         super(context);
         this.context = context;
@@ -45,6 +43,7 @@ public class FloatWindowBigView  extends ConstraintLayout {
         close = view.findViewById(R.id.close);
         ini_circlebutton();
         circleMenu.setEventListener(eventListener);
+
     }
 
     //menu的監聽器
@@ -130,4 +129,6 @@ public class FloatWindowBigView  extends ConstraintLayout {
                 .load(res)
                 .into(circleMenuButton);
     }
+
+
 }

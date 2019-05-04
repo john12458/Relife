@@ -52,15 +52,11 @@ public class eat_page_activity extends Fragment {
         view = inflater.inflate(R.layout.eat_page,container,false);
         gv_data1 = view.findViewById(R.id.gv_data1);
         gv_data2 = view.findViewById(R.id.gv_data2);
-        bt_week = view.findViewById(R.id.bt_analysis_week);
-        bt_day = view.findViewById(R.id.bt_analysis_today);
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
         bt_datepicker.setOnClickListener(datepicker);
         nowdate();
         date = setDateFormat(mYear,mMonth,mDay);
         bt_datepicker.setText(date);
-        bt_week.setOnClickListener(week);
-        bt_day.setOnClickListener(today);
         eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top);
         eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img);
         gv_data1.setAdapter(eat_gridview_adapter);
@@ -109,26 +105,6 @@ public class eat_page_activity extends Fragment {
                 intent_eat_new.putExtras(bundle);
                 startActivity(intent_eat_new);
             }
-        }
-    };
-
-    private Button.OnClickListener week = new Button.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            Intent intent_eat_week = new Intent();
-            intent_eat_week.setClass(context, eat_week_analysis.class);
-            startActivity(intent_eat_week);
-        }
-    };
-
-    private Button.OnClickListener today = new Button.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            Intent intent_eat_week = new Intent();
-            intent_eat_week.setClass(context, eat_day_analysis.class);
-            startActivity(intent_eat_week);
         }
     };
 

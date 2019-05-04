@@ -13,6 +13,9 @@ public class count_cal {
         else if(sport.equals("健走")){
             cal = sport_count_cal_all(sport_min,kg,5.5);
         }
+        else if(sport.equals("拖地")){
+            cal = sport_count_cal_all(sport_min,kg,3.7);
+        }
         else if(sport.equals("慢跑")){
             cal = sport_count_cal_all(sport_min,kg,8.2);
         }

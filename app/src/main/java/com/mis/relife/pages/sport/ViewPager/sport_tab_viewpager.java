@@ -45,7 +45,7 @@ public class sport_tab_viewpager extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.sleep_tab_viewpager,container,false);
+        View view = inflater.inflate(R.layout.sport_tab_viewpager,container,false);
         fm = getChildFragmentManager();
         System.out.println("tab initial!!!!!!!!!!!!!");
         initData_sleep_tablayout();
@@ -97,7 +97,7 @@ public class sport_tab_viewpager extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        sport_adapter.notifyDataSetChanged();
+//        sport_adapter.notifyDataSetChanged();
     }
 
     @Override
