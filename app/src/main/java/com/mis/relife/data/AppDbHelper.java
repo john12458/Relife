@@ -1,10 +1,12 @@
 package com.mis.relife.data;
 
 import com.mis.relife.data.dao.DietDao;
+import com.mis.relife.data.dao.FoodCalDao;
 import com.mis.relife.data.dao.InfoDao;
 import com.mis.relife.data.dao.SleepDao;
 import com.mis.relife.data.dao.SportDao;
 import com.mis.relife.data.model.Diet;
+import com.mis.relife.data.model.Food;
 import com.mis.relife.data.model.Info;
 import com.mis.relife.data.model.Sleep;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +22,7 @@ public class AppDbHelper {
     private static InfoDao infoDao;
     private static SleepDao sleepDao;
     private static SportDao sportDao;
+    private static FoodCalDao foodCalDao;
 
     public AppDbHelper(String userId){
         this.userId = userId;
@@ -28,8 +31,10 @@ public class AppDbHelper {
         this.infoDao = new InfoDao(userId,mFirebase);
         this.sleepDao = new SleepDao(userId,mFirebase);
         this.sportDao = new SportDao(userId,mFirebase);
+        this.foodCalDao = new FoodCalDao(mFirebase);
     }
-
+    // FoofCal
+    public static void getAllFoodCalFromFireBase(MyCallBack<Map<String, Food>> myCallback) {foodCalDao.loadAll(myCallback);}
     // Diet
     public static Task<Void> insertDietToFireBase(Diet value) {return dietDao.insert(value); }
     public static Task<Void> updateDietToFireBase(String key, Object value) {return dietDao.update(key,value); }

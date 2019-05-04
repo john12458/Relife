@@ -17,7 +17,7 @@ public class Food {
     public String toString() {
         String txt="\n\t--- food ---\n";
         txt+="\tfood:\t"+food+"\n";
-        txt+="\tnumber:\t"+String.valueOf(number)+"\n";
+        if(number!=0) txt+="\tnumber:\t"+String.valueOf(number)+"\n";
         txt+="\tcal:\t"+String.valueOf(cal)+"\n";
         txt+="\t------------\n";
         return txt;

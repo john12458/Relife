@@ -7,6 +7,8 @@ public class MyUser {
     public Info info;
     public List<Sleep> sleeps;
     public List<Sport> sports;
+    public Love love;
+    public Recipe recipe;
 
     public MyUser(){}
     public MyUser(Info info){this.info = info;}
