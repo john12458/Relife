@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class AppDbHelper {
     private static String userId = "";
-    public static FirebaseDatabase mFirebase;
+    public static FirebaseDatabase mFirebase = FirebaseDatabase.getInstance();
     private static DietDao dietDao;
     private static InfoDao infoDao;
     private static SleepDao sleepDao;
@@ -26,7 +26,6 @@ public class AppDbHelper {
 
     public AppDbHelper(String userId){
         this.userId = userId;
-        this.mFirebase = FirebaseDatabase.getInstance();
         this.dietDao = new DietDao(userId,mFirebase);
         this.infoDao = new InfoDao(userId,mFirebase);
         this.sleepDao = new SleepDao(userId,mFirebase);

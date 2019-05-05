@@ -83,12 +83,13 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
         }
     }
     private void onLogout(){
-//        SharedPreferences pref = activity.getSharedPreferences("user", MODE_PRIVATE);
-//        pref.edit()
-//                .putString("id","")
-//                .commit();
-//        Intent intent = new Intent(activity, MainActivity.class);
-//        activity.startActivity(intent);
+        Toast.makeText(context,"登出!!",Toast.LENGTH_SHORT).show();
+        SharedPreferences pref = activity.getSharedPreferences("user", MODE_PRIVATE);
+        pref.edit()
+                .putString("id","")
+                .commit();
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
