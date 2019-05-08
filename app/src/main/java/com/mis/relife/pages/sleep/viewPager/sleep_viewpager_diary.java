@@ -227,6 +227,7 @@ public class sleep_viewpager_diary extends Fragment {
             String wakeTime = recylerview_sleep_adapter.wake_time.get(position);
             String recordDate = recylerview_sleep_adapter.recordDate.get(position);
             String description = recylerview_sleep_adapter.description.get(position);
+            String mood = recylerview_sleep_adapter.mood.get(position);
             String key = sleepData.get_key(sleepTime,wakeTime,recordDate,description);
 
             Intent sleep_edit = new Intent();
@@ -238,6 +239,7 @@ public class sleep_viewpager_diary extends Fragment {
             bundle.putString("get",wakeTime);
             bundle.putString("date",recordDate);
             bundle.putString("sleep_content",description);
+            bundle.putString("mood",mood);
             bundle.putString("key",key);
             sleep_edit.putExtras(bundle);
             startActivity(sleep_edit);

@@ -178,7 +178,8 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         BarDataSet barset = new BarDataSet(entryList,"");
 
         barset.setColors(colors);
-        barset.setDrawValues(false);
+//        barset.setDrawValues(false);
+        barset.setValueTextColor(Color.WHITE);
         barset.setBarShadowColor(Color.GRAY);
 
         List<IBarDataSet> datasets = new ArrayList<>();

@@ -72,7 +72,7 @@ public class Sleep_Clock_Activity extends Activity {
             String get_up_hour = "",get_up_minute = "";
             Intent back_intent = new Intent();
             Calendar back = Calendar.getInstance();
-            int back_hour = back.get(Calendar.HOUR);
+            int back_hour = back.get(Calendar.HOUR_OF_DAY);
             int back_minute = back.get(Calendar.MINUTE);
             //讓計時器變得是00:00:00
             get_up_hour = add_zero(String.valueOf(back_hour));

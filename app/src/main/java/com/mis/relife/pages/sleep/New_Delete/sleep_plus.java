@@ -1,6 +1,10 @@
 package com.mis.relife.pages.sleep.New_Delete;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -8,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +21,7 @@ import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.model.Sleep;
 import com.mis.relife.pages.sleep.Adapter.recylerview_sleep_adapter;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +32,7 @@ public class sleep_plus extends AppCompatActivity {
     private TextView tv_date;
     private Button tv_finish;
     private Button bt_finish;
+    public ImageButton ib_mood;
     private EditText et_go_bed_time;
     private EditText et_get_up_time;
     private EditText et_sleep_content;
@@ -36,10 +43,12 @@ public class sleep_plus extends AppCompatActivity {
     private String get_up_time = "";
     private String dream = "";
     private String date = "";
+    public String mood = "firt4";
     private int bool = 0,position;
     private int mYear,mMonth,mDay;
 
     private String key = "";
+    private FragmentManager fm;
 
 
     @Override
@@ -47,9 +56,11 @@ public class sleep_plus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_sleep_plus);
+        fm = getSupportFragmentManager();
         tv_date = findViewById(R.id.tv_date);
         tv_finish  =findViewById(R.id.tv_finish);
         bt_finish = findViewById(R.id.bt_finish);
+        ib_mood = findViewById(R.id.ib_moood_image);
         et_go_bed_time = findViewById(R.id.et_go_bed_time);
         et_get_up_time = findViewById(R.id.et_get_up_time);
         et_sleep_content  =findViewById(R.id.et_sleep_content);
@@ -69,6 +80,7 @@ public class sleep_plus extends AppCompatActivity {
                 initTimePicker(et_go_bed_time);
             }
         });
+        ib_mood.setOnClickListener(ibMoodClick);
 
         //三種狀況
         //第一種 設定鬧鐘
@@ -95,6 +107,14 @@ public class sleep_plus extends AppCompatActivity {
         bt_finish.setOnClickListener(finish);
     }
 
+    private Button.OnClickListener ibMoodClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SleepChooseMood chooseMood = new SleepChooseMood(sleep_plus.this,sleep_plus.this);
+            chooseMood.show(fm,"choose");
+        }
+    };
+
     //三種傳值過來的情況
     //第一 設定鬧鐘
     private void clock(){
@@ -115,6 +135,7 @@ public class sleep_plus extends AppCompatActivity {
         get_up_time = bundle.getString("get");
         date = bundle.getString("date");
         key = bundle.getString("key");
+        mood = bundle.getString("mood");
         //切割字串
         String sleepTime = "";
         String wakeTime = "";
@@ -125,6 +146,17 @@ public class sleep_plus extends AppCompatActivity {
         et_go_bed_time.setText(sleepTime);
         et_get_up_time.setText(wakeTime);
         tv_date.setText(date);
+        if(mood.charAt(0) == '/'){
+            Bitmap bitmap= BitmapFactory.decodeFile(mood);
+            ib_mood.setImageBitmap(bitmap);
+        }
+        else {
+            int resId = this.getResources()
+                    .getIdentifier(mood
+                            , "drawable"
+                            , "com.mis.relife");
+            ib_mood.setImageResource(resId);
+        }
     }
     //第三種 直接新增日記
     private void plus_diary(){
@@ -204,6 +236,7 @@ public class sleep_plus extends AppCompatActivity {
                     sleep_insert.wakeTime = date + " " + et_get_up_time.getText().toString() + ":00";
                     sleep_insert.description = et_sleep_content.getText().toString();
                     sleep_insert.recordDate = date;
+                    sleep_insert.mood = mood;
 
                     AppDbHelper.insertSleepToFireBase(sleep_insert);
                 }
@@ -213,6 +246,7 @@ public class sleep_plus extends AppCompatActivity {
                     sleep_edit.sleepTime = date + " " + et_go_bed_time.getText().toString() + ":00";
                     sleep_edit.wakeTime = date + " " + et_get_up_time.getText().toString() + ":00";
                     sleep_edit.description = et_sleep_content.getText().toString();
+                    sleep_edit.mood = mood;
                     sleep_edit.recordDate = date;
 
                     System.out.println("key!!!!!!!!!!!!!!!!!!" + key);

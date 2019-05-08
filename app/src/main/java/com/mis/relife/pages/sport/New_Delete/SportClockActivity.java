@@ -293,7 +293,7 @@ public class SportClockActivity extends AppCompatActivity {
     private void init_img(){
         subButtonDrawablesRight = new Drawable[]{getApplicationContext().getResources().getDrawable(R.drawable.add_run),
                 getApplicationContext().getResources().getDrawable(R.drawable.add_pie),
-                getApplicationContext().getResources().getDrawable(R.drawable.add_bat),
+                getApplicationContext().getResources().getDrawable(R.drawable.add_beat),
                 getApplicationContext().getResources().getDrawable(R.drawable.add_ball),
                 getApplicationContext().getResources().getDrawable(R.drawable.add_material)};
 
