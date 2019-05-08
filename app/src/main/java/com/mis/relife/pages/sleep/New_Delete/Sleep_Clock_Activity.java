@@ -2,10 +2,12 @@ package com.mis.relife.pages.sleep.New_Delete;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mis.relife.R;
@@ -17,8 +19,10 @@ public class Sleep_Clock_Activity extends Activity {
 
 
     private Long StartTime,hours,minius,seconds;
+    public AnimationDrawable anim;
     private Handler handler = new Handler();
     private TextView tv_clock;
+    private ImageView petSleep;
     private Button bt_back;
     private sleep_viewpager_diary diary;
     private String go_bed_time,get_up_time;
@@ -30,12 +34,13 @@ public class Sleep_Clock_Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep__clock_);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         String go_bed_hour = "",go_bed_minute = "";
         tv_clock = findViewById(R.id.tv_clock);
         bt_back = findViewById(R.id.bt_back);
+        petSleep = findViewById(R.id.pet_sleep);
         c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR);
+        hour = c.get(Calendar.HOUR_OF_DAY);
         minute = c.get(Calendar.MINUTE);
         if(String.valueOf(hour).length() == 1){
             go_bed_hour = "0" + String.valueOf(hour);
@@ -49,6 +54,9 @@ public class Sleep_Clock_Activity extends Activity {
         else {
             go_bed_minute = String.valueOf(minute);
         }
+        petSleep.setImageResource(R.drawable.anim_tired);
+        anim = (AnimationDrawable) petSleep.getDrawable();
+        anim.start();
         go_bed_time = go_bed_hour+":"+ go_bed_minute;
         StartTime = System.currentTimeMillis();
         handler.removeCallbacks(updateTimer);
@@ -66,18 +74,10 @@ public class Sleep_Clock_Activity extends Activity {
             Calendar back = Calendar.getInstance();
             int back_hour = back.get(Calendar.HOUR);
             int back_minute = back.get(Calendar.MINUTE);
-            if(String.valueOf(back_hour).length() == 1){
-                get_up_hour = "0" + String.valueOf(back_hour);
-            }
-            else {
-                get_up_hour = String.valueOf(back_hour);
-            }
-            if(String.valueOf(back_minute).length() == 1){
-                get_up_minute = "0" + String.valueOf(back_minute);
-            }
-            else {
-                get_up_minute = String.valueOf(back_minute);
-            }
+            //讓計時器變得是00:00:00
+            get_up_hour = add_zero(String.valueOf(back_hour));
+            get_up_minute = add_zero(String.valueOf(back_minute));
+            //將計時器組合
             get_up_time = get_up_hour + ":" + get_up_minute ;
             back_intent.setClass(Sleep_Clock_Activity.this, sleep_plus.class);
             Bundle bundle = new Bundle();
@@ -86,20 +86,46 @@ public class Sleep_Clock_Activity extends Activity {
             bundle.putString("get",get_up_time);
             back_intent.putExtras(bundle);
             startActivity(back_intent);
+            anim.stop();
+            anim = null;
             finish();
         }
     };
 
+    private String add_zero(String text){
+        if(String.valueOf(text).length() == 1){
+            text = "0" + String.valueOf(text);
+        }
+        else {
+            text = String.valueOf(text);
+        }
+        return text;
+    }
+
     private Runnable updateTimer = new Runnable() {
         public void run() {
             Long spentTime = System.currentTimeMillis() - StartTime;
+            String tvHour = "",tvMin = "",tvSec = "";
             //計算目前已過分鐘數
             hours = (spentTime/1000)/3600;
             minius = (spentTime/1000)/60;
             //計算目前已過秒數
             seconds = (spentTime/1000) % 60;
-            tv_clock.setText(hours+":"+minius+":"+seconds);
+            tvHour = settext(hours,tvHour);
+            tvMin = settext(minius,tvMin);
+            tvSec = settext(seconds,tvSec);
+
+            tv_clock.setText(tvHour+":"+tvMin+":"+tvSec);
             handler.postDelayed(this, 1000);
         }
     };
+    private String settext(Long num,String text){
+        if(num / 10 == 0){
+            text = "0" + String.valueOf(num);
+        }
+        else {
+            text = String.valueOf(num);
+        }
+        return text;
+    }
 }

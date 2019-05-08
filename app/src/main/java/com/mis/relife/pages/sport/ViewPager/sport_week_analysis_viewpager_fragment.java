@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,11 +71,13 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
 
     Context context;
     private SportData sportData;
-    private TextView tvSportAvgTime,tvSportAvgCal;
+    private TextView tvSportAvgTime,tvSportAvgCal,tvUnit;
+    private Button btTime,btCal;
     private Button btPicker;
 
     //圖表資料區
     private BarChart barChart;
+    private BarData sportBarData;
     private XAxis xAxis;
     private YAxis leftAxis;
     private  YAxis rightAxis;
@@ -111,8 +116,14 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         View view = inflater.inflate(R.layout.sport_week_analysis_viewpager_fragment,container,false);
         tvSportAvgTime = view.findViewById(R.id.tv_sport_time);
         tvSportAvgCal = view.findViewById(R.id.tv_sport_cal);
+        tvUnit = view.findViewById(R.id.description);
         barChart = view.findViewById(R.id.bar_chart);
         btPicker = view.findViewById(R.id.bt_datepicker);
+        btTime = view.findViewById(R.id.bt_time);
+        btCal = view.findViewById(R.id.bt_cal);
+
+        btTime.setOnClickListener(bt_time);
+        btCal.setOnClickListener(bt_Cal);
         btPicker.setOnClickListener(datepicker);
 
         if(first == 0){
@@ -127,8 +138,13 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
 
     private void myInit(){
         AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onCallback(Map<String, Sport> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+                Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+                btTime.setBackground(grayDrawable);
+                btCal.setBackground(whiteDrawable);
                 //拿到星期一的day
                 get_monday();
 
@@ -153,7 +169,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             return avgSportTime;
         }
         else {
-            avgSportTime = week_sport_time / 60 / week_sport_time_cnt;
+            avgSportTime = (float) week_sport_time / (float) 60 / (float) week_sport_time_cnt;
             return avgSportTime;
         }
 
@@ -235,16 +251,21 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         int maxX = 7;
         int have ;
         List<BarEntry> list = new ArrayList<>();
+        List<BarEntry> sportCalList = new ArrayList<>();
         float total_sporttime;
+        //每天運動消耗的卡路里
+        float dayLossCal;
         week_sport_time = 0;
         week_sport_time_cnt = 0;
         week_sport_cal = 0;
         for (int i = 0; i < maxX; i++) {
             //先將X軸設好七天
             BarEntry barEntry = new BarEntry(i, 0);
+            BarEntry sportCalBarEntry = new BarEntry(i, 0);
             //用來計算有哪幾天是有運動的
             have = 0;
             total_sporttime = 0;
+            dayLossCal = 0;
 
             //再來比對有對應到日記的日期 從資料庫裡的 recordDate 進行比對
             for (int a = 0; a < sportData.sport_recordDate.size(); a++) {
@@ -252,6 +273,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 if (Monday.equals(sportData.sport_recordDate.get(a))) {
                     int sport_time = Integer.valueOf(sportData.sport_time.get(a));
                     int sport_cal = Integer.valueOf(sportData.sport_cal.get(a));
+                    dayLossCal += sport_cal;
                     total_sporttime += sport_time;
                     week_sport_time += sport_time;
                     week_sport_cal += sport_cal;
@@ -264,23 +286,29 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             total_sporttime = total_sporttime / 60;
             System.out.println("total !!!!!!!!!!!!!!!!!!" + total_sporttime);
             barEntry.setY(total_sporttime);
+            sportCalBarEntry.setY(dayLossCal);
             cal.add(Calendar.DAY_OF_MONTH,1);
             //System.out.println("BAR DAY !!!!!!!!!!!!!!!!!!" + cal.get(Calendar.DAY_OF_MONTH));
             Monday = sdf.format(cal.getTime());
             list.add(barEntry);
+            sportCalList.add(sportCalBarEntry);
         }
+
+//        BarDataSet barset = new BarDataSet(list, "");
+//        List<IBarDataSet> datasets = new ArrayList<>();
+//        datasets.add(barset);
         //將資料放進去
-        BarDataSet barset = new BarDataSet(list, "");
-
-        barset.setColors(colors);
-        barset.setDrawValues(false);
-        barset.setBarShadowColor(Color.GRAY);
-
-        List<IBarDataSet> datasets = new ArrayList<>();
-        datasets.add(barset);
-
-        BarData barData = new BarData(barset);
+        BarData barData = new BarData(getDataset(list));
+        sportBarData = new BarData(getDataset(sportCalList));
         return  barData;
+    }
+
+    private BarDataSet getDataset(List<BarEntry> list){
+        BarDataSet barset = new BarDataSet(list, "");
+        barset.setColors(colors);
+        barset.setValueTextSize(10);
+        barset.setBarShadowColor(Color.GRAY);
+        return barset;
     }
 
     private void nowdate(){
@@ -325,6 +353,41 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    private Button.OnClickListener bt_time = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onClick(View v) {
+            Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+            Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+            btTime.setBackground(grayDrawable);
+            btCal.setBackground(whiteDrawable);
+            tvUnit.setText("時間");
+            //繪製圖表
+            get_monday();
+            barData = getBarData();
+            barChart.setData(barData);
+            setBarchar();
+            //leftAxis.setAxisMinimum(0f);
+        }
+    };
+
+    private Button.OnClickListener bt_Cal = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onClick(View v) {
+            Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+            Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+            btTime.setBackground(whiteDrawable);
+            btCal.setBackground(grayDrawable);
+            tvUnit.setText("卡路里");
+            //繪製圖表
+            get_monday();
+            barData = getBarData();
+            barChart.setData(sportBarData);
+            setBarchar();
+        }
+    };
 
     private Button.OnClickListener datepicker = new Button.OnClickListener(){
 

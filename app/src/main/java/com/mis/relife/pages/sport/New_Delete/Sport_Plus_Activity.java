@@ -34,7 +34,7 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     private  String[] sport_type = {"跑步","拍類","棒類","球類","武術","水上","健體","工作","騎車","其他"};
     private count_cal count_cal;
 
-    private TextView tv_sport_child_name;
+    private TextView tv_sport_child_name,tv_cancel;
     private Button bt_finish;
 
 //    static int choose_type = 0;
@@ -55,7 +55,15 @@ public class Sport_Plus_Activity extends AppCompatActivity {
         gv_sport_type = findViewById(R.id.gv_data2);
         recyclerView_sport_record = findViewById(R.id.recycler_record);
         tv_sport_child_name = findViewById(R.id.tv_sport_child_type);
+        tv_cancel = findViewById(R.id.tv_cancel);
         bt_finish = findViewById(R.id.bt_finish);
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //初始化下面提供使用者輸入資訊的地方
 
@@ -100,16 +108,19 @@ public class Sport_Plus_Activity extends AppCompatActivity {
             recyclerview_sport_type_child_adapter.notifyDataSetChanged();
             bt_finish.setOnClickListener(finish_back);
         }
+        else if(bundle.getString("choose").equals("clock")){
+            System.out.println("clock!!!!!!!!!!!!!!!!!!!");
+            clockWay();
+            bt_finish.setOnClickListener(finish_back);
+        }
     }
 
     //方法區
 
     //如果使用者要編輯日記 就會判斷有值傳過來 要做的事情 分三部分 跑步類 腳踏車類 或是其他類
     private void have_deliever_way(){
-
         recyclerview_sport_type_child_adapter.sport_type_child.clear();
         recyclerview_sport_type_child_adapter.notifyDataSetChanged();
-//        bundle = getIntent().getExtras();
         position = bundle.getInt("position");
         sport_recycler_record_adapter.sport_record_info.clear();
         tv_sport_child_name.setText(bundle.getString("sport_name"));
@@ -119,13 +130,27 @@ public class Sport_Plus_Activity extends AppCompatActivity {
         cal = bundle.getString("sport_cal");
         record_key = bundle.getString("key");
         System.out.println(record_key + "!!!!!!!!!!!!!!!!!!!!!!");
-
         sport_recycler_record_adapter.initView_record_other();
         sport_recycler_record_adapter.sport_record_info.set(0,start);
         sport_recycler_record_adapter.sport_record_info.set(1,time);
         sport_recycler_record_adapter.sport_record_info.set(2,cal);
         sport_recycler_record_adapter.notifyDataSetChanged();
+    }
 
+    //如果使用者要編輯日記 就會判斷有值傳過來 要做的事情 分三部分 跑步類 腳踏車類 或是其他類
+    private void clockWay(){
+        recyclerview_sport_type_child_adapter.sport_type_child.clear();
+        recyclerview_sport_type_child_adapter.notifyDataSetChanged();
+        sport_recycler_record_adapter.sport_record_info.clear();
+        tv_sport_child_name.setText(bundle.getString("sport_name"));
+        start = bundle.getString("sport_start");
+        time = bundle.getString("sport_time");
+        cal = bundle.getString("sport_cal");
+        sport_recycler_record_adapter.initView_record_other();
+        sport_recycler_record_adapter.sport_record_info.set(0,start);
+        sport_recycler_record_adapter.sport_record_info.set(1,time);
+        sport_recycler_record_adapter.sport_record_info.set(2,cal);
+        sport_recycler_record_adapter.notifyDataSetChanged();
     }
 
     //編輯的 傳值方式

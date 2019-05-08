@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,11 +23,14 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.lilei.springactionmenu.ActionMenu;
+import com.lilei.springactionmenu.OnActionItemClickListener;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
 import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.Adapter.recylerview_sportpage_adapter;
+import com.mis.relife.pages.sport.New_Delete.SportClockActivity;
 import com.mis.relife.pages.sport.SportData;
 import com.mis.relife.pages.sport.New_Delete.SportDialogFragment;
 import com.mis.relife.pages.sport.New_Delete.Sport_Plus_Activity;
@@ -52,13 +56,13 @@ public class sport_page_activity extends Fragment {
     private int nowmYear,nowmMonth,nowmDay;
     private String dateFormat;
     public TextView tv_sport_cal;
-    public TextView tv_sport_walk;
     public recylerview_sportpage_adapter sportpage_adapter ;
     private FragmentManager fm;
     public int total_cal = 0;
     private EasyFlipView easyFlipView;
     private ImageView iv_sport,iv_cal;
     private ImageButton ibv_plus,ibv_daily;
+    ActionMenu actionMenu;
     private SportData sportData;
     private Bundle bundle = new Bundle();
 
@@ -83,32 +87,29 @@ public class sport_page_activity extends Fragment {
         View view = inflater.inflate(R.layout.sport_page,container,false);
         sport_recyclerView = view.findViewById(R.id.sport_recyler_view);
         tv_sport_cal = view.findViewById(R.id.tv_sport_cal);
-        tv_sport_walk = view.findViewById(R.id.tv_walk_number);
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
-        bt_sport_plus = view.findViewById(R.id.bt_sport_plus);
+        actionMenu = view.findViewById(R.id.actionMenu);
         easyFlipView = view.findViewById(R.id.sport_cons_circle);
         iv_sport = view.findViewById(R.id.iv_sport);
         iv_cal = view.findViewById(R.id.iv_champion);
-        ibv_plus = view.findViewById(R.id.bt_sport_plus);
-        ibv_daily = view.findViewById(R.id.bt_daily);
+        //picasso初始化圖片
         ini_img();
+        //初始化actionMenu
+        action_add();
+        actionMenu.setItemClickListener(action_click);
 
         sport_recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
-
         bt_datepicker.setOnClickListener(datepicker);
-
 
         if(first == 0) {
             nowdate();
             dateFormat = setDateFormat(mYear,mMonth,mDay);
             bt_datepicker.setText("今天");
             first++;
+            sport_recyclerView.addItemDecoration(new recyler_item_space(0,30));
         }
 
         myInit();
-
-        bt_sport_plus.setOnClickListener(sport_record_plus);
         return view;
     }
 
@@ -130,14 +131,37 @@ public class sport_page_activity extends Fragment {
         });
     }
 
-    private void picasso_iv (int res,ImageView img){
-        Picasso
-                .with(context)
-                .load(res)
-                .into(img);
+    private void action_add(){
+        actionMenu.addView(R.drawable.write,Color.rgb(255,165,0),Color.rgb(255,215,0));
+        actionMenu.addView(R.drawable.sportclock,Color.rgb(255,165,0),Color.rgb(255,215,0));
     }
 
-    private void picasso_ib (int res,ImageButton img){
+    private OnActionItemClickListener action_click = new OnActionItemClickListener() {
+        @Override
+        public void onItemClick(int i) {
+            if(i == 1){
+                Intent intent_sport_plus = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("choose","diary");
+                bundle.putString("date", dateFormat);
+                intent_sport_plus.setClass(context, Sport_Plus_Activity.class);
+                intent_sport_plus.putExtras(bundle);
+                startActivity(intent_sport_plus);
+            }
+            else if(i == 2){
+                Intent intent_sport_plus = new Intent();
+                intent_sport_plus.setClass(context, SportClockActivity.class);
+                startActivity(intent_sport_plus);
+            }
+        }
+
+        @Override
+        public void onAnimationEnd(boolean b) {
+
+        }
+    };
+
+    private void picasso_iv (int res,ImageView img){
         Picasso
                 .with(context)
                 .load(res)
@@ -147,23 +171,7 @@ public class sport_page_activity extends Fragment {
     private void ini_img(){
         picasso_iv(R.drawable.sport,iv_sport);
         picasso_iv(R.drawable.champion,iv_cal);
-        picasso_ib(R.drawable.sleep_plus02,ibv_plus);
-        picasso_ib(R.drawable.daily,ibv_daily);
     }
-
-    //寫運動日記
-    private Button.OnClickListener sport_record_plus = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent_sport_plus = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString("choose","diary");
-            bundle.putString("date", dateFormat);
-            intent_sport_plus.setClass(context, Sport_Plus_Activity.class);
-            intent_sport_plus.putExtras(bundle);
-            startActivity(intent_sport_plus);
-        }
-    };
 
     //運動日記 點擊編輯 或長按刪除
     private recylerview_sportpage_adapter.OnItemClickListener sport_record_click = new recylerview_sportpage_adapter.OnItemClickListener() {

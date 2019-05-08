@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item android:drawable="@drawable/tired1" android:duration="120"/>
+    <item android:drawable="@drawable/tired2" android:duration="120"/>
+    <item android:drawable="@drawable/tired3" android:duration="120"/>
+    <item android:drawable="@drawable/tired4" android:duration="120"/>
+    <item android:drawable="@drawable/tired5" android:duration="120"/>
+    <item android:drawable="@drawable/tired6" android:duration="120"/>
+    <item android:drawable="@drawable/tired7" android:duration="120"/>
+    <item android:drawable="@drawable/tired8" android:duration="120"/>
+    <item android:drawable="@drawable/tired9" android:duration="120"/>
+
+</animation-list>
