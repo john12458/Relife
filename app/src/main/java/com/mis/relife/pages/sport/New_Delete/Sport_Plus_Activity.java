@@ -1,5 +1,6 @@
 package com.mis.relife.pages.sport.New_Delete;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.model.Sport;
+import com.mis.relife.pages.sleep.New_Delete.SleepChooseMood;
+import com.mis.relife.pages.sleep.New_Delete.sleep_plus;
 import com.mis.relife.pages.sport.Adapter.recyclerview_sport_plus_adapter;
 import com.mis.relife.pages.sport.Adapter.sport_plus_type_gridview;
 import com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter;
@@ -28,13 +31,13 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     private RecyclerView recyclerView_sport_record;
 
     private sport_plus_type_gridview gv_sport_type_adapter;
-    private recyclerview_sport_plus_adapter recyclerview_sport_type_child_adapter;
+    public recyclerview_sport_plus_adapter recyclerview_sport_type_child_adapter;
     public com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter sport_recycler_record_adapter;
 
     private  String[] sport_type = {"跑步","拍類","棒類","球類","武術","水上","健體","工作","騎車","其他"};
     private count_cal count_cal;
 
-    private TextView tv_sport_child_name,tv_cancel;
+    private TextView tv_sport_child_name,tv_cancel,tvSelf;
     private Button bt_finish;
 
 //    static int choose_type = 0;
@@ -43,12 +46,15 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     Bundle bundle = null;
     String date;
 
+    private FragmentManager fm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_sport__plus_);
+        fm = getSupportFragmentManager();
         count_cal = new count_cal();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         recyclerView_sport_type = findViewById(R.id.recycler_sport_type);
@@ -56,8 +62,10 @@ public class Sport_Plus_Activity extends AppCompatActivity {
         recyclerView_sport_record = findViewById(R.id.recycler_record);
         tv_sport_child_name = findViewById(R.id.tv_sport_child_type);
         tv_cancel = findViewById(R.id.tv_cancel);
+        tvSelf = findViewById(R.id.tv_self);
         bt_finish = findViewById(R.id.bt_finish);
 
+        tvSelf.setOnClickListener(selfClick);
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +124,15 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     }
 
     //方法區
+
+
+    private Button.OnClickListener selfClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SportDialogSelfAddFragment addSelf = new SportDialogSelfAddFragment(Sport_Plus_Activity.this,Sport_Plus_Activity.this,count_cal);
+            addSelf.show(fm,"choose");
+        }
+    };
 
     //如果使用者要編輯日記 就會判斷有值傳過來 要做的事情 分三部分 跑步類 腳踏車類 或是其他類
     private void have_deliever_way(){

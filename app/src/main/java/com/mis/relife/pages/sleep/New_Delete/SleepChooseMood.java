@@ -55,8 +55,7 @@ public class SleepChooseMood extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.sleep_dialog_choose_mood, null);
         Dialog dialog = new Dialog(getActivity());
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setTitle("選擇圖片");
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
