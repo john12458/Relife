@@ -122,7 +122,6 @@ public class RegisterDialogFragment extends DialogFragment {
         ));
         alert("成功註冊 ! ! 請重新登入頁面","確認");
         goToLoginClick();
-
     }
     private void alert(String message,String btnTxt){
         new AlertDialog.Builder(getContext())

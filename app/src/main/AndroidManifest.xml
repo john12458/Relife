@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label">
+        <activity android:name=".test.imageDetect.CameraActivity"></activity>
         <activity android:name=".pages.sleep.ClockActivity"></activity>
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
         <activity android:name=".pages.sleep.New_Delete.sleep_plus" />
@@ -46,6 +47,15 @@
             tools:ignore="DuplicateActivity" />
 
         <service android:name=".pages.Service.FloatWindowService" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.mis.relife.cameraalbumtest.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
     </application>
 
 </manifest>
