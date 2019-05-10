@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         main_constrain = findViewById(R.id.main_cons);
         System.out.println(first + "!!!!!!!!!aaaaaaa!!");
-        checkFirstLogin(); //如果不是初次登入則會進入登入畫面
+        checkFirstLogin(); //如果是初次登入則會進入登入畫面
         //開啟service
         service();
         service_button();

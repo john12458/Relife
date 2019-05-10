@@ -12,7 +12,7 @@ public class GridBtn{
     private BtnsGridAdapter adapter;
     private GridView userInfoBtns;
     private UserInfoActivity activity;
-    private String[] btns={"帳戶設定","重生"};
+
 
     public GridBtn(UserInfoActivity activity, GridView userInfoBtns, UserInfoModel userInfoModel){
         this.activity =  activity;
@@ -22,7 +22,7 @@ public class GridBtn{
     }
     private void initlize(){
         Context context = activity.getApplicationContext();
-        adapter = new BtnsGridAdapter(context,btns);
+        adapter = new BtnsGridAdapter(context,userInfoModel.btns);
         userInfoBtns.setAdapter(adapter);
         userInfoBtns.setOnItemClickListener(userInfoModel);
     }

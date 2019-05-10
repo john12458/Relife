@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="login"
-            type="com.mis.relife.pages.login.LoginDialogFragment" />
+            name="register"
+            type="com.mis.relife.pages.login.RegisterDialogFragment" />
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:fontFamily="adobe-clean"
                 android:paddingVertical="20dp"
                 android:scaleType="center"
-                android:text="Login"
+                android:text="Register"
                 android:textAlignment="center"
                 android:textColor="@color/colorLogin"
                 android:textSize="30sp" />
@@ -52,14 +52,50 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="324dp"
+                    android:layout_height="66dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:width="10dp"
+                        android:text="確認密碼"
+                        android:textAlignment="center"
+                        android:textSize="20dp" />
+
+
+                    <EditText
+                        android:id="@+id/checkPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="3"
+                        android:hint="checked"
+                        android:inputType="textPassword" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="324dp"
                     android:layout_height="66dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:width="10dp"
-                        android:text="Name"
+                        android:text="帳號"
                         android:textAlignment="center"
                         android:textSize="20dp" />
 
@@ -82,23 +118,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:hint="username"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:maxEms="10"
                         android:layout_weight="3"
-                        />
+                        android:hint="username" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="324dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_height="66dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:width="10dp"
-                        android:text="Password"
+                        android:text="密碼"
                         android:textAlignment="center"
                         android:textSize="20dp" />
 
@@ -130,21 +162,20 @@
 
                 <LinearLayout
                     android:layout_width="324dp"
-                    android:layout_height="54dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginBottom="24dp"
                     android:gravity="center|right"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.492"
+                    app:layout_constraintHorizontal_bias="0.9"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                    app:layout_constraintVertical_bias="1.0">
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
                     <Button
                         android:id="@+id/TestButton"
@@ -153,9 +184,9 @@
                         android:layout_gravity="start"
                         android:layout_weight="2"
                         android:background="@drawable/button_register"
-                        android:onClick="@{()->login.onRegisterClick()}"
+                        android:onClick="@{()->register.goToLoginClick()}"
                         android:paddingLeft="10dp"
-                        android:text=" - 點我進行註冊"
+                        android:text=" - 點我返回登入"
                         android:textAlignment="textStart"
                         android:textColor="@color/colorAccent" />
 
@@ -165,8 +196,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:background="@drawable/button_login"
-                        android:onClick="@{()->login.onLoginClick()}"
-                        android:text="登入"
+                        android:onClick="@{()->register.onRegisterClick()}"
+                        android:text="註冊"
                         android:textColor="@color/colorLogin" />
                 </LinearLayout>
 
