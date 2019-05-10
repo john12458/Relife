@@ -16,6 +16,12 @@ public class Info {
     public String account;
     public String password;
     public int life;
+    // editing ...
+//    public int height;
+//    public int weight;
+//    public int goalweight;
+//    public int old;
+//    public String gender;
 
     public Info(){}
 

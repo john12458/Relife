@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,10 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
         love = (ImageView) viewRecipe.findViewById(R.id.btn_love);
         add = (ImageView) viewRecipe.findViewById(R.id.btn_add);
         switch (viewGroup.getId()) {
+            case R.id.listview_new:
+                name.setText(recipe.getName() + "(" + recipe.getCal() + "大卡)");
+                System.out.println("!!!!!!!!!!!!!"+recipe.getFood_id());
+                break;
             case R.id.listview_recipe:
                 // 將數據一一添加到自定義的布局中
                 name.setText(recipe.getName() + "(" + recipe.getCal() + "大卡)");
@@ -92,6 +97,14 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                 if(c.moveToFirst()) {
                     name.setText(c.getString(0) + "(" + c.getDouble(2) + "大卡)");
                 }
+                //search
+                Log.e("getFoodid", String.valueOf(recipe.getFood_id()));
+                    Cursor c2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + recipe.getFood_id(), null); //我的最愛中的foodID
+                    if(c2.moveToFirst()) {
+                        Log.e("getFoodName", c2.getString(0));
+                        name.setText(c2.getString(0) + "(" + c2.getDouble(2) + "大卡)");
+                    }
+                //----
                 break;
             case R.id.listview_record:
                 Cursor today_record = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "' AND foodID = " + recipe.getFood_id(), null);
@@ -101,11 +114,25 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                         name.setText(foodinformation.getString(0) + "(" + foodinformation.getDouble(2) + "大卡)");
                     }
                 }
+                // search
+                Cursor today_record2 = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "' AND foodID = " + recipe.getFood_id(), null);
+                if(today_record2.moveToFirst()) {
+                    Cursor foodinformation2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + recipe.getFood_id(), null);
+                    if(foodinformation2.moveToFirst()) {
+                        name.setText(foodinformation2.getString(0) + "(" + foodinformation2.getDouble(2) + "大卡)");
+                    }
+                }
+                //--
                 break;
             case R.id.listview_recent:
                 Cursor recent_foodid = db.rawQuery("SELECT * FROM recipe WHERE foodID = " + recipe.getFood_id(), null);
                 if(recent_foodid.moveToFirst()) {
                     name.setText(recent_foodid.getString(0) + "(" + recent_foodid.getDouble(2) + "大卡)");
+                }
+                // search
+                Cursor recent_foodid2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + recipe.getFood_id(), null);
+                if(recent_foodid2.moveToFirst()) {
+                    name.setText(recent_foodid2.getString(0) + "(" + recent_foodid2.getDouble(2) + "大卡)");
                 }
                 break;
         }
@@ -142,7 +169,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                 recipe_id = (int) v.getTag();
                 Cursor c = db.rawQuery("SELECT * FROM love WHERE foodID = " + recipe_id, null);
                 ContentValues cv = new ContentValues(1);
-                cv.put("foodID", recipe_id);
+                cv.put("foodID", recipe_id);///////////
                 if(c.getCount() == 0) {
                     db.insert("love", null, cv);
                     love.setImageResource(R.drawable.heart2);
@@ -157,6 +184,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
             case R.id.btn_add:
                 ImageView add = (ImageView)v;
                 recipe_id = (int) v.getTag();
+                Log.e("recipe_id", String.valueOf(recipe_id));
                 Cursor food_in_today_meal = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_viewpager_recipe.eat + "' AND foodID = " + recipe_id, null);
                 Cursor food_in_recent = db.rawQuery("SELECT * FROM recent WHERE foodID = " + recipe_id, null);
                 ContentValues cv_record = new ContentValues(4);
@@ -190,6 +218,10 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                         Cursor cal_in_food = db.rawQuery("SELECT * FROM recipe WHERE foodID = " + c2.getInt(3), null);
                         if (cal_in_food.moveToFirst()) {
                             total_cal += cal_in_food.getFloat(2);// * cal_in_food.getFloat(4);
+                        }
+                        Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + c2.getInt(3), null);
+                        if (cal_in_food2.moveToFirst()) {
+                            total_cal += cal_in_food2.getFloat(2);//
                         }
                     } while (c2.moveToNext());
                     eat_new_second.cal.setText( (int) total_cal + " 大卡");

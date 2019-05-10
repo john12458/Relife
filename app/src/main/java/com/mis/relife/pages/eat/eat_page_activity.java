@@ -86,9 +86,14 @@ public class eat_page_activity extends Fragment {
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
         selectdate = ft.format(dNow);
         db = context.openOrCreateDatabase("relife", 0, null);
-        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
                 "(name VARCHAR(20) , " +
                 "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
                 "cal DOUBLE) ";
         db.execSQL(sql_recipe);
         String sql_record = "CREATE TABLE IF NOT EXISTS record " +

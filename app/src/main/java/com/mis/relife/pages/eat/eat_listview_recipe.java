@@ -26,6 +26,7 @@ public class eat_listview_recipe extends AppCompatActivity {
 
 
     }
+
     public eat_listview_recipe(int id,String name, double cal){ // 食譜
         this.food_id = id;
         this.name = name;
