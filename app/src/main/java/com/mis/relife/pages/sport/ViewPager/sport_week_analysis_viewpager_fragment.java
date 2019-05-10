@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +29,12 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.SportData;
 
 import java.text.ParseException;
@@ -35,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -62,22 +71,24 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
 
     Context context;
     private SportData sportData;
-    private TextView tvSportAvgTime,tvSportAvgCal;
+    private TextView tvSportAvgTime,tvSportAvgCal,tvUnit;
+    private Button btTime,btCal;
     private Button btPicker;
 
     //圖表資料區
     private BarChart barChart;
+    private BarData sportBarData;
     private XAxis xAxis;
     private YAxis leftAxis;
     private  YAxis rightAxis;
     private BarData barData;
 
-    private int mYear,mMonth,mDay,monday;
-    //    private int bar_mYear,bar_mMonth,bar_mDay;
+    private int mYear,mMonth,mDay;
+    private int nowmYear,nowmMonth,nowmDay;
     private String date_format;
     float avgSportTime;
     float avgSportCal;
-    private int week_sport_time,week_sport_time_cnt;
+    private int week_sport_time,week_sport_time_cnt,week_sport_cal;
 
     //圖表外觀資料區
     private  String[] week = {"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
@@ -105,31 +116,50 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         View view = inflater.inflate(R.layout.sport_week_analysis_viewpager_fragment,container,false);
         tvSportAvgTime = view.findViewById(R.id.tv_sport_time);
         tvSportAvgCal = view.findViewById(R.id.tv_sport_cal);
+        tvUnit = view.findViewById(R.id.description);
         barChart = view.findViewById(R.id.bar_chart);
         btPicker = view.findViewById(R.id.bt_datepicker);
+        btTime = view.findViewById(R.id.bt_time);
+        btCal = view.findViewById(R.id.bt_cal);
+
+        btTime.setOnClickListener(bt_time);
+        btCal.setOnClickListener(bt_Cal);
         btPicker.setOnClickListener(datepicker);
 
         if(first == 0){
             nowdate();
-            btPicker.setText(date_format);
+            btPicker.setText("今天");
             first++;
         }
-        //拿到星期一的day
-        get_monday();
-        monday = cal.get(Calendar.DAY_OF_MONTH);
-
-        //設置圖表
-        week_sport_time = 0;
-        week_sport_time_cnt = 0;
-        barData = getBarData();
-        barChart.setData(barData);
-        setBarchar();
-
-        //計算平均time 和 cal
-        tvSportAvgTime.setText(String.format("%.1f", getAvgSportTime()) + "小時");
-        tvSportAvgCal.setText(String.valueOf((int)getAvgSportCal()) + "卡路里");
+        myInit();
 
         return view;
+    }
+
+    private void myInit(){
+        AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onCallback(Map<String, Sport> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+                Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+                btTime.setBackground(grayDrawable);
+                btCal.setBackground(whiteDrawable);
+                //拿到星期一的day
+                get_monday();
+
+                //設置圖表
+                week_sport_time = 0;
+                week_sport_time_cnt = 0;
+                barData = getBarData();
+                barChart.setData(barData);
+                setBarchar();
+
+                //計算平均time 和 cal
+                tvSportAvgTime.setText(String.format("%.1f", getAvgSportTime()) + "小時");
+                tvSportAvgCal.setText(String.valueOf((int)getAvgSportCal()) + "卡路里");
+            }
+        });
     }
 
     //拿到平均運動時間
@@ -139,7 +169,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             return avgSportTime;
         }
         else {
-            avgSportTime = week_sport_time / 60 / week_sport_time_cnt;
+            avgSportTime = (float) week_sport_time / (float) 60 / (float) week_sport_time_cnt;
             return avgSportTime;
         }
 
@@ -152,7 +182,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             return avgSportCal;
         }
         else {
-            avgSportCal = week_sport_time / 24 / week_sport_time_cnt;
+            avgSportCal = week_sport_cal / week_sport_time_cnt;
             return avgSportCal;
         }
     }
@@ -205,7 +235,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         xAxis.setValueFormatter(x_value);
         //保证Y轴从0开始，不然会上移一点
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setGranularity(0.5f);
+        leftAxis.setGranularity(1f);
         rightAxis.setAxisMinimum(0f);
         rightAxis.setEnabled(false);
         xAxis.setDrawGridLines(false);
@@ -221,31 +251,32 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         int maxX = 7;
         int have ;
         List<BarEntry> list = new ArrayList<>();
+        List<BarEntry> sportCalList = new ArrayList<>();
         float total_sporttime;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+        //每天運動消耗的卡路里
+        float dayLossCal;
+        week_sport_time = 0;
+        week_sport_time_cnt = 0;
+        week_sport_cal = 0;
         for (int i = 0; i < maxX; i++) {
             //先將X軸設好七天
             BarEntry barEntry = new BarEntry(i, 0);
+            BarEntry sportCalBarEntry = new BarEntry(i, 0);
             //用來計算有哪幾天是有運動的
             have = 0;
             total_sporttime = 0;
+            dayLossCal = 0;
+
             //再來比對有對應到日記的日期 從資料庫裡的 recordDate 進行比對
             for (int a = 0; a < sportData.sport_recordDate.size(); a++) {
-                //將字串轉成date
-                try {
-                    bar_date =sdf.parse(sportData.sport_recordDate.get(a));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                //用calendar 拿到資料庫 recordDate 的 day
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(bar_date);
-                int record_day = calendar.get(Calendar.DAY_OF_MONTH);
-                //拿到後可以對應指定的day
-                if (day == record_day) {
+                //對應指定的date
+                if (Monday.equals(sportData.sport_recordDate.get(a))) {
                     int sport_time = Integer.valueOf(sportData.sport_time.get(a));
+                    int sport_cal = Integer.valueOf(sportData.sport_cal.get(a));
+                    dayLossCal += sport_cal;
                     total_sporttime += sport_time;
                     week_sport_time += sport_time;
+                    week_sport_cal += sport_cal;
                     if(have == 0) {
                         week_sport_time_cnt++;
                         have++;
@@ -255,27 +286,36 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             total_sporttime = total_sporttime / 60;
             System.out.println("total !!!!!!!!!!!!!!!!!!" + total_sporttime);
             barEntry.setY(total_sporttime);
+            sportCalBarEntry.setY(dayLossCal);
             cal.add(Calendar.DAY_OF_MONTH,1);
             //System.out.println("BAR DAY !!!!!!!!!!!!!!!!!!" + cal.get(Calendar.DAY_OF_MONTH));
-            day = cal.get(Calendar.DAY_OF_MONTH);
+            Monday = sdf.format(cal.getTime());
             list.add(barEntry);
+            sportCalList.add(sportCalBarEntry);
         }
+
+//        BarDataSet barset = new BarDataSet(list, "");
+//        List<IBarDataSet> datasets = new ArrayList<>();
+//        datasets.add(barset);
         //將資料放進去
-        BarDataSet barset = new BarDataSet(list, "");
-
-        barset.setColors(colors);
-        barset.setDrawValues(false);
-        barset.setBarShadowColor(Color.GRAY);
-
-        List<IBarDataSet> datasets = new ArrayList<>();
-        datasets.add(barset);
-
-        BarData barData = new BarData(barset);
+        BarData barData = new BarData(getDataset(list));
+        sportBarData = new BarData(getDataset(sportCalList));
         return  barData;
+    }
+
+    private BarDataSet getDataset(List<BarEntry> list){
+        BarDataSet barset = new BarDataSet(list, "");
+        barset.setColors(colors);
+        barset.setValueTextSize(10);
+        barset.setBarShadowColor(Color.GRAY);
+        return barset;
     }
 
     private void nowdate(){
         Calendar now = Calendar.getInstance();
+        nowmYear = now.get(Calendar.YEAR);
+        nowmMonth = now.get(Calendar.MONTH);
+        nowmDay = now.get(Calendar.DAY_OF_MONTH);
         mYear = now.get(Calendar.YEAR);
         mMonth = now.get(Calendar.MONTH);
         mDay = now.get(Calendar.DAY_OF_MONTH);
@@ -314,6 +354,41 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         }
     }
 
+    private Button.OnClickListener bt_time = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onClick(View v) {
+            Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+            Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+            btTime.setBackground(grayDrawable);
+            btCal.setBackground(whiteDrawable);
+            tvUnit.setText("時間");
+            //繪製圖表
+            get_monday();
+            barData = getBarData();
+            barChart.setData(barData);
+            setBarchar();
+            //leftAxis.setAxisMinimum(0f);
+        }
+    };
+
+    private Button.OnClickListener bt_Cal = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onClick(View v) {
+            Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
+            Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+            btTime.setBackground(whiteDrawable);
+            btCal.setBackground(grayDrawable);
+            tvUnit.setText("卡路里");
+            //繪製圖表
+            get_monday();
+            barData = getBarData();
+            barChart.setData(sportBarData);
+            setBarchar();
+        }
+    };
+
     private Button.OnClickListener datepicker = new Button.OnClickListener(){
 
         @Override
@@ -323,23 +398,12 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     date_format = setDateFormat(year,month,day);
-                    btPicker.setText(date_format);
-                    get_monday();
-                    System.out.println("monday!!!!!!!!" + monday);
-                    if(cal.get(Calendar.DAY_OF_MONTH) != monday){
-                        monday = cal.get(Calendar.DAY_OF_MONTH);
-                        //設置圖表
-                        week_sport_time = 0;
-                        week_sport_time_cnt = 0;
-                        barData = getBarData();
-                        barChart.setData(barData);
-                        setBarchar();
-
-                        //計算平均time 和 cal
-                        tvSportAvgTime.setText(String.format("%.1f", getAvgSportTime()) + "小時");
-                        tvSportAvgCal.setText(String.valueOf((int)getAvgSportCal()) + "卡路里");
-                        System.out.println("monday!!!!!!!!" + monday);
-                    }
+                    if(nowmYear == year && nowmMonth == month && nowmDay == day)
+                        btPicker.setText("今天");
+                    else if(nowmYear == year && nowmMonth == month && nowmDay - 1 == day)
+                        btPicker.setText("昨天");
+                    else btPicker.setText(date_format);
+                    myInit();
                     mYear = year;
                     mMonth = month;
                     mDay = day;
@@ -351,14 +415,31 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
 
     //設定日期格式
     private String setDateFormat(int year,int monthOfYear,int dayOfMonth){
+        String month,day;
+        //判斷如果是個位數 日期前面要加個零
+        if(monthOfYear / 10 == 0){
+            month = "0" + String.valueOf(monthOfYear + 1);
+        }
+        else {
+            month = String.valueOf(monthOfYear + 1);
+        }
+        if (dayOfMonth / 10 == 0){
+            day = "0" + String.valueOf(dayOfMonth);
+        }
+        else {
+            day = String.valueOf(dayOfMonth);
+        }
+        //設定日期格式
         return String.valueOf(year) + "/"
-                + String.valueOf(monthOfYear + 1) + "/"
-                + String.valueOf(dayOfMonth);
+                + month + "/"
+                + day;
     }
 
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("resume!!!!!!!!!!!!!!!!!!!!!");
+    }
 
     /*
     底下是目前沒有用的東西

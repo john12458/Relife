@@ -135,10 +135,21 @@ public class DayModel {
         int day = 0;
         int hour = 0;
         int min = 0;
+        Calendar sleepDate = Calendar.getInstance();
+        Calendar wakeDate = Calendar.getInstance();
+        sleepDate.setTime(date1);
+        wakeDate.setTime(date2);
+        if(sleepDate.get(Calendar.HOUR_OF_DAY) > wakeDate.get(Calendar.HOUR_OF_DAY)){
+            wakeDate.add(Calendar.DAY_OF_MONTH,1);
+        }
+        else {
 
+        }
+        date1 = sleepDate.getTime();
+        date2 = wakeDate.getTime();
         long time1 = date1.getTime();
         long time2 = date2.getTime();
-        long diff = Math.abs(time1-time2);
+        long diff = Math.abs(time2-time1);
         String txt= "";
         try {
             day = (int)(diff / nd);// 計算差多少天

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.pages.Service.FloatWindowService;
+import com.mis.relife.pages.eat.EatTabViewpagerFragment;
 import com.mis.relife.pages.eat.eat_page_activity;
 import com.mis.relife.pages.home.HomeFragment;
 import com.mis.relife.pages.login.LoginDialogFragment;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     private FragmentManager fManager;
     private sport_tab_viewpager sport_tab_viewpager;
     private sleep_tab_viewpager sleep_page;
-    private eat_page_activity eat_page;
+    private EatTabViewpagerFragment eat_page;
     private HomeFragment homeFragment;
     private BottomNavigationView navigation;
     private ImageView iv_icon;
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         main_constrain = findViewById(R.id.main_cons);
         System.out.println(first + "!!!!!!!!!aaaaaaa!!");
-        checkFirstLogin(); //如果是初次登入則會進入登入畫面
+
+        checkFirstLogin(); //如果不是初次登入則會進入登入畫面
         //開啟service
         service();
         service_button();
@@ -126,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         fManager = getSupportFragmentManager();
         //  Fragments - Home, Eat, Sport, Sleep
         homeFragment = new HomeFragment();
-        eat_page = new eat_page_activity(this);
+        eat_page = new EatTabViewpagerFragment();
         sport_tab_viewpager = new sport_tab_viewpager(this,getSupportFragmentManager());
         sleep_page = new sleep_tab_viewpager(this);
 
@@ -218,19 +220,19 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
             Bundle bundle = getIntent().getExtras();
             int bool = bundle.getInt("choose");
             if(bool == 1){
-                eat_page = new eat_page_activity(this);
+                eat_page = new EatTabViewpagerFragment();
                 fManager.beginTransaction().replace(R.id.ly_content,eat_page).commit();
-                changebackgorund_page(R.drawable.background_eat);
+                main_constrain.setBackgroundResource(R.drawable.background_eat);
             }
             else if(bool == 2){
                 sport_tab_viewpager = new sport_tab_viewpager(this,getSupportFragmentManager());
                 fManager.beginTransaction().replace(R.id.ly_content,sport_tab_viewpager).commit();
-                changebackgorund_page(R.drawable.background_sport);
+                main_constrain.setBackgroundResource(R.drawable.background_sport);
             }
             else if(bool == 3){
                 sleep_page = new sleep_tab_viewpager(this);
                 fManager.beginTransaction().replace(R.id.ly_content, sleep_page).commit();
-                changebackgorund_page(R.drawable.background_sleep);
+                main_constrain.setBackgroundResource(R.drawable.background_sleep);
             }
         }
     }

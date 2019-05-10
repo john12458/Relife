@@ -44,6 +44,10 @@ public class eat_listview_recipe extends AppCompatActivity {
         this.number = number;
     }
 
+    public eat_listview_recipe(int food_id){ // 最近新增
+        this.food_id = food_id;
+    }
+
     public int getFood_id() {
         return food_id;
     }

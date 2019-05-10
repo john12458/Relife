@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.mis.relife.R;
 
 public class eat_new_recipe extends AppCompatActivity {
-    TextView test;
     EditText ed_food, ed_cal;
     SQLiteDatabase db;
 
@@ -24,7 +23,6 @@ public class eat_new_recipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_recipe);
 
-        test = (TextView)findViewById(R.id.txv_test);
         ed_food = (EditText)findViewById(R.id.ed_food);
         ed_cal = (EditText)findViewById(R.id.ed_cal);
         db = openOrCreateDatabase("relife",0,null);
@@ -53,11 +51,7 @@ public class eat_new_recipe extends AppCompatActivity {
             }
         }
     }
-    public void test(View v){
-        Intent intent_new_recipe = new Intent();
-        intent_new_recipe.setClass(this, eat_new_second.class);
-        startActivityForResult(intent_new_recipe, 0);
-    }
+
     public void test2(View v){
         new AlertDialog.Builder(this).setTitle("牛角麵包378大卡(1個)，份數 : ").setIcon(R.drawable.pen).setView(new EditText(this)).setPositiveButton("確認", null).setNegativeButton("取消", null).show();
     }

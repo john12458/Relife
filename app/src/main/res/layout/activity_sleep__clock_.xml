@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".pages.sleep.New_Delete.Sleep_Clock_Activity"
-    android:background="@drawable/background_gradient_three">
+    android:background="@drawable/background_sleep">
 
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,13 +18,14 @@
         android:rotation="500" />
 
     <ImageView
-        android:layout_width="350dp"
+        android:id="@+id/pet_sleep"
+        android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/sleep_circle"/>
+        app:layout_constraintVertical_bias="0.4"/>
 
     <TextView
         android:id="@+id/tv_clock"
@@ -34,6 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.6"
         android:textColor="#fff"
         android:textSize="50dp"
         android:text="現在時間"/>
@@ -50,25 +52,5 @@
         android:background="@drawable/sport_circle"
         android:text="關閉"
         android:textSize="20dp"/>
-
-    <TextView
-        android:id="@+id/tv_test1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:textSize="50dp"
-        android:text="測試"
-        android:textColor="#fff"/>
-
-    <TextView
-        android:id="@+id/tv_test2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tv_test1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:textSize="50dp"
-        android:text="測試"
-        android:textColor="#fff"/>
 
 </android.support.constraint.ConstraintLayout>
