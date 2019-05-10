@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label">
         <activity android:name=".pages.sport.New_Delete.SportClockActivity"></activity>
-        <activity android:name=".pages.sleep.ClockActivity" />
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
         <activity android:name=".pages.sleep.New_Delete.sleep_plus" />
         <activity android:name=".pages.sport.New_Delete.Sport_Plus_Activity" />
@@ -45,12 +44,6 @@
             tools:ignore="DuplicateActivity" />
         <activity
             android:name=".pages.sleep.New_Delete.sleep_plus"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".pages.eat.eat_day_analysis"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".pages.eat.eat_week_analysis"
             tools:ignore="DuplicateActivity" />
 
         <service android:name=".pages.Service.FloatWindowService" />

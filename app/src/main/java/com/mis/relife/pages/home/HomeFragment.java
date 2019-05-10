@@ -25,16 +25,29 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Diet;
+import com.mis.relife.data.model.Sleep;
+import com.mis.relife.data.model.Sport;
 import com.mis.relife.databinding.FragmentHomeBinding;
+import com.mis.relife.pages.MainActivity;
 import com.squareup.picasso.Picasso;
+import com.white.progressview.CircleProgressView;
+
+import java.util.Map;
 
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment {
 
     private HomeFragmentModel vm;
     public AnimationDrawable anim;
+    private TextView tvSportBadge,tvEatBadge;
     public ImageView food,sport,user_pet;
     private ImageButton ibt_food,ibt_sport;
     private FrameLayout test_frame;
@@ -45,6 +58,10 @@ public class HomeFragment extends Fragment {
     float foodLastRawX, foodLastRawY;
     float sportLastRawX,sportLastRawY;
     private FragmentHomeBinding  binding;
+
+    private CircleProgressView eatProgress,sportProgress;
+    private int sportNum = 0,eatNum = 0,sleepNum = 0;
+    private int sporthun = 0,eathun = 0,sleephun = 0;
 
     public HomeFragment() {
     }
@@ -59,6 +76,10 @@ public class HomeFragment extends Fragment {
         user_pet = view.findViewById(R.id.imageView3);
         ibt_food = view.findViewById(R.id.ibt_food);
         ibt_sport = view.findViewById(R.id.ibt_sport);
+        tvEatBadge = view.findViewById(R.id.tvEatBadge);
+        tvSportBadge = view.findViewById(R.id.tvSportBadge);
+        eatProgress = view.findViewById(R.id.eatCircleProgress);
+        sportProgress = view.findViewById(R.id.sportCircleProgress);
         picasso_ibt(ibt_food,R.drawable.meal);
         picasso_ibt(ibt_sport,R.drawable.running);
         //初始化pet
@@ -71,40 +92,91 @@ public class HomeFragment extends Fragment {
         ibt_food.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(food == null){
-                    addfood();
-                    food.setOnTouchListener(food_ontouch);
-                    System.out.println("null!!!!!!!!!!!!!!!!!!!");
-                }
-                else if(food.getVisibility() == View.GONE){
-                    food.setVisibility(View.VISIBLE);
-                    System.out.println("visible!!!!!!!!!!!!!!!!!!!");
-                }
-                else {
+                if(Integer.valueOf(tvEatBadge.getText().toString()) > 0) {
+                    if (food == null) {
+                        addfood();
+                        food.setOnTouchListener(food_ontouch);
+                        System.out.println("null!!!!!!!!!!!!!!!!!!!");
+                    } else if (food.getVisibility() == View.GONE) {
+                        food.setVisibility(View.VISIBLE);
+                        System.out.println("visible!!!!!!!!!!!!!!!!!!!");
+                    } else {
 
+                    }
                 }
             }
         });
         ibt_sport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sport == null){
-                    addsport();
-                    sport.setOnTouchListener(sport_ontouch);
-                    System.out.println("null!!!!!!!!!!!!!!!!!!!");
-                }
-                else if(sport.getVisibility() == View.GONE){
-                    sport.setVisibility(View.VISIBLE);
-                    System.out.println("visible!!!!!!!!!!!!!!!!!!!");
-                }
-                else {
+                if(Integer.valueOf(tvSportBadge.getText().toString()) > 0) {
+                    if (sport == null) {
+                        addsport();
+                        sport.setOnTouchListener(sport_ontouch);
+                        System.out.println("null!!!!!!!!!!!!!!!!!!!");
+                    } else if (sport.getVisibility() == View.GONE) {
+                        sport.setVisibility(View.VISIBLE);
+                        System.out.println("visible!!!!!!!!!!!!!!!!!!!");
+                    } else {
 
+                    }
                 }
             }
         });
 
-
+        myInit();
         return view;
+    }
+
+    private void myInit(){
+        AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
+            @Override
+            public void onCallback(Map<String, Sport> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                sportNum = 0;
+                for(String key : value.keySet()){
+                    sportNum++;
+                }
+                sportProgress.setProgress(countProgress(sportNum,tvSportBadge) * 10);
+            }
+        });
+        AppDbHelper.getAllSleepFromFireBase(new MyCallBack<Map<String, Sleep>>() {
+            @Override
+            public void onCallback(Map<String, Sleep> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                sleepNum = 0;
+                for(String key : value.keySet()){
+                    sleepNum++;
+                }
+            }
+        });
+        AppDbHelper.getAllDietFromFireBase(new MyCallBack<Map<String, Diet>>() {
+            @Override
+            public void onCallback(Map<String, Diet> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                eatNum = 0;
+                for(String key : value.keySet()){
+                    eatNum++;
+                }
+                eatProgress.setProgress(countProgress(eatNum,tvEatBadge) * 10);
+            }
+        });
+        System.out.println("!!!!!" + eatNum + "!!!!!!" + sportNum + "!!!!!!" + sleepNum);
+    }
+
+    //計算圓形進度條還有角標的量
+    private int countProgress(int Num,TextView textView){
+        int hun;
+        if(Num >= 10){
+            hun = Num / 10;
+            Num = Num % 10;
+            System.out.println("!!!!!!!!!!!!!!!!!hun" + hun);
+            if(textView.getVisibility() == View.GONE) {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(String.valueOf(hun));
+            }
+        }
+        else {
+
+        }
+        return Num;
     }
 
     //動態加一個運動的view
@@ -180,6 +252,17 @@ public class HomeFragment extends Fragment {
                         anim_walk();
                         //將物件弄不見
                         sport.setVisibility(View.GONE);
+                        //角標的減少
+                        sporthun = Integer.valueOf(tvSportBadge.getText().toString());
+                        sporthun--;
+                        if(sporthun == 0){
+                            tvSportBadge.setText("0");
+                            tvSportBadge.setVisibility(View.GONE);
+                        }
+                        else {
+                            tvSportBadge.setText(sporthun);
+                        }
+
                         //當動畫跑完後 開始跑原本的
                         anim_change(duration);
                     }
@@ -216,6 +299,10 @@ public class HomeFragment extends Fragment {
                             user_pet.getBottom() - 10 > food.getBottom() && user_pet.getRight() - 10 > food.getRight()){
                         anim_eat();
                         food.setVisibility(View.GONE);
+                        eathun--;
+                        if(sporthun == 0){
+                            tvEatBadge.setVisibility(View.GONE);
+                        }
                         anim_change(duration);
                     }
                     else {

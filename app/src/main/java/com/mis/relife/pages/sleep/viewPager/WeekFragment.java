@@ -3,6 +3,7 @@ package com.mis.relife.pages.sleep.viewPager;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
 import com.mis.relife.data.model.Sleep;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +52,8 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
 
     Context context;
     private TextView tv_sleep_hour_average,tv_go_bed_average,tv_get_up_average;
+    private ImageView iv_talk_pet,iv_talk_place;
+    public AnimationDrawable anim;
     //圖表資料區
     private BarChart barChart;
     private  XAxis xAxis;
@@ -91,6 +96,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
             tv_sleep_hour_average = view.findViewById(R.id.tv_sleep_time);
             tv_go_bed_average = view.findViewById(R.id.tv_sleep_bed);
             tv_get_up_average = view.findViewById(R.id.tv_sleep_get);
+
         nowCalendar = Calendar.getInstance();
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
         sdf= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -112,6 +118,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
           }
       });
     }
+
     public void onDataChange(Date pDate){
         boolean weekSleepsIsNull = true;
          List<Sleep> weekSleeps = new ArrayList<>();
