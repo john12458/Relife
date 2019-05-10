@@ -44,6 +44,12 @@
         <activity
             android:name=".pages.sleep.New_Delete.sleep_plus"
             tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".pages.eat.eat_day_analysis"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".pages.eat.eat_week_analysis"
+            tools:ignore="DuplicateActivity" />
 
         <service android:name=".pages.Service.FloatWindowService" />
     </application>

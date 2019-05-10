@@ -28,13 +28,13 @@
 
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-
+        android:src="@drawable/heart"
         android:background="@drawable/button_check"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/information"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/information"
-        app:srcCompat="@drawable/heart" />
+         />
 
     <ImageView
         android:id="@+id/btn_add"
@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/information"
-        app:srcCompat="@drawable/checked"
+        android:src="@drawable/checked"
         android:background="@drawable/button_check"/>
 
 
