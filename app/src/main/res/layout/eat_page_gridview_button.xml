@@ -12,7 +12,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerInside"
-        android:background="@drawable/button_cercle"
+        android:background="@drawable/button_food"
         android:src="@drawable/breakfast"
         />
 

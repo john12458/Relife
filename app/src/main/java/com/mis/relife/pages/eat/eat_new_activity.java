@@ -35,6 +35,7 @@ public class eat_new_activity extends AppCompatActivity {
         vp_adapter = new eat_new_viewpager_adapter(getSupportFragmentManager(),fragments,tabs);
         tb_content = findViewById(R.id.tb_content);
         vp_content = findViewById(R.id.vp_content);
+        vp_content.setOffscreenPageLimit(3);
         //设置TabLayout的模式
         tb_content.setTabMode(TabLayout.MODE_FIXED);
         vp_content.setAdapter(vp_adapter);
@@ -51,7 +52,7 @@ public class eat_new_activity extends AppCompatActivity {
         tabs.add("最近新增");
         recipe = new eat_new_viewpager_recipe(this,eat_name);
         love = new eat_new_viewpager_favorite(this,eat_name);
-       recent= new eat_new_viewpager_recent(this,eat_name);
+        recent= new eat_new_viewpager_recent(this,eat_name);
         fragments.add(new eat_new_viewpager_new(this,eat_name));
         fragments.add(recipe);
         fragments.add(love);
@@ -61,6 +62,7 @@ public class eat_new_activity extends AppCompatActivity {
         recipe.initData();
         love.initData();
         recent.initData();
+//        recent.adapter.notifyDataSetChanged();
     }
     private Button.OnClickListener finish = new Button.OnClickListener(){
 
