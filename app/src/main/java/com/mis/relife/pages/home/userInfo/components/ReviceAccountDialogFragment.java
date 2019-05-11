@@ -44,13 +44,15 @@ public class ReviceAccountDialogFragment extends DialogFragment {
                 .setPositiveButton("submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+
                         AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
                             @Override
                             public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
                                 if(binding.oldPassword.getText().toString().equals(value.password)){
                                     String account = binding.editname.getText().toString();
                                     String newPassword = binding.newPassword.getText().toString();
-                                    AppDbHelper.insertInfoToFireBase(new Info(value.id,account,newPassword,value.life));
+                                    AppDbHelper.updateInfoToFireBase("account",account);
+                                    AppDbHelper.updateInfoToFireBase("password",newPassword);
                                     SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
                                     pref.edit()
                                             .putString("pAccount",account)

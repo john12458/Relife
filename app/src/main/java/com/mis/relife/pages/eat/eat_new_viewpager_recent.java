@@ -71,6 +71,12 @@ public class eat_new_viewpager_recent extends Fragment implements View.OnClickLi
                             eat_listview_recipe record = new eat_listview_recipe(search.getInt(0));
                             search_data.add(record);
                         }
+                        // search
+                        Cursor search2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + search_name.getInt(1), null);
+                        if (search2.moveToFirst()) {
+                            eat_listview_recipe record = new eat_listview_recipe(search2.getInt(0));
+                            search_data.add(record);
+                        }
                     }while (search_name.moveToNext());
                 }
                 LayoutInflater layoutinflater = getLayoutInflater();

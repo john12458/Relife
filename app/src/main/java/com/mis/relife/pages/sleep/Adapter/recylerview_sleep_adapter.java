@@ -1,7 +1,10 @@
 package com.mis.relife.pages.sleep.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.utils.Utils;
 import com.mis.relife.R;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +52,7 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
     @Override
     public recylerview_sleep_adapter.viewholder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view  =LayoutInflater.from(context).inflate(R.layout.sleep_page,viewGroup,false);
-        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,250);
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,  RecyclerView.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(params);
         viewholder holder = new viewholder(view);
         return holder;
@@ -68,10 +72,18 @@ public class recylerview_sleep_adapter extends RecyclerView.Adapter<recylerview_
         viewHolder.sleep_card.setCardBackgroundColor(Color.WHITE);
         viewHolder.sleep_card.setCardElevation(10);
         viewHolder.sleep_card.setContentPadding(0,0,0,0);
-        Picasso
-                .with(context)
-                .load(R.drawable.image_rabbit)
-                .into(viewHolder.iv_rabit);
+
+        if(mood.get(i).charAt(0) == '/'){
+            Bitmap bitmap= BitmapFactory.decodeFile(mood.get(i));
+            viewHolder.iv_rabit.setImageBitmap(bitmap);
+        }
+        else {
+            int resId = context.getResources()
+                    .getIdentifier(mood.get(i)
+                            , "drawable"
+                            , "com.mis.relife");
+            viewHolder.iv_rabit.setImageResource(resId);
+        }
 
         // item click
         if (mOnItemClickListener != null) {

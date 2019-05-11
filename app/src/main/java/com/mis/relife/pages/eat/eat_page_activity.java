@@ -65,17 +65,20 @@ public class eat_page_activity extends Fragment {
         view = inflater.inflate(R.layout.eat_page,container,false);
         gv_data1 = view.findViewById(R.id.gv_data1);
         gv_data2 = view.findViewById(R.id.gv_data2);
-        bt_week = view.findViewById(R.id.bt_analysis_week);
-        bt_day = view.findViewById(R.id.bt_analysis_today);
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
         bt_datepicker.setOnClickListener(datepicker);
         nowdate();
         date = setDateFormat(mYear,mMonth,mDay);
         bt_datepicker.setText(date);
-        bt_week.setOnClickListener(week);
-        bt_day.setOnClickListener(today);
+//<<<<<<< HEAD
+//        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top);
+//        eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img);
+//=======
+//        bt_week.setOnClickListener(week);
+//        bt_day.setOnClickListener(today);
         eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top,context);
         eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img,context);
+//>>>>>>> 0b7594979b7f26ca38a877d7ecb5a9a15f1a6164
         gv_data1.setAdapter(eat_gridview_adapter);
         gv_data2.setAdapter(eat_gridview_adapter2);
         gv_data2.setOnItemClickListener(gv_eat);
@@ -83,9 +86,14 @@ public class eat_page_activity extends Fragment {
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
         selectdate = ft.format(dNow);
         db = context.openOrCreateDatabase("relife", 0, null);
-        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
                 "(name VARCHAR(20) , " +
                 "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
                 "cal DOUBLE) ";
         db.execSQL(sql_recipe);
         String sql_record = "CREATE TABLE IF NOT EXISTS record " +
@@ -219,27 +227,30 @@ public class eat_page_activity extends Fragment {
         }
     };
 
-    private Button.OnClickListener week = new Button.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            Intent intent_eat_week = new Intent();
-            intent_eat_week.setClass(context, eat_week_analysis.class);
-            startActivity(intent_eat_week);
-        }
-    };
-
-    private Button.OnClickListener today = new Button.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            Intent intent_eat_week = new Intent();
-            intent_eat_week.setClass(context, eat_day_analysis.class);
-            startActivity(intent_eat_week);
-        }
-    };
-
-
+//<<<<<<< HEAD
+//=======
+//    private Button.OnClickListener week = new Button.OnClickListener(){
+//
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent_eat_week = new Intent();
+//            intent_eat_week.setClass(context, eat_week_analysis.class);
+//            startActivity(intent_eat_week);
+//        }
+//    };
+//
+//    private Button.OnClickListener today = new Button.OnClickListener(){
+//
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent_eat_week = new Intent();
+//            intent_eat_week.setClass(context, eat_day_analysis.class);
+//            startActivity(intent_eat_week);
+//        }
+//    };
+//
+//
+//>>>>>>> 0b7594979b7f26ca38a877d7ecb5a9a15f1a6164
     private Button.OnClickListener datepicker = new Button.OnClickListener(){
 
         @Override

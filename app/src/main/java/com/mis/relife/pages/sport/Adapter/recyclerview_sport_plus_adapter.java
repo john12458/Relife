@@ -17,11 +17,20 @@ public class recyclerview_sport_plus_adapter extends RecyclerView.Adapter<recycl
 
     Context context;
     public List<String> sport_type_child = new ArrayList<String>();
+    public List<String> sport_type_other = new ArrayList<>();
+//    public String[] sport_type_other = {"腳踏車 10km/時  ","腳踏車 20km/時  ","腳踏車 30km/時"};
     private OnItemClickListener mOnItemClickListener;
 
 
     public recyclerview_sport_plus_adapter(Context context){
         this.context = context;
+        sport_type_other.clear();
+        sport_type_other.add("滑雪");
+        sport_type_other.add("攀岩");
+        sport_type_other.add("溜冰刀");
+        sport_type_other.add("飛盤");
+        sport_type_other.add("溜直排輪");
+        sport_type_other.add("跳繩");
     }
 
     @NonNull
@@ -113,12 +122,9 @@ public class recyclerview_sport_plus_adapter extends RecyclerView.Adapter<recycl
     }
     public void inidata_sport_child_type_other(){
         sport_type_child.clear();
-        sport_type_child.add("滑雪");
-        sport_type_child.add("攀岩");
-        sport_type_child.add("溜冰刀");
-        sport_type_child.add("飛盤");
-        sport_type_child.add("溜直排輪");
-        sport_type_child.add("跳繩");
+        for (int i = 0;i < sport_type_other.size();i++){
+            sport_type_child.add(sport_type_other.get(i));
+        }
     }
     public void inidata_sport_child_type_work(){
         sport_type_child.clear();
@@ -130,9 +136,9 @@ public class recyclerview_sport_plus_adapter extends RecyclerView.Adapter<recycl
     }
     public void inidata_sport_child_type_bike(){
         sport_type_child.clear();
-        sport_type_child.add("腳踏車 10km/時  ");
-        sport_type_child.add("腳踏車 20km/時  ");
-        sport_type_child.add("腳踏車 30km/時");
+        for (int i = 0;i < sport_type_other.size();i++){
+            sport_type_child.add(sport_type_other.get(i));
+        }
     }
 
 

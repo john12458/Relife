@@ -78,7 +78,7 @@ public class sleep_tab_viewpager extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        sleep_adapter.notifyDataSetChanged();
+        //sleep_adapter.notifyDataSetChanged();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

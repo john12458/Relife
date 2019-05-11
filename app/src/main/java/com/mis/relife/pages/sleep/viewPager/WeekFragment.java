@@ -109,12 +109,6 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
               sleepList = new HashMap<>();
               sleepList.putAll(value);
               onDataChange(pickDate);
-//              //拿到星期一的day
-//              get_monday();
-//              //設置圖表
-//              barData = getBarData();
-//              barChart.setData(barData);
-//              setBarchar();
           }
       });
     }
@@ -184,7 +178,8 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         BarDataSet barset = new BarDataSet(entryList,"");
 
         barset.setColors(colors);
-        barset.setDrawValues(false);
+//        barset.setDrawValues(false);
+        barset.setValueTextColor(Color.WHITE);
         barset.setBarShadowColor(Color.GRAY);
 
         List<IBarDataSet> datasets = new ArrayList<>();
@@ -274,6 +269,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         rightAxis = barChart.getAxisRight();
         //不顯示XY軸的線條
         xAxis.setDrawAxisLine(false);
+        xAxis.setTextColor(Color.WHITE);
         leftAxis.setDrawAxisLine(false);
         rightAxis.setDrawAxisLine(false);
 
@@ -283,6 +279,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         //保证Y轴从0开始，不然会上移一点
         leftAxis.setAxisMinimum(0f);
         leftAxis.setGranularity(1f);
+        leftAxis.setTextColor(Color.WHITE);
         rightAxis.setAxisMinimum(0f);
         rightAxis.setEnabled(false);
         xAxis.setDrawGridLines(false);
@@ -317,10 +314,21 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         long nh = 1000 * 60 * 60;// 一小時的毫秒數
         int day = 0;
         int hour = 0;
+        Calendar sleepDate = Calendar.getInstance();
+        Calendar wakeDate = Calendar.getInstance();
+        sleepDate.setTime(date1);
+        wakeDate.setTime(date2);
+        if(sleepDate.get(Calendar.HOUR_OF_DAY) > wakeDate.get(Calendar.HOUR_OF_DAY)){
+            wakeDate.add(Calendar.DAY_OF_MONTH,1);
+        }
+        else {
 
+        }
+        date1 = sleepDate.getTime();
+        date2 = wakeDate.getTime();
         long time1 = date1.getTime();
         long time2 = date2.getTime();
-        long diff = Math.abs(time1-time2);
+        long diff = Math.abs(time2-time1);
         try {
             day = (int)(diff / nd);// 計算差多少天
             hour =  (int)(diff % nd /nh + day*24);// 計算差多少小時

@@ -1,5 +1,6 @@
 package com.mis.relife.pages.sport.New_Delete;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,9 +16,12 @@ import android.widget.Toast;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.model.Sport;
+import com.mis.relife.pages.sleep.New_Delete.SleepChooseMood;
+import com.mis.relife.pages.sleep.New_Delete.sleep_plus;
 import com.mis.relife.pages.sport.Adapter.recyclerview_sport_plus_adapter;
 import com.mis.relife.pages.sport.Adapter.sport_plus_type_gridview;
 import com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter;
+import com.mis.relife.pages.sport.count_cal;
 import com.mis.relife.useful.recyler_item_space;
 
 public class Sport_Plus_Activity extends AppCompatActivity {
@@ -27,16 +31,13 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     private RecyclerView recyclerView_sport_record;
 
     private sport_plus_type_gridview gv_sport_type_adapter;
-    private recyclerview_sport_plus_adapter recyclerview_sport_type_child_adapter;
+    public recyclerview_sport_plus_adapter recyclerview_sport_type_child_adapter;
     public com.mis.relife.pages.sport.Adapter.sport_recycler_record_adapter sport_recycler_record_adapter;
 
     private  String[] sport_type = {"跑步","拍類","棒類","球類","武術","水上","健體","工作","騎車","其他"};
-//    private List<String> sport_type_child = new ArrayList<String>();
+    private count_cal count_cal;
 
-//    private List<String> sport_record_name = new ArrayList<String>();
-//    private List<String> sport_record_info = new ArrayList<String>();
-
-    private TextView tv_sport_child_name;
+    private TextView tv_sport_child_name,tv_cancel,tvSelf;
     private Button bt_finish;
 
 //    static int choose_type = 0;
@@ -45,18 +46,32 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     Bundle bundle = null;
     String date;
 
+    private FragmentManager fm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_sport__plus_);
+        fm = getSupportFragmentManager();
+        count_cal = new count_cal();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         recyclerView_sport_type = findViewById(R.id.recycler_sport_type);
         gv_sport_type = findViewById(R.id.gv_data2);
         recyclerView_sport_record = findViewById(R.id.recycler_record);
         tv_sport_child_name = findViewById(R.id.tv_sport_child_type);
+        tv_cancel = findViewById(R.id.tv_cancel);
+        tvSelf = findViewById(R.id.tv_self);
         bt_finish = findViewById(R.id.bt_finish);
+
+        tvSelf.setOnClickListener(selfClick);
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //初始化下面提供使用者輸入資訊的地方
 
@@ -101,16 +116,28 @@ public class Sport_Plus_Activity extends AppCompatActivity {
             recyclerview_sport_type_child_adapter.notifyDataSetChanged();
             bt_finish.setOnClickListener(finish_back);
         }
+        else if(bundle.getString("choose").equals("clock")){
+            System.out.println("clock!!!!!!!!!!!!!!!!!!!");
+            clockWay();
+            bt_finish.setOnClickListener(finish_back);
+        }
     }
 
     //方法區
 
+
+    private Button.OnClickListener selfClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SportDialogSelfAddFragment addSelf = new SportDialogSelfAddFragment(Sport_Plus_Activity.this,Sport_Plus_Activity.this,count_cal);
+            addSelf.show(fm,"choose");
+        }
+    };
+
     //如果使用者要編輯日記 就會判斷有值傳過來 要做的事情 分三部分 跑步類 腳踏車類 或是其他類
     private void have_deliever_way(){
-
         recyclerview_sport_type_child_adapter.sport_type_child.clear();
         recyclerview_sport_type_child_adapter.notifyDataSetChanged();
-//        bundle = getIntent().getExtras();
         position = bundle.getInt("position");
         sport_recycler_record_adapter.sport_record_info.clear();
         tv_sport_child_name.setText(bundle.getString("sport_name"));
@@ -120,13 +147,27 @@ public class Sport_Plus_Activity extends AppCompatActivity {
         cal = bundle.getString("sport_cal");
         record_key = bundle.getString("key");
         System.out.println(record_key + "!!!!!!!!!!!!!!!!!!!!!!");
-
         sport_recycler_record_adapter.initView_record_other();
         sport_recycler_record_adapter.sport_record_info.set(0,start);
         sport_recycler_record_adapter.sport_record_info.set(1,time);
         sport_recycler_record_adapter.sport_record_info.set(2,cal);
         sport_recycler_record_adapter.notifyDataSetChanged();
+    }
 
+    //如果使用者要編輯日記 就會判斷有值傳過來 要做的事情 分三部分 跑步類 腳踏車類 或是其他類
+    private void clockWay(){
+        recyclerview_sport_type_child_adapter.sport_type_child.clear();
+        recyclerview_sport_type_child_adapter.notifyDataSetChanged();
+        sport_recycler_record_adapter.sport_record_info.clear();
+        tv_sport_child_name.setText(bundle.getString("sport_name"));
+        start = bundle.getString("sport_start");
+        time = bundle.getString("sport_time");
+        cal = bundle.getString("sport_cal");
+        sport_recycler_record_adapter.initView_record_other();
+        sport_recycler_record_adapter.sport_record_info.set(0,start);
+        sport_recycler_record_adapter.sport_record_info.set(1,time);
+        sport_recycler_record_adapter.sport_record_info.set(2,cal);
+        sport_recycler_record_adapter.notifyDataSetChanged();
     }
 
     //編輯的 傳值方式
@@ -146,7 +187,8 @@ public class Sport_Plus_Activity extends AppCompatActivity {
                 Toast.makeText(Sport_Plus_Activity.this,"請選擇運動長度",Toast.LENGTH_LONG).show();
             }
             else {
-                    cal = sport_recycler_record_adapter.sport_record_info.get(2);
+
+                    cal = String.valueOf(count_cal.if_else_sport(name,Integer.valueOf(time),40));
                     Sport sport_update = new Sport();
                     sport_update.type = name;
                     sport_update.startTime = start;
@@ -186,12 +228,13 @@ public class Sport_Plus_Activity extends AppCompatActivity {
                 Toast.makeText(Sport_Plus_Activity.this,"請選擇運動長度",Toast.LENGTH_LONG).show();
             }
             else {
-                insert_cal = sport_recycler_record_adapter.sport_record_info.get(2);
+                System.out.println(insert_name + "!!!!!!!哈哈!!!!!!!!" + insert_time);
+                insert_cal = String.valueOf(count_cal.if_else_sport(insert_name,Integer.valueOf(insert_time),40));
                 Sport sport_insert = new Sport();
                 sport_insert.type = insert_name;
                 sport_insert.startTime = insert_start;
                 sport_insert.betweenTime = Integer.valueOf(insert_time);
-                sport_insert.cal = 200;
+                sport_insert.cal = Integer.valueOf(insert_cal);
                 sport_insert.recordDate = date;
 
                 AppDbHelper.insertSportToFireBase(sport_insert);

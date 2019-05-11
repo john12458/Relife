@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.GridView;
 
 import com.mis.relife.R;
-import com.mis.relife.pages.sleep.New_Delete.Sleep_Clock_Activity;
 
 @SuppressLint("ValidFragment")
 public class SleepDialogFragment_choose_way extends DialogFragment {
