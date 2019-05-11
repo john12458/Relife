@@ -17,11 +17,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:background="@color/colorLogin"
             android:orientation="vertical"
@@ -42,7 +42,7 @@
                 android:fontFamily="adobe-clean"
                 android:paddingVertical="20dp"
                 android:scaleType="center"
-                android:text="Register"
+                android:text="Register - Step 1"
                 android:textAlignment="center"
                 android:textColor="@color/colorLogin"
                 android:textSize="30sp" />
@@ -196,8 +196,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:background="@drawable/button_login"
-                        android:onClick="@{()->register.onRegisterClick()}"
-                        android:text="註冊"
+                        android:onClick="@{()->register.onNextPageClick()}"
+                        android:text="下一步"
                         android:textColor="@color/colorLogin" />
                 </LinearLayout>
 

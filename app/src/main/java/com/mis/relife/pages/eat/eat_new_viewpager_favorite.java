@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,11 +65,24 @@ public class eat_new_viewpager_favorite extends Fragment implements View.OnClick
                     do {
                         Cursor search = db.rawQuery("SELECT * FROM love WHERE foodID = " + search_name.getInt(1), null);
                         if (search.moveToFirst()) {
-                                eat_listview_recipe record = new eat_listview_recipe(search.getInt(0), search.getInt(1));
-                                search_data.add(record);
+                            eat_listview_recipe record = new eat_listview_recipe(search.getInt(0), search.getInt(1));
+                            search_data.add(record);
                         }
                     }while (search_name.moveToNext());
                 }
+                //search
+                    Cursor search_name2 = db.rawQuery("SELECT * FROM search WHERE name LIKE '%" + word + "%'", null);
+                    if(search_name2.moveToFirst()) {
+                        do {
+                            Log.d("Search Table ",search_name2.getString(0)+search_name2.getString(1));
+                            Cursor search2 = db.rawQuery("SELECT * FROM love WHERE foodID = " + search_name2.getInt(1), null);
+                            if (search2.moveToFirst()) {
+                                eat_listview_recipe search = new eat_listview_recipe(search2.getInt(0), search2.getInt(1));
+                                search_data.add(search);
+                            }
+                        }while (search_name2.moveToNext());
+                    }
+                //--
                 LayoutInflater layoutinflater = getLayoutInflater();
                 recipe_adapter adapter = new recipe_adapter(layoutinflater, search_data, context,(eat_new_activity) getActivity());
                 lv_love.setAdapter(adapter);

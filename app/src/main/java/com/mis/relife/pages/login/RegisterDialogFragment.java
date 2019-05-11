@@ -1,12 +1,16 @@
 package com.mis.relife.pages.login;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,11 +35,14 @@ import com.mis.relife.pages.MainActivity;
 import static android.content.Context.MODE_PRIVATE;
 
 public class RegisterDialogFragment extends DialogFragment {
+    private final static int REAPET = 0;
+    private final static int NOT_REAPET = 1;
     private FragmentRegisterDialogBinding binding;
     private InputMethodManager imm;
     private String account ;
     private String password ;
     private String checkPassword;
+    private ProgressDialog pd;
 
     public RegisterDialogFragment() { }
 
@@ -85,8 +92,9 @@ public class RegisterDialogFragment extends DialogFragment {
             }
         }, 100);
     }
-    // data
-    public void onRegisterClick(){
+    /**   event and Data handler ----------------------------------------------------------------------------------------------------------------------------------------- */
+    public void goToLoginClick(){ this.dismiss(); }
+    public void onNextPageClick(){
         account = binding.account.getText().toString();
         password = binding.password.getText().toString();
         checkPassword = binding.checkPassword.getText().toString();
@@ -95,35 +103,48 @@ public class RegisterDialogFragment extends DialogFragment {
             alert("確認密碼與密碼不符合","確認");
             return ;
         }
+        pd = ProgressDialog.show(getContext(),
+                "驗證中", "請等待...", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() { checkRepeat(); }
+        }).start();
 
+    }
+    private void checkRepeat(){
+        // 確認是否有重複帳號，沒有就執行註冊
         DatabaseReference userRef = AppDbHelper.mFirebase.getReference("user");
         final Query userQuery = userRef.orderByChild("info/account").equalTo(account);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userQuery.removeEventListener(this);
-                if (dataSnapshot.exists())alert("已有此帳號，請重新填寫","確認");
-                else register();
+                if (dataSnapshot.exists()) pdHandler.sendEmptyMessage(REAPET);
+                else pdHandler.sendEmptyMessage(NOT_REAPET);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+    }
 
+    private Handler pdHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            pd.dismiss();
+            switch (msg.what){
+                case REAPET:
+                    alert("已有此帳號，請重新填寫","確認");
+                    break;
+                case NOT_REAPET:
+                    goToNextPage();
+                    break;
+            }
+        }
+    };
+    private void goToNextPage(){
+        new InfoDialogFragment(this,account,password).show(getActivity().getSupportFragmentManager(), "Info");
     }
-    public void goToLoginClick(){
-        this.dismiss();
-    }
-    private void register(){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = db.getReference("user");
-        String key = userRef.push().getKey();
-        userRef.child(key).setValue(new MyUser(
-                new Info(key,account,password,0)
-        ));
-        alert("成功註冊 ! ! 請重新登入頁面","確認");
-        goToLoginClick();
 
-    }
     private void alert(String message,String btnTxt){
         new AlertDialog.Builder(getContext())
                 .setMessage(message)
