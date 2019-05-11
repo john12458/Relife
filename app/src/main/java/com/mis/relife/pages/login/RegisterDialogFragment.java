@@ -85,7 +85,8 @@ public class RegisterDialogFragment extends DialogFragment {
             }
         }, 100);
     }
-    // data
+    /**   event and Data handler ----------------------------------------------------------------------------------------------------------------------------------------- */
+    public void goToLoginClick(){ this.dismiss(); }
     public void onRegisterClick(){
         account = binding.account.getText().toString();
         password = binding.password.getText().toString();
@@ -95,7 +96,7 @@ public class RegisterDialogFragment extends DialogFragment {
             alert("確認密碼與密碼不符合","確認");
             return ;
         }
-
+        // 確認是否有重複帳號，沒有就執行註冊
         DatabaseReference userRef = AppDbHelper.mFirebase.getReference("user");
         final Query userQuery = userRef.orderByChild("info/account").equalTo(account);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -108,21 +109,19 @@ public class RegisterDialogFragment extends DialogFragment {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+    }
 
-    }
-    public void goToLoginClick(){
-        this.dismiss();
-    }
     private void register(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference userRef = db.getReference("user");
         String key = userRef.push().getKey();
         userRef.child(key).setValue(new MyUser(
-                new Info(key,account,password,0)
+                new Info(key,account,password,20,170,60,1,20,"男")
         ));
         alert("成功註冊 ! ! 請重新登入頁面","確認");
         goToLoginClick();
     }
+
     private void alert(String message,String btnTxt){
         new AlertDialog.Builder(getContext())
                 .setMessage(message)
