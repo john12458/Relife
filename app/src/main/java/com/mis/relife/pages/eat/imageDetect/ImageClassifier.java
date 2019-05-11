@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.mis.relife.test.imageDetect;
+package com.mis.relife.pages.eat.imageDetect;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;

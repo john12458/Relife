@@ -3,6 +3,7 @@ package com.mis.relife.pages.Service;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.WindowManager;
 
@@ -59,9 +60,16 @@ public class MyWindowManager {
         if (smallWindow == null) {
             smallWindow = new FloatWindowSmallView(context);
             if (smallWindowParams == null) {
-                smallWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                        PixelFormat.TRANSLUCENT);
+                if(Build.VERSION.SDK_INT >= 26){
+                    smallWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            PixelFormat.TRANSLUCENT);
+                }
+                else {
+                    smallWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            PixelFormat.TRANSLUCENT);
+                }
                 smallWindowParams.format = PixelFormat.RGBA_8888;
                 smallWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -103,9 +111,16 @@ public class MyWindowManager {
         if (bigWindow == null) {
             bigWindow = new FloatWindowBigView(context);
             if (bigWindowParams == null) {
-                bigWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                        PixelFormat.TRANSLUCENT);
+                if(Build.VERSION.SDK_INT>=26){
+                    bigWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            PixelFormat.TRANSLUCENT);
+                }
+                else {
+                    bigWindowParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            PixelFormat.TRANSLUCENT);
+                }
 //                bigWindowParams.x = screenWidth / 2;
 //                bigWindowParams.y = screenHeight / 2;
                 bigWindowParams.format = PixelFormat.RGBA_8888;

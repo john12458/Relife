@@ -1,10 +1,13 @@
 package com.mis.relife.pages.login;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -17,22 +20,24 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.model.Info;
-import com.mis.relife.data.model.MyUser;
 import com.mis.relife.databinding.FragmentLoginDialogBinding;
 import com.mis.relife.pages.MainActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginDialogFragment extends DialogFragment implements DialogInterface.OnClickListener{
+    private final static int LOGIN_SUCCESS = 1;
+    private final static int LOGIN_FAULT = 0;
     private FragmentLoginDialogBinding binding;
     private InputMethodManager imm;
     private DialogInterface.OnClickListener dismissClick=this;
+    private ProgressDialog pd;
+
     public LoginDialogFragment() { }
 
     @Override
@@ -87,42 +92,60 @@ public class LoginDialogFragment extends DialogFragment implements DialogInterfa
         new RegisterDialogFragment().show(getActivity().getSupportFragmentManager(), "Register");
     }
     public void onLoginClick() {
-        final String account = binding.account.getText().toString();
-        final String password = binding.password.getText().toString();
-        DatabaseReference userRef =AppDbHelper.mFirebase.getReference("user");
-        final Query userQuery = userRef.orderByChild("info/account").equalTo(account);
-        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        pd = ProgressDialog.show(getContext(),
+                "驗證中", "請等待...", true);
+        new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userQuery.removeEventListener(this);
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Info info = data.child("info").getValue(Info.class);
-                        if(info.password.equals(password)){
-                            String id = info.id;
-                            // 存入偏好設定
-                            SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
-                            pref.edit()
-                                    .putString("id",id)
-                                    .commit();
-                            alert("成功登入!!","確認",dismissClick);
-                            new AppDbHelper(info.id); // 開啟資料庫
-                            // 關閉鍵盤
-                            imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getDialog().getWindow().peekDecorView().getWindowToken(), 0);
-                            // 初始化頁面
-                            ((MainActivity)getActivity()).myInitlize();
-                            return;
+            public void run() {
+                final String account = binding.account.getText().toString();
+                final String password = binding.password.getText().toString();
+                DatabaseReference userRef =AppDbHelper.mFirebase.getReference("user");
+                final Query userQuery = userRef.orderByChild("info/account").equalTo(account);
+                userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        userQuery.removeEventListener(this);
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                Info info = data.child("info").getValue(Info.class);
+                                if(info.password.equals(password)){
+                                    String id = info.id;
+                                    // 存入偏好設定
+                                    SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
+                                    pref.edit().putString("id",id).commit();
+                                    // 開啟資料庫
+                                    new AppDbHelper(id);
+                                    pdHandler.sendEmptyMessage(LOGIN_SUCCESS);
+                                    return;
+                                }
+                            }
                         }
+                        pdHandler.sendEmptyMessage(LOGIN_FAULT);
                     }
-                }
-                alert("帳號或密碼錯誤","確認",null);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) { }
+                });
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
-    }
+        }).start();
 
+    }
+    private Handler pdHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            pd.dismiss();
+            switch (msg.what){
+                case LOGIN_SUCCESS:
+                    // 關閉鍵盤
+                    imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getDialog().getWindow().peekDecorView().getWindowToken(), 0);
+                    alert("成功登入!!","確認",dismissClick);
+                    break;
+                case LOGIN_FAULT:
+                    alert("帳號或密碼錯誤","確認",null);
+                    break;
+            }
+        }
+    };
     private void alert(String message, String btnTxt, DialogInterface.OnClickListener listener){
         new AlertDialog.Builder(getContext())
                 .setMessage(message)
@@ -133,6 +156,8 @@ public class LoginDialogFragment extends DialogFragment implements DialogInterfa
     @Override
     public void onClick(DialogInterface dialog, int which) {
         this.dismiss();
+        // 初始化頁面
+        ((MainActivity)getActivity()).myInitlize();
     }
 }
 

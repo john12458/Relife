@@ -42,7 +42,7 @@
                 android:fontFamily="adobe-clean"
                 android:paddingVertical="20dp"
                 android:scaleType="center"
-                android:text="Register"
+                android:text="Register - Step 1"
                 android:textAlignment="center"
                 android:textColor="@color/colorLogin"
                 android:textSize="30sp" />
@@ -196,8 +196,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:background="@drawable/button_login"
-                        android:onClick="@{()->register.onRegisterClick()}"
-                        android:text="註冊"
+                        android:onClick="@{()->register.onNextPageClick()}"
+                        android:text="下一步"
                         android:textColor="@color/colorLogin" />
                 </LinearLayout>
 

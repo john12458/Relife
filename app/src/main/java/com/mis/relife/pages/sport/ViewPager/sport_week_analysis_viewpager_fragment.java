@@ -141,8 +141,8 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onCallback(Map<String, Sport> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
-                Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+                Drawable whiteDrawable = context.getResources().getDrawable(R.drawable.button_rectangle);
+                Drawable grayDrawable = context.getResources().getDrawable(R.drawable.button_rectangle_gray);
                 btTime.setBackground(grayDrawable);
                 btCal.setBackground(whiteDrawable);
                 //拿到星期一的day
