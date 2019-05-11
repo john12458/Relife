@@ -16,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,7 +39,6 @@ public class EatDetectResultActivity extends AppCompatActivity {
     private ImageView imageView;
     private Uri uri;
     private ImageClassifier classifier;
-    private TextView textView;
     private ListView lv_detect;
 
     private void createClassfier(){
@@ -60,9 +60,9 @@ public class EatDetectResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_detect_result_activity);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         lv_detect =(ListView)findViewById(R.id.listview_detect);
         imageView=(ImageView)findViewById(R.id.picture);
-        textView = (TextView) findViewById(R.id.textView);
         createClassfier();
         goToCamera();
     }
@@ -146,7 +146,6 @@ public class EatDetectResultActivity extends AppCompatActivity {
         classifier.close();
 
         Log.d("d",textToShow);
-        textView.setText(textToShow);
         lv_detect.setAdapter(new recipe_adapter(getLayoutInflater(), getHandleText(textToShow), getApplicationContext()));
     }
     private List<eat_listview_recipe> getHandleText(String textToShow){

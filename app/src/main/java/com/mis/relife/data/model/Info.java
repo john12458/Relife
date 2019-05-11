@@ -20,12 +20,13 @@ public class Info {
     public int height;
     public int weight;
     public int goalWeight;
+    public int goalWeekWeight;
     public int old;
     public String gender;
 
     public Info(){}
 
-    public Info(String id, String account, String password, int life, int height, int weight, int goalWeight, int old, String gender) {
+    public Info(String id, String account, String password, int life, int height, int weight, int goalWeight, int goalWeekWeight, int old, String gender) {
         this.id = id;
         this.account = account;
         this.password = password;
@@ -33,6 +34,7 @@ public class Info {
         this.height = height;
         this.weight = weight;
         this.goalWeight = goalWeight;
+        this.goalWeekWeight = goalWeekWeight;
         this.old = old;
         this.gender = gender;
     }
@@ -54,6 +56,7 @@ public class Info {
                 +"height:\t"+String.valueOf(height)+"\n"
                 +"weight:\t"+String.valueOf(weight)+"\n"
                 +"goalWeight:\t"+String.valueOf(goalWeight)+"\n"
+                +"goalWeekWeight:\t"+String.valueOf(goalWeekWeight)+"\n"
                 +"old:\t"+String.valueOf(old)+"\n"
                 +"gender:\t"+gender+"\n";
         txt+="----------------\n";
