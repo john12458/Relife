@@ -25,11 +25,13 @@ public class HomeFragmentModel extends BaseViewModel{
     public final ObservableField<Integer> life = new ObservableField<>();
     public final ObservableField<String> account = new ObservableField<>();
     private final FragmentHomeBinding binding;
+    private HomeFragment homeFragment;
 
-    public HomeFragmentModel(Activity activity, FragmentHomeBinding binding) {
+    public HomeFragmentModel(Activity activity, FragmentHomeBinding binding,HomeFragment homeFragment) {
         super();
         this.activity = activity;
         this.binding = binding;
+        this.homeFragment = homeFragment;
     }
     public void onEnterUserInfo(){
         Intent intent = new Intent(activity, UserInfoActivity.class);
@@ -43,6 +45,7 @@ public class HomeFragmentModel extends BaseViewModel{
                 if(value!=null){
                     life.set(value.life);
                     account.set(value.account);
+                    homeFragment.judgePetTime();
                 }
             }
         });
