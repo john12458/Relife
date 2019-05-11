@@ -84,9 +84,11 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
         love = (ImageView) viewRecipe.findViewById(R.id.btn_love);
         add = (ImageView) viewRecipe.findViewById(R.id.btn_add);
         switch (viewGroup.getId()) {
+            case R.id.listview_detect:
+                name.setText(recipe.getName() + "(" + recipe.getCal() + "大卡)");
+                break;
             case R.id.listview_new:
                 name.setText(recipe.getName() + "(" + recipe.getCal() + "大卡)");
-                System.out.println("!!!!!!!!!!!!!"+recipe.getFood_id());
                 break;
             case R.id.listview_recipe:
                 // 將數據一一添加到自定義的布局中
@@ -230,7 +232,8 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                     eat_new_second.cal.setText("0 大卡");
                 }
 
-                notifyDataSetChanged();
+                // detect 那個頁面執行會崩掉
+                if(activity!=null)notifyDataSetChanged();
 
                 break;
             case R.id.information:

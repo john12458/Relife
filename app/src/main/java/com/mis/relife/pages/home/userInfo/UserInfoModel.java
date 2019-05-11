@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.pages.MainActivity;
 import com.mis.relife.pages.home.userInfo.components.ReviceAccountDialogFragment;
-import com.mis.relife.test.imageDetect.CameraActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -94,8 +93,6 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     }
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(activity, CameraActivity.class);
-        activity.startActivity(intent);
 //        AppDbHelper.deleteAllInfoToFireBase();
 //        AppDbHelper.deleteAllDietToFireBase();
 //        AppDbHelper.deleteAllSleepToFireBase();

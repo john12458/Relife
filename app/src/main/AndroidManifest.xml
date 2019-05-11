@@ -17,8 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label">
-        <activity android:name=".pages.eat.EatDetectResultActivity"></activity>
-        <activity android:name=".test.imageDetect.CameraActivity" />
+        <activity android:name=".pages.eat.imageDetect.EatDetectResultActivity"></activity>
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
         <activity android:name=".pages.sleep.New_Delete.sleep_plus" />
         <activity android:name=".pages.sport.New_Delete.Sport_Plus_Activity" />
