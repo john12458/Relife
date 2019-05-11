@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mis.relife">
-
+    
     <uses-permission android:name="android.permission.INTERNET" /> <!-- <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
