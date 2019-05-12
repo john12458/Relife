@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
 
         checkFirstLogin(); //如果不是初次登入則會進入登入畫面
         //開啟service
-        service();
-        service_button();
+//        service();
+//        service_button();
 
     }
     private void sqliteCreateOrOpen(){
@@ -118,8 +118,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
             myInitlize();
         }
     }
-    //方法區
-
+    //方法
     //開啟service
     private void service(){
         if(Build.VERSION.SDK_INT>=23)
