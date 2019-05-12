@@ -3,6 +3,7 @@ package com.mis.relife.pages;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     private int[] tab_layout={R.layout.test_badge,R.layout.test_badge2,R.layout.test_badge3,R.layout.test_badge4};
     private int[] iv_id = {R.id.iv_home,R.id.iv_eat,R.id.iv_sport,R.id.iv_sleep};
     private int[] iv_res = {R.drawable.house,R.drawable.lunch,R.drawable.running,R.drawable.bed};
+    SQLiteDatabase db;
 
     int first = 0;
 
@@ -80,6 +82,37 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         } else{
             System.out.println("login id:"+id);
             new AppDbHelper(id);
+            //
+            db = this.openOrCreateDatabase("relife", 0, null);
+            String sql_search = "CREATE TABLE IF NOT EXISTS search " +
+                    "(name VARCHAR(20) , " +
+                    "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                    "cal DOUBLE) ";
+            db.execSQL(sql_search);
+            String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                    "(name VARCHAR(20) , " +
+                    "foodID INTEGER PRIMARY KEY ,"+
+                    "cal DOUBLE) ";
+            db.execSQL(sql_recipe);
+            String sql_record = "CREATE TABLE IF NOT EXISTS record " +
+                    "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "date VARCHAR(20), " +
+                    "category VARCHAR(20),"+
+                    "foodID INTEGER,"+
+                    "number FLOAT) ";
+            db.execSQL(sql_record);
+            String sql_love = "CREATE TABLE IF NOT EXISTS love " +
+                    "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                    "foodID INTEGER)";
+            db.execSQL(sql_love);
+            String sql_water = "CREATE TABLE IF NOT EXISTS water " +
+                    "(date VARCHAR(20) PRIMARY KEY,"+
+                    "cc INTEGER)";
+            db.execSQL(sql_water);
+            String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
+                    "(foodID INTEGER PRIMARY KEY)";
+            db.execSQL(sql_recent);
+            //
             myInitlize();
         }
     }

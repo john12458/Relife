@@ -14,7 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.databinding.SleepDayFragmentBinding;
 import com.squareup.picasso.Picasso;
 
@@ -76,29 +81,14 @@ public class DayFragment extends Fragment {
         }
     };
 
-//    private void initText(){
-//        if(old > 13 && old < 29) {
-//            if (sleeTime == 0) {
-//                tvTalk.setText("嗨~~~");
-//            } else if (sleeTime > 8 && sleeTime < 9) {
-//                tvTalk.setText("睡眠充足~讚讚");
-//            } else if(sleeTime < 8){
-//                tvTalk.setText("要睡飽一點喔~我會擔心~");
-//            }
-//        }
-//        else if(old >= 29 && old < 60){
-//            if (sleeTime == 0) {
-//                tvTalk.setText("嗨~~~");
-//            } else if (sleeTime > 7 && sleeTime < 8) {
-//                tvTalk.setText("睡眠充足~讚讚");
-//            } else if(sleeTime < 7){
-//                tvTalk.setText("要睡飽一點喔~我會擔心~");
-//            }
-//        }
-//    }
-
     //設定建議的文字 已年齡做區分
     private void setTalkText(Random ran){
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                old = value.old;
+            }
+        });
         if(old == 0) {
 
         }

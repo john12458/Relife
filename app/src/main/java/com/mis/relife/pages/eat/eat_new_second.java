@@ -64,18 +64,23 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
         mData = new ArrayList<eat_listview_recipe>();
         Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + category + "'", null);
         if(c.moveToFirst()){
-            //test.setText(category);
             do {
                 eat_listview_recipe record  = new eat_listview_recipe(c.getInt(0), c.getString(2), c.getInt(3), c.getDouble(4));
                 mData.add(record);
                 Cursor cal_in_food = db.rawQuery("SELECT * FROM recipe WHERE foodID = " + c.getInt(3), null);
                 if (cal_in_food.moveToFirst()) {
-                    total_cal += cal_in_food.getFloat(2);// * cal_in_food.getFloat(4);
+                    Cursor food_num = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + category + "' AND foodID = " + c.getInt(3), null);
+                    if(food_num.moveToFirst()) {
+                        total_cal += cal_in_food.getFloat(2) * food_num.getFloat(4);
+                    }
                 }
                 //search
                 Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + c.getInt(3), null);
                 if (cal_in_food2.moveToFirst()) {
-                    total_cal += cal_in_food2.getFloat(2);
+                    Cursor food_num = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + category + "' AND foodID = " + c.getInt(3), null);
+                    if(food_num.moveToFirst()) {
+                        total_cal += cal_in_food2.getFloat(2) * food_num.getFloat(4);
+                    }
                 }
                 //--------
             } while (c.moveToNext());
@@ -105,5 +110,9 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void back(View v) {
+        finish();
     }
 }

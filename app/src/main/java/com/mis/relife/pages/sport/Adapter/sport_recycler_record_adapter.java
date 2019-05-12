@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.airsaid.pickerviewlibrary.TimePickerView;
 import com.mis.relife.R;
+import com.mis.relife.pages.sport.New_Delete.Sport_Plus_Activity;
 import com.mis.relife.pages.sport.count_cal;
 
 import java.text.SimpleDateFormat;
@@ -23,12 +24,14 @@ public class sport_recycler_record_adapter extends RecyclerView.Adapter<sport_re
     Context context;
     public List<String> sport_record_name = new ArrayList<>();
     public List<String> sport_record_info = new ArrayList<>();
-    private com.mis.relife.pages.sport.count_cal count_cal = null;
+    private count_cal count_cal = null;
+    private Sport_Plus_Activity sportPlus;
 
     private OnItemClickListener mOnItemClickListener;
 
-    public  sport_recycler_record_adapter(Context context){
+    public  sport_recycler_record_adapter(Context context, Sport_Plus_Activity sportPlus){
         this.context = context;
+        this.sportPlus = sportPlus;
         initView_record_other();
         count_cal = new count_cal();
     }
@@ -140,6 +143,7 @@ public class sport_recycler_record_adapter extends RecyclerView.Adapter<sport_re
                 int total_time = hour * 60 + min;
 //                count_cal.if_else_sport(Sport_Plus_Activity.tv_sport_child_name.getText().toString(),total_time,40);
                 sport_record_info.set(position,String.valueOf(total_time));
+                sport_record_info.set(position + 1,String.valueOf(count_cal.if_else_sport(sportPlus.tv_sport_child_name.getText().toString(),total_time,40)));
                 notifyDataSetChanged();
             }
         });
