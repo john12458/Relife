@@ -1,11 +1,10 @@
 package com.mis.relife.pages;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +37,9 @@ import com.mis.relife.pages.sleep.viewPager.sleep_tab_viewpager;
 import com.mis.relife.pages.sport.ViewPager.sport_tab_viewpager;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements sleep_tab_viewpager.OnFragmentInteractionListener , sport_tab_viewpager.OnFragmentInteractionListener{
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements sleep_tab_viewpager.OnFragmentInteractionListener , sport_tab_viewpager.OnFragmentInteractionListener {
 
     private FragmentManager fManager;
     private sport_tab_viewpager sport_tab_viewpager;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     SQLiteDatabase db;
 
     int first = 0;
+    SensorManager mSensorManager;
+    Sensor stepCounter;
+    float mSteps = 0;
 
     @Override
     protected void onResume() {
@@ -64,15 +69,49 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         main_constrain = findViewById(R.id.main_cons);
         System.out.println(first + "!!!!!!!!!aaaaaaa!!");
 
         checkFirstLogin(); //如果不是初次登入則會進入登入畫面
         //開啟service
-        service();
-        service_button();
+//        service();
+//        service_button();
 
+    }
+    private void sqliteCreateOrOpen(){
+        //
+        db = this.openOrCreateDatabase("relife", 0, null);
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_recipe);
+        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
+                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "date VARCHAR(20), " +
+                "category VARCHAR(20),"+
+                "foodID INTEGER,"+
+                "number FLOAT) ";
+        db.execSQL(sql_record);
+        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
+                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "foodID INTEGER)";
+        db.execSQL(sql_love);
+        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
+                "(date VARCHAR(20) PRIMARY KEY,"+
+                "cc INTEGER)";
+        db.execSQL(sql_water);
+        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
+                "(foodID INTEGER PRIMARY KEY)";
+        db.execSQL(sql_recent);
+        db.close();
     }
     private void checkFirstLogin(){
         String id = getSharedPreferences("user", MODE_PRIVATE)
@@ -82,42 +121,10 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         } else{
             System.out.println("login id:"+id);
             new AppDbHelper(id);
-            //
-            db = this.openOrCreateDatabase("relife", 0, null);
-            String sql_search = "CREATE TABLE IF NOT EXISTS search " +
-                    "(name VARCHAR(20) , " +
-                    "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                    "cal DOUBLE) ";
-            db.execSQL(sql_search);
-            String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
-                    "(name VARCHAR(20) , " +
-                    "foodID INTEGER PRIMARY KEY ,"+
-                    "cal DOUBLE) ";
-            db.execSQL(sql_recipe);
-            String sql_record = "CREATE TABLE IF NOT EXISTS record " +
-                    "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "date VARCHAR(20), " +
-                    "category VARCHAR(20),"+
-                    "foodID INTEGER,"+
-                    "number FLOAT) ";
-            db.execSQL(sql_record);
-            String sql_love = "CREATE TABLE IF NOT EXISTS love " +
-                    "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                    "foodID INTEGER)";
-            db.execSQL(sql_love);
-            String sql_water = "CREATE TABLE IF NOT EXISTS water " +
-                    "(date VARCHAR(20) PRIMARY KEY,"+
-                    "cc INTEGER)";
-            db.execSQL(sql_water);
-            String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
-                    "(foodID INTEGER PRIMARY KEY)";
-            db.execSQL(sql_recent);
-            //
             myInitlize();
         }
     }
-    //方法區
-
+    //方法
     //開啟service
     private void service(){
         if(Build.VERSION.SDK_INT>=23)
@@ -161,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     }
 
     public void myInitlize(){
+        sqliteCreateOrOpen();
         fManager = getSupportFragmentManager();
         //  Fragments - Home, Eat, Sport, Sleep
         homeFragment = new HomeFragment();
@@ -277,4 +285,5 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }

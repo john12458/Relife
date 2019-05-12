@@ -51,6 +51,7 @@ import java.util.Map;
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment {
 
+
     private HomeFragmentModel vm;
     public AnimationDrawable anim;
     private TextView tvSportBadge,tvEatBadge,tvSleepBadge,tvDrinkBadge;
@@ -142,6 +143,7 @@ public class HomeFragment extends Fragment {
         else {
 
         }
+        db.close();
         //SQLlite結束
         //再來做比對 會做到運動 飲食 睡眠的比對
         AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
@@ -361,6 +363,7 @@ public class HomeFragment extends Fragment {
         food.setLayoutParams(frame);
         test_frame.addView(food);
     }
+    
     //動態加一個喝水的view
     //用法同上
     private void adddrink(){
@@ -386,6 +389,7 @@ public class HomeFragment extends Fragment {
 
     //-------------------------addview END-------------------------------------
 
+//>>>>>>> 73fba6a2fdf62a3ea420160725c2917d4e23a06e
     //picasso 套件 給imageview的
     //-------------------------picasso 開始-------------------------------------
     private void picasso_iv(ImageView imageView,int res){
@@ -562,7 +566,7 @@ public class HomeFragment extends Fragment {
                     //如果物件離寵物很近 就執行
                     if(user_pet.getTop() + 10 < sleep.getTop() && user_pet.getLeft() + 10 < sleep.getLeft() &&
                             user_pet.getBottom() - 10 > sleep.getBottom() && user_pet.getRight() - 10 > sleep.getRight()){
-                        anim_shine();
+                        anim_sleep();
                         //將物件弄不見
                         sleep.setVisibility(View.GONE);
                         //角標的減少
@@ -782,6 +786,15 @@ public class HomeFragment extends Fragment {
         anim = (AnimationDrawable) user_pet.getDrawable();
         anim.start();
     }
+    private void anim_sleep(){
+        type = "sleep";
+        anim.stop();
+        anim = null;
+        user_pet.setImageResource(R.drawable.anim_sleep);
+        anim = (AnimationDrawable) user_pet.getDrawable();
+        anim.start();
+    }
+
     //執行 累的動畫
     private void anim_tired(){
         type = "tired";

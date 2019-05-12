@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
@@ -46,9 +51,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static android.content.Context.SENSOR_SERVICE;
+
 
 @SuppressLint("ValidFragment")
-public class sport_page_activity extends Fragment {
+public class sport_page_activity extends Fragment implements SensorEventListener {
     //建議區
     private int old = 27;
     private int a = 0,b = 0;
@@ -75,7 +82,7 @@ public class sport_page_activity extends Fragment {
     private int mYear,mMonth,mDay;
     private int nowmYear,nowmMonth,nowmDay;
     private String dateFormat;
-    public TextView tv_sport_cal,tvTalk;
+    public TextView tv_sport_cal,tvTalk,tvWalkCount;
     public recylerview_sportpage_adapter sportpage_adapter ;
     private FragmentManager fm;
     public int total_cal = 0;
@@ -94,6 +101,10 @@ public class sport_page_activity extends Fragment {
 
     public AnimationDrawable anim;
     private int first = 0;
+
+    SensorManager mSensorManager;
+    Sensor stepCounter;
+    float mSteps = 0;
 
     public sport_page_activity(Context context,FragmentManager fm,SportData sportData){
         this.context = context;
@@ -116,6 +127,29 @@ public class sport_page_activity extends Fragment {
         tvTalk = view.findViewById(R.id.tv_talk);
         iv_talk_pet = view.findViewById(R.id.iv_talk_pet);
         iv_talk_place = view.findViewById(R.id.iv_talk_place);
+        tvWalkCount = view.findViewById(R.id.tv_sport_count);
+
+        //計步器
+        // 获取SensorManager管理器实例
+        mSensorManager = (SensorManager)context.getSystemService(SENSOR_SERVICE);
+        // getSensorList用于列出设备支持的所有sensor列表
+        List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        System.out.println("Sensor size:"+sensorList.size());
+        for (Sensor sensor : sensorList) {
+            System.out.println("Supported Sensor: "+sensor.getName());
+        }
+
+        stepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(stepCounter != null){
+            // 如果sensor找到，则注册监听器
+            mSensorManager.registerListener(this,stepCounter,1000000);
+            Toast.makeText(context,"sensor found",Toast.LENGTH_SHORT);
+        }
+        else{
+            Toast.makeText(context,"no step counter sensor found",Toast.LENGTH_SHORT);
+        }
+        //-----------------------------------計步器-------------------------------
+
         //picasso初始化圖片
         ini_img();
         //初始化actionMenu
@@ -427,4 +461,16 @@ public class sport_page_activity extends Fragment {
                 + day;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        mSteps = event.values[0];
+        System.out.println("Detected step changes:"+event.values[0]);
+        System.out.println("您今天走了"+String.valueOf((int)mSteps)+"步");
+        tvWalkCount.setText(String.valueOf((int)mSteps) + "步");
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }

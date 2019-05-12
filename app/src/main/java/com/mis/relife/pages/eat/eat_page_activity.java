@@ -70,6 +70,7 @@ public class eat_page_activity extends Fragment {
     public eat_page_activity(Context context,SportData sportData) {
         this.context = context;
         this.sportData = sportData;
+
     }
 
     @Nullable
@@ -130,6 +131,7 @@ public class eat_page_activity extends Fragment {
                 dialog.show();
                 watercc = dialog.findViewById(R.id.txv_watercc);
                 cc = 0;
+                db = getActivity().openOrCreateDatabase("relife", 0, null);
                 Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + eat_page_activity.selectdate + "'", null);
                 if(c.moveToFirst()) {
                     cc = c.getInt(1);

@@ -62,8 +62,6 @@ public class EatSearchData {
     }
     private void onDataChange(){
         if(!checkSearchTableIsNewest()){
-            pd = ProgressDialog.show(activity,
-                    "資料上傳", "請等待...", true);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -72,18 +70,11 @@ public class EatSearchData {
                         Food value = foodCal.get(key);
                         insertIntoSQLite(Integer.parseInt(key),value.food,value.cal);
                     }
-                    pdHandler.sendEmptyMessage(0);
                 }
             }).start();
         }
         ed_search.addTextChangedListener(searchWatcher);
     }
-    private Handler pdHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            pd.dismiss();
-        }
-    };
     private boolean checkSearchTableIsNewest(){
         SQLiteDatabase db = activity.openOrCreateDatabase("relife",0,null);
         Cursor cursor = db.rawQuery("SELECT * FROM search", null);
