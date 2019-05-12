@@ -40,13 +40,14 @@ import com.mis.relife.data.model.Sport;
 import com.mis.relife.databinding.FragmentHomeBinding;
 import com.mis.relife.pages.MainActivity;
 import com.squareup.picasso.Picasso;
-//import com.white.progressview.CircleProgressView;
+import com.white.progressview.CircleProgressView;
 
 import java.util.Calendar;
 import java.util.Map;
 
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment {
+
 
     private HomeFragmentModel vm;
     public AnimationDrawable anim;
@@ -547,7 +548,7 @@ public class HomeFragment extends Fragment {
                     //如果物件離寵物很近 就執行
                     if(user_pet.getTop() + 10 < sleep.getTop() && user_pet.getLeft() + 10 < sleep.getLeft() &&
                             user_pet.getBottom() - 10 > sleep.getBottom() && user_pet.getRight() - 10 > sleep.getRight()){
-                        anim_shine();
+                        anim_sleep();
                         //將物件弄不見
                         sleep.setVisibility(View.GONE);
                         //角標的減少
@@ -767,6 +768,15 @@ public class HomeFragment extends Fragment {
         anim = (AnimationDrawable) user_pet.getDrawable();
         anim.start();
     }
+    private void anim_sleep(){
+        type = "sleep";
+        anim.stop();
+        anim = null;
+        user_pet.setImageResource(R.drawable.anim_sleep);
+        anim = (AnimationDrawable) user_pet.getDrawable();
+        anim.start();
+    }
+
     //執行 累的動畫
     private void anim_tired(){
         type = "tired";

@@ -10,7 +10,6 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-        android:background="@drawable/background_gradient_three"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorLoginbg"
@@ -85,11 +84,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="Life:"
-<<<<<<< HEAD
-                android:textSize="18sp"
-=======
                 android:textSize="20dp"
->>>>>>> 6958cd367d26a6cc80e0af54e21f3ec8ad57e7ba
                 app:layout_constraintEnd_toStartOf="@+id/UserInfoProgressBar"
                 app:layout_constraintTop_toTopOf="@+id/UserInfoProgressBar" />
 
