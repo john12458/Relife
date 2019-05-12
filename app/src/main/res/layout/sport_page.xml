@@ -178,6 +178,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_talk_pet"
                     app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="10dp"
                     app:layout_constraintVertical_bias="0.1"
                     android:text="哈哈哈哈"
                     android:textColor="#fff"

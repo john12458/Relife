@@ -25,9 +25,15 @@ import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.generated.callback.OnClickListener;
 import com.mis.relife.pages.MainActivity;
 import com.mis.relife.R;
+import com.mis.relife.pages.sport.SportData;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -53,9 +59,13 @@ public class eat_page_activity extends Fragment {
     public static String selectdate;
     SQLiteDatabase db;
     LayoutInflater inflater;
+    private SportData sportData;
+    public int lossTotalCal = 0;
+    private Info info;
 
-    public eat_page_activity(Context context) {
+    public eat_page_activity(Context context,SportData sportData) {
         this.context = context;
+        this.sportData = sportData;
     }
 
     @Nullable
@@ -69,63 +79,23 @@ public class eat_page_activity extends Fragment {
         bt_datepicker.setOnClickListener(datepicker);
         nowdate();
         date = setDateFormat(mYear,mMonth,mDay);
+        myInit();
         bt_datepicker.setText(date);
-//<<<<<<< HEAD
-//        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top);
-//        eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img);
-//=======
-//        bt_week.setOnClickListener(week);
-//        bt_day.setOnClickListener(today);
-        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top,context);
+        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top,context,this);
         eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img,context);
-//>>>>>>> 0b7594979b7f26ca38a877d7ecb5a9a15f1a6164
         gv_data1.setAdapter(eat_gridview_adapter);
         gv_data2.setAdapter(eat_gridview_adapter2);
         gv_data2.setOnItemClickListener(gv_eat);
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
         selectdate = ft.format(dNow);
-        db = context.openOrCreateDatabase("relife", 0, null);
-        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
-                "(name VARCHAR(20) , " +
-                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "cal DOUBLE) ";
-        db.execSQL(sql_search);
-        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
-                "(name VARCHAR(20) , " +
-                "foodID INTEGER PRIMARY KEY ,"+
-                "cal DOUBLE) ";
-        db.execSQL(sql_recipe);
-        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
-                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "date VARCHAR(20), " +
-                "category VARCHAR(20),"+
-                "foodID INTEGER,"+
-                "number FLOAT) ";
-        db.execSQL(sql_record);
-        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
-                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "foodID INTEGER)";
-        db.execSQL(sql_love);
-        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
-                "(date VARCHAR(20) PRIMARY KEY,"+
-                "cc INTEGER)";
-        db.execSQL(sql_water);
-        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
-                "(foodID INTEGER PRIMARY KEY)";
-        db.execSQL(sql_recent);
-//        gv_data2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(context,"ewewe",Toast.LENGTH_LONG).show();
-//                Intent intent_eat_new = new Intent();
-//                intent_eat_new.setClass(context,eat_new_activity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("eat_name",menu[position]);
-//                intent_eat_new.putExtras(bundle);
-//                startActivity(intent_eat_new);
-//            }
-//        });
+
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                info = value;
+            }
+        });
         return view;
     }
     TextView watercc;
@@ -226,31 +196,16 @@ public class eat_page_activity extends Fragment {
             }
         }
     };
+    private void myInit(){
 
-//<<<<<<< HEAD
-//=======
-//    private Button.OnClickListener week = new Button.OnClickListener(){
-//
-//        @Override
-//        public void onClick(View v) {
-//            Intent intent_eat_week = new Intent();
-//            intent_eat_week.setClass(context, eat_week_analysis.class);
-//            startActivity(intent_eat_week);
-//        }
-//    };
-//
-//    private Button.OnClickListener today = new Button.OnClickListener(){
-//
-//        @Override
-//        public void onClick(View v) {
-//            Intent intent_eat_week = new Intent();
-//            intent_eat_week.setClass(context, eat_day_analysis.class);
-//            startActivity(intent_eat_week);
-//        }
-//    };
-//
-//
-//>>>>>>> 0b7594979b7f26ca38a877d7ecb5a9a15f1a6164
+        for(int l = 0;l < sportData.sport_recordDate.size();l++){
+            //比對到日期後做加總
+            if(date.equals(sportData.sport_recordDate.get(l))){
+                lossTotalCal += Integer.valueOf(sportData.sport_cal.get(l));
+            }
+        }
+    }
+
     private Button.OnClickListener datepicker = new Button.OnClickListener(){
 
         @Override

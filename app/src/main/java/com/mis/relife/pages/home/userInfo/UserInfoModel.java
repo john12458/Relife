@@ -93,6 +93,7 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     }
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
+        context.deleteDatabase("relife");
 //        AppDbHelper.deleteAllInfoToFireBase();
 //        AppDbHelper.deleteAllDietToFireBase();
 //        AppDbHelper.deleteAllSleepToFireBase();
