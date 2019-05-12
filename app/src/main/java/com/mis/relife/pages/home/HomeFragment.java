@@ -130,18 +130,18 @@ public class HomeFragment extends Fragment {
     //-------------------------初始化按鈕的progress 和寵物反應-------------------------------------
     private void myInit(){
         //首先拿到時間
-        nowdate();
-        dateFormate = setDateFormat(mYear,mMonth,mDay);
-        System.out.println("現在時間!!!!!!!!!!!" + dateFormate + "!!!!!!!!!!!!!! HOUR" + mHour);
-        //拿到喝多少水
-        db = getContext().openOrCreateDatabase("relife", 0, null);
-        Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + dateFormate + "'", null);
-        if(c.moveToFirst()) {
-            cc = c.getInt(1);
-        }
-        else {
-
-        }
+//        nowdate();
+//        dateFormate = setDateFormat(mYear,mMonth,mDay);
+//        System.out.println("現在時間!!!!!!!!!!!" + dateFormate + "!!!!!!!!!!!!!! HOUR" + mHour);
+//        //拿到喝多少水
+//        db = getContext().openOrCreateDatabase("relife", 0, null);
+//        Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + dateFormate + "'", null);
+//        if(c.moveToFirst()) {
+//            cc = c.getInt(1);
+//        }
+//        else {
+//
+//        }
         //SQLlite結束
         //再來做比對 會做到運動 飲食 睡眠的比對
         AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
