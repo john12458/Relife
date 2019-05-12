@@ -62,6 +62,11 @@ public class eat_page_gridview extends BaseAdapter {
                         if (cal_in_food.moveToFirst()) {
                             cal += cal_in_food.getFloat(2);// * cal_in_food.getFloat(4);
                         }
+                        // search
+                        Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + c.getInt(3), null);
+                        if (cal_in_food2.moveToFirst()) {
+                            cal += cal_in_food2.getFloat(2);
+                        }
                     } while (c.moveToNext());
                     tv_data.setText(String.valueOf((int) cal));
                 }
