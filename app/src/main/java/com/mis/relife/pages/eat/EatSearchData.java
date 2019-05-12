@@ -1,13 +1,17 @@
 package com.mis.relife.pages.eat;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -31,6 +35,7 @@ public class EatSearchData {
     private ListView lv_new;
     private EditText ed_search;
     private Map<String, Food> foodCal;
+    private ProgressDialog pd;
 
     public EatSearchData(EditText ed_search, ListView lv_new, FragmentActivity activity, LayoutInflater layoutInflater) {
         this.activity = activity;
@@ -54,6 +59,8 @@ public class EatSearchData {
     }
     private void onDataChange(){
         if(!checkSearchTableIsNewest()){
+            pd = ProgressDialog.show(activity,
+                    "資料上傳", "請等待...", true);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -62,11 +69,18 @@ public class EatSearchData {
                         Food value = foodCal.get(key);
                         insertIntoSQLite(Integer.parseInt(key),value.food,value.cal);
                     }
+                    pdHandler.sendEmptyMessage(0);
                 }
             }).start();
         }
         ed_search.addTextChangedListener(searchWatcher);
     }
+    private Handler pdHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            pd.dismiss();
+        }
+    };
     private boolean checkSearchTableIsNewest(){
         SQLiteDatabase db = activity.openOrCreateDatabase("relife",0,null);
         Cursor cursor = db.rawQuery("SELECT * FROM search", null);

@@ -26,11 +26,13 @@ public class DayModel {
     private final SimpleDateFormat dateSdf;
     private final Calendar nowCalendar;
     public Date pickDate;
+    private int old = 27;
     private final SleepDayFragmentBinding binding;
     private final MyPieChart myPieChart;
     private Context context;
     public Map<String,Sleep> sleepList;
     public final ObservableField<Sleep> sleep = new ObservableField<>();
+    public final ObservableField<String> sleepTime = new ObservableField<>();
     public final ObservableField<String> date = new ObservableField<>();
     public final ObservableField<String> sleepClockTime = new ObservableField<>();
     public final ObservableField<String> sleepTimeBetween = new ObservableField<>();
@@ -106,8 +108,9 @@ public class DayModel {
         sleepTimeBetween.set("");
         sleepPercent.set((float)0);
         wakePercent.set((float)0);
+        initText(0);
         sleep.set(null);
-        myPieChart.resume(); // 更新pieChart
+        myPieChart.resume();// 更新pieChart
     }
     private void updateView(Sleep value) throws ParseException { // 畫面更新
             sleep.set(value);
@@ -119,7 +122,9 @@ public class DayModel {
                 @Override
                 public void onCallback(String message, int day, int hour, int min) {
                     sleepTimeBetween.set(message);
-                    float sleepTotal = hour + min / 24;
+                    float sleepTotal = hour + min / 60;
+                    System.out.println("!!!!!!!!!!!!!!!!!!" + sleepTotal);
+                    initText(sleepTotal);
                     float clearTotal = 24 - sleepTotal;
                     sleepPercent.set(sleepTotal / 24 * 100);
                     wakePercent.set(clearTotal / 24 * 100);
@@ -127,6 +132,31 @@ public class DayModel {
             });
             myPieChart.resume(); // 更新pieChart
     }
+
+    private void initText(float sleeTime){
+        if(old > 13 && old < 29) {
+            if (sleeTime == 0) {
+                sleepTime.set("嗨~~~");
+            } else if (sleeTime >= 8 && sleeTime <= 9) {
+                sleepTime.set("睡眠充足~讚讚");
+            } else if(sleeTime < 8){
+                sleepTime.set("要睡飽一點喔~我會擔心~");
+            }
+            else if(sleeTime > 9){
+                sleepTime.set("睡太多搂~小豬");
+            }
+        }
+        else if(old >= 29 && old < 60){
+            if (sleeTime == 0) {
+                sleepTime.set("嗨~~~");
+            } else if (sleeTime > 7 && sleeTime < 8) {
+                sleepTime.set("睡眠充足~讚讚");
+            } else if(sleeTime < 7){
+                sleepTime.set("要睡飽一點喔~我會擔心~");
+            }
+        }
+    }
+
     // 兩個Date的相差時間
     private void betweenTime(Date date1, Date date2, BtTimeCallback btTimeCallback){
         long nd = 1000 * 24 * 60 * 60;// 一天的毫秒數

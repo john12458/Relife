@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mis.relife">
-
+    
     <uses-permission android:name="android.permission.INTERNET" /> <!-- <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" /> -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -13,12 +13,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="Relife"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="label">
-        <activity android:name=".pages.eat.EatDetectResultActivity"></activity>
-        <activity android:name=".test.imageDetect.CameraActivity" />
+
+        <activity android:name=".pages.sport.New_Delete.SportClockActivity"></activity>
+        <activity android:name=".pages.eat.imageDetect.EatDetectResultActivity"></activity>
         <activity android:name=".pages.home.userInfo.UserInfoActivity" />
         <activity android:name=".pages.sleep.New_Delete.sleep_plus" />
         <activity android:name=".pages.sport.New_Delete.Sport_Plus_Activity" />

@@ -113,7 +113,8 @@ public class FloatWindowSmallView extends ConstraintLayout {
                 break;
             case MotionEvent.ACTION_UP:
                  //如果手指离开屏幕时，xDownInScreen和xInScreen相等，且yDownInScreen和yInScreen相等，则视为触发了单击事件。
-                if (xDownInScreen == xInScreen && yDownInScreen == yInScreen) {
+                if (xDownInScreen <= xInScreen + 2  && xDownInScreen >= xInScreen - 2 &&
+                        yDownInScreen <= yInScreen + 2 && yDownInScreen >= yInScreen - 2) {
                     openBigWindow();
                 }
                 break;

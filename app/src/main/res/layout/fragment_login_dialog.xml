@@ -42,7 +42,7 @@
                 android:fontFamily="adobe-clean"
                 android:paddingVertical="20dp"
                 android:scaleType="center"
-                android:text="Login"
+                android:text="L  o  g  i  n"
                 android:textAlignment="center"
                 android:textColor="@color/colorLogin"
                 android:textSize="30sp" />

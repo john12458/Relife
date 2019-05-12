@@ -136,9 +136,9 @@ public class recyclerview_sport_plus_adapter extends RecyclerView.Adapter<recycl
     }
     public void inidata_sport_child_type_bike(){
         sport_type_child.clear();
-        for (int i = 0;i < sport_type_other.size();i++){
-            sport_type_child.add(sport_type_other.get(i));
-        }
+        sport_type_child.add("腳踏車 10km/時  ");
+        sport_type_child.add("腳踏車 20km/時  ");
+        sport_type_child.add("腳踏車 30km/時");
     }
 
 
