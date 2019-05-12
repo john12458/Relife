@@ -237,7 +237,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                 }
 
                 // detect 那個頁面執行會崩掉
-                if(activity!=null)notifyDataSetChanged();
+                notifyDataSetChanged();
 
                 break;
             case R.id.information:
@@ -259,6 +259,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                                             if(inputnum != 0) {
                                                 db.execSQL("UPDATE  record SET number = " + inputnum + " WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_viewpager_recipe.eat + "' AND foodID = " + recipe_id, new Object[]{});
                                                 Toast.makeText(context, "已修改記錄 ! ", Toast.LENGTH_SHORT).show();
+                                                notifyDataSetChanged();
                                                 float total_cal = 0;
                                                 Cursor change_cal = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "'", null);
                                                 if(change_cal.moveToFirst()) {
@@ -274,7 +275,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                                                         if (cal_in_food2.moveToFirst()) {
                                                             Cursor food_num = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "' AND foodID = " + change_cal.getInt(3), null);
                                                             if(food_num.moveToFirst()) {
-                                                                total_cal += cal_in_food.getFloat(2) * food_num.getFloat(4);
+                                                                total_cal += cal_in_food2.getFloat(2) * food_num.getFloat(4);
                                                             }
                                                         }
                                                     } while (change_cal.moveToNext());
@@ -310,7 +311,68 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                             .setNegativeButton("取消", null).show();
                 }
                 if(food_in_search.moveToFirst()){
-                    new AlertDialog.Builder(context).setTitle(food_in_recipe.getString(0) + "("+ food_in_recipe.getFloat(2) + "大卡)").setMessage("份數 : ").setIcon(R.drawable.pen).setView(input).setPositiveButton("確認", null).setNegativeButton("取消", null).show();
+                     new AlertDialog.Builder(context)
+                             .setTitle(food_in_search.getString(0) + "("+ food_in_search.getFloat(2) + "大卡)")
+                             .setMessage("份數 : ")
+                             .setIcon(R.drawable.pen)
+                             .setView(input).setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialog, int which) {
+                             if(!input.getText().toString().equals("")) {
+                                 float inputnum = Float.parseFloat(input.getText().toString());
+                                 if(food_meal.moveToFirst()){
+                                     if(inputnum != 0) {
+                                         db.execSQL("UPDATE  record SET number = " + inputnum + " WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_viewpager_recipe.eat + "' AND foodID = " + recipe_id, new Object[]{});
+                                         Toast.makeText(context, "已修改記錄 ! ", Toast.LENGTH_SHORT).show();
+                                         notifyDataSetChanged();
+                                         float total_cal = 0;
+                                         Cursor change_cal = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "'", null);
+                                         if(change_cal.moveToFirst()) {
+                                             do {
+                                                 Cursor cal_in_food = db.rawQuery("SELECT * FROM recipe WHERE foodID = " + change_cal.getInt(3), null);
+                                                 if (cal_in_food.moveToFirst()) {
+                                                     Cursor food_num = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "' AND foodID = " + change_cal.getInt(3), null);
+                                                     if(food_num.moveToFirst()) {
+                                                         total_cal += cal_in_food.getFloat(2) * food_num.getFloat(4);
+                                                     }
+                                                 }
+                                                 Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + change_cal.getInt(3), null);
+                                                 if (cal_in_food2.moveToFirst()) {
+                                                     Cursor food_num = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + eat_new_second.category + "' AND foodID = " + change_cal.getInt(3), null);
+                                                     if(food_num.moveToFirst()) {
+                                                         total_cal += cal_in_food2.getFloat(2) * food_num.getFloat(4);
+                                                     }
+                                                 }
+                                             } while (change_cal.moveToNext());
+                                             eat_new_second.cal.setText( (int) total_cal + " 大卡");
+                                         }
+                                         else {
+                                             eat_new_second.cal.setText("0 大卡");
+                                         }
+                                     }
+                                 }
+                                 else {
+                                     if(inputnum != 0) {
+                                         ContentValues cv_record = new ContentValues(4);
+                                         cv_record.put("date", eat_page_activity.selectdate);
+                                         cv_record.put("category", eat_new_viewpager_recipe.eat);
+                                         cv_record.put("foodID", recipe_id);
+                                         cv_record.put("number", inputnum);
+                                         db.insert("record", null, cv_record);
+                                         Toast.makeText(context, "已新增記錄 ! ", Toast.LENGTH_SHORT).show();
+                                         Cursor food_in_recent = db.rawQuery("SELECT * FROM recent WHERE foodID = " + recipe_id, null);
+                                         if (food_in_recent.moveToFirst()) {
+                                             db.delete("recent", "foodID = " + recipe_id, null);
+                                         }
+                                         ContentValues cv_recent = new ContentValues(1);
+                                         cv_recent.put("foodID", recipe_id);
+                                         db.insert("recent", null, cv_recent);
+                                     }
+                                 }
+                             }
+                         }
+                     }).setNegativeButton("取消", null).show();
+
                 }
                 notifyDataSetChanged();
                 break;

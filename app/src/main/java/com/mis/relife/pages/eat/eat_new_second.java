@@ -111,4 +111,8 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public void back(View v) {
+        finish();
+    }
 }

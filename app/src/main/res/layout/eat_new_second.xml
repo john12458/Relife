@@ -62,7 +62,7 @@
 
     <LinearLayout
         android:id="@+id/linear_cal"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -185,11 +185,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/v_line2" />
+
     <Button
         android:id="@+id/bt_left"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/left_arrow"
+        android:onClick="back"
         android:scaleType="fitXY"
         android:text=""
         app:layout_constraintBottom_toTopOf="@+id/v_line2"
