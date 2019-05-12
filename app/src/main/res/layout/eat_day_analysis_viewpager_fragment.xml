@@ -175,17 +175,6 @@
                 android:background="#000000"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cal" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="目標"
-                android:textColor="#000"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/v_line5" />
-
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="0dp"
@@ -194,7 +183,7 @@
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/v_line5"
                 app:srcCompat="@drawable/blackboard" />
 
             <ImageView
@@ -213,6 +202,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/txv_suggest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="建議"
+                android:textColor="@color/circle_menu_center_button_color_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView8"
+                app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
         </android.support.constraint.ConstraintLayout>
 
