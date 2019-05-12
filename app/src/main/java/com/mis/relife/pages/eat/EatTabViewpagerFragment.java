@@ -110,7 +110,7 @@ public class EatTabViewpagerFragment extends Fragment {
         eat_tabs.add("每週分析");
         eat_fragments.add(new eat_page_activity(getContext(),sportData));
         eat_fragments.add(new EatDayAnalysisViewpager(eatData,sportData));
-        eat_fragments.add(new EatWeekAnalysisViewpager(eatData,sportData));
+        eat_fragments.add(new EatWeekAnalysisViewpager(eatData,sportData,getContext()));
         eat_adapter = new eat_viewpager_adapter(fm,eat_fragments,eat_tabs);
     }
 
