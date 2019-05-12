@@ -3,6 +3,8 @@ package com.mis.relife.pages.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.PixelFormat;
@@ -39,6 +41,7 @@ import com.mis.relife.data.model.Sleep;
 import com.mis.relife.data.model.Sport;
 import com.mis.relife.databinding.FragmentHomeBinding;
 import com.mis.relife.pages.MainActivity;
+import com.mis.relife.pages.eat.eat_page_activity;
 import com.squareup.picasso.Picasso;
 import com.white.progressview.CircleProgressView;
 
@@ -65,12 +68,15 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding  binding;
 
     private CircleProgressView eatProgress,sportProgress,sleepProgress,drinkProgress;
-    private int sportNum = 0,eatNum = 0,sleepNum = 0,drinkNum;
+    private int sportNum = 0,eatNum = 0,sleepNum = 0,drinkNum = 0;
     private int sporthun = 0,eathun = 0,sleephun = 0,drinkhun;
     private int mYear,mMonth,mDay,mHour;
     private String dateFormate;
     private Boolean sportHave = false,sleepHave = false,breakHave = false,lunHave = false,dinnHave = false;
     private int sportShow = 0,sleepShow = 0,breakShow = 0,lunShow = 0,dinnShow = 0;
+
+    SQLiteDatabase db;
+    private int cc = 0;
 
     public HomeFragment() {
     }
@@ -127,6 +133,16 @@ public class HomeFragment extends Fragment {
         nowdate();
         dateFormate = setDateFormat(mYear,mMonth,mDay);
         System.out.println("現在時間!!!!!!!!!!!" + dateFormate + "!!!!!!!!!!!!!! HOUR" + mHour);
+        //拿到喝多少水
+        db = getContext().openOrCreateDatabase("relife", 0, null);
+        Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + dateFormate + "'", null);
+        if(c.moveToFirst()) {
+            cc = c.getInt(1);
+        }
+        else {
+
+        }
+        //SQLlite結束
         //再來做比對 會做到運動 飲食 睡眠的比對
         AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {
             @Override
@@ -185,14 +201,15 @@ public class HomeFragment extends Fragment {
                 eatProgress.setProgress(countProgress(eatNum, tvEatBadge) * 20);
             }
         });
-        drinkNum = 8;
-        drinkProgress.setProgress(countProgress(drinkNum,tvDrinkBadge) * 20);
-        System.out.println("!!!!!" + eatNum + "!!!!!!" + sportNum + "!!!!!!" + sleepNum);
     }
 
     //判斷在特定時間點如果沒有作紀錄的話 會出現某些特定反應
     public void judgePetTime(){
         System.out.println("!!!!!!!!!!" + sportHave);
+        //為了與Info更新同步放在這裡
+        drinkNum = cc / 100;
+        drinkProgress.setProgress(countProgress(drinkNum,tvDrinkBadge) * 20);
+        //--------------------為了與Info更新同步放在這裡---------------
         if(mHour < 11 && breakShow <= 1){
             judgeBreakfast();
             breakShow++;

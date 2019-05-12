@@ -20,12 +20,14 @@ public class eat_page_gridview extends BaseAdapter {
     private String[] data;
     private Context context;
     SQLiteDatabase db;
+    private eat_page_activity eatPage;
 
-    public eat_page_gridview(MainActivity mainActivity, String[] data, String[] top, Context context) {
+    public eat_page_gridview(MainActivity mainActivity, String[] data, String[] top, Context context,eat_page_activity eatPage) {
         myinflater = LayoutInflater.from(mainActivity);
         this.data = data;
         this.top = top;
         this.context = context;
+        this.eatPage = eatPage;
         db = context.openOrCreateDatabase("relife",0,null);
     }
 
@@ -70,6 +72,8 @@ public class eat_page_gridview extends BaseAdapter {
                 }
                 else {tv_data.setText("0");}
             break;
+            case 2:
+                tv_data.setText(String.valueOf(eatPage.lossTotalCal) + "cal");
         }
         tv_top.setText(top[position]);
         return convertView;
