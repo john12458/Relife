@@ -82,18 +82,7 @@ public class eat_page_activity extends Fragment {
         gv_data2 = view.findViewById(R.id.gv_data2);
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
         bt_datepicker.setOnClickListener(datepicker);
-        nowdate();
-        date = setDateFormat(mYear,mMonth,mDay);
-        myInit();
-        bt_datepicker.setText(date);
-        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top,context,this);
-        eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img,context);
-        gv_data1.setAdapter(eat_gridview_adapter);
-        gv_data2.setAdapter(eat_gridview_adapter2);
         gv_data2.setOnItemClickListener(gv_eat);
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
-        selectdate = ft.format(dNow);
         AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
             @Override
             public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
@@ -104,9 +93,25 @@ public class eat_page_activity extends Fragment {
                 goalWeight = value.goalWeight;
                 goalWeekWeight = value.goalWeekWeight;
                 old = value.old;
+                myinit();
             }
         });
+
+
         return view;
+    }
+    private void myinit(){
+        nowdate();
+        date = setDateFormat(mYear,mMonth,mDay);
+        myInit();
+        bt_datepicker.setText(date);
+        eat_gridview_adapter = new eat_page_gridview((MainActivity) context,data,top,context,this);
+        eat_gridview_adapter2 = new eat_page_gridview2((MainActivity) context,menu,menu_img,context);
+        gv_data1.setAdapter(eat_gridview_adapter);
+        gv_data2.setAdapter(eat_gridview_adapter2);
+        Date dNow = new Date( );
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
+        selectdate = ft.format(dNow);
     }
     TextView watercc;
     int cc;

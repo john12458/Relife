@@ -222,10 +222,12 @@ public class EatDayAnalysisViewpager extends Fragment {
 
     //卡路里加總
     private float getCalTotal(float calTotal,int datePosition){
-        for(int l = 0;l < eatData.foods.get(datePosition).size();l++){
-            calTotal += eatData.foods.get(datePosition).get(l).cal * eatData.foods.get(datePosition).get(l).number;
-            System.out.println("!!!!!!!!!!!cal"+eatData.foods.get(datePosition).get(l).cal);
-        }
+        if(eatData.foods!=null){
+            for(int l = 0;l < eatData.foods.get(datePosition).size();l++){
+                calTotal += eatData.foods.get(datePosition).get(l).cal * eatData.foods.get(datePosition).get(l).number;
+                System.out.println("!!!!!!!!!!!cal"+eatData.foods.get(datePosition).get(l).cal);
+            }
+        }else calTotal=0;
         return  calTotal;
     }
 
