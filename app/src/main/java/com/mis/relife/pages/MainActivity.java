@@ -74,6 +74,39 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         service_button();
 
     }
+    private void sqliteCreateOrOpen(){
+        //
+        db = this.openOrCreateDatabase("relife", 0, null);
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_recipe);
+        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
+                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "date VARCHAR(20), " +
+                "category VARCHAR(20),"+
+                "foodID INTEGER,"+
+                "number FLOAT) ";
+        db.execSQL(sql_record);
+        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
+                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "foodID INTEGER)";
+        db.execSQL(sql_love);
+        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
+                "(date VARCHAR(20) PRIMARY KEY,"+
+                "cc INTEGER)";
+        db.execSQL(sql_water);
+        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
+                "(foodID INTEGER PRIMARY KEY)";
+        db.execSQL(sql_recent);
+        //
+    }
     private void checkFirstLogin(){
         String id = getSharedPreferences("user", MODE_PRIVATE)
                 .getString("id", "");
@@ -82,37 +115,6 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         } else{
             System.out.println("login id:"+id);
             new AppDbHelper(id);
-            //
-            db = this.openOrCreateDatabase("relife", 0, null);
-            String sql_search = "CREATE TABLE IF NOT EXISTS search " +
-                    "(name VARCHAR(20) , " +
-                    "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                    "cal DOUBLE) ";
-            db.execSQL(sql_search);
-            String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
-                    "(name VARCHAR(20) , " +
-                    "foodID INTEGER PRIMARY KEY ,"+
-                    "cal DOUBLE) ";
-            db.execSQL(sql_recipe);
-            String sql_record = "CREATE TABLE IF NOT EXISTS record " +
-                    "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "date VARCHAR(20), " +
-                    "category VARCHAR(20),"+
-                    "foodID INTEGER,"+
-                    "number FLOAT) ";
-            db.execSQL(sql_record);
-            String sql_love = "CREATE TABLE IF NOT EXISTS love " +
-                    "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                    "foodID INTEGER)";
-            db.execSQL(sql_love);
-            String sql_water = "CREATE TABLE IF NOT EXISTS water " +
-                    "(date VARCHAR(20) PRIMARY KEY,"+
-                    "cc INTEGER)";
-            db.execSQL(sql_water);
-            String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
-                    "(foodID INTEGER PRIMARY KEY)";
-            db.execSQL(sql_recent);
-            //
             myInitlize();
         }
     }
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     }
 
     public void myInitlize(){
+        sqliteCreateOrOpen();
         fManager = getSupportFragmentManager();
         //  Fragments - Home, Eat, Sport, Sleep
         homeFragment = new HomeFragment();
