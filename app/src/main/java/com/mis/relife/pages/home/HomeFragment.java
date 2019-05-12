@@ -143,6 +143,7 @@ public class HomeFragment extends Fragment {
         else {
 
         }
+        db.close();
         //SQLlite結束
         //再來做比對 會做到運動 飲食 睡眠的比對
         AppDbHelper.getAllSportFromFireBase(new MyCallBack<Map<String, Sport>>() {

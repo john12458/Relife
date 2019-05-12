@@ -62,10 +62,15 @@ public class eat_page_activity extends Fragment {
     private SportData sportData;
     public int lossTotalCal = 0;
     private Info info;
+    public static String gender;
+    public static float height, weight, goalWeight, goalWeekWeight;
+    public static int old;
+
 
     public eat_page_activity(Context context,SportData sportData) {
         this.context = context;
         this.sportData = sportData;
+
     }
 
     @Nullable
@@ -89,11 +94,16 @@ public class eat_page_activity extends Fragment {
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
         selectdate = ft.format(dNow);
-
         AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
             @Override
             public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
                 info = value;
+                gender = value.gender;
+                height = value.height;
+                weight = value.weight;
+                goalWeight = value.goalWeight;
+                goalWeekWeight = value.goalWeekWeight;
+                old = value.old;
             }
         });
         return view;
@@ -121,6 +131,7 @@ public class eat_page_activity extends Fragment {
                 dialog.show();
                 watercc = dialog.findViewById(R.id.txv_watercc);
                 cc = 0;
+                db = getActivity().openOrCreateDatabase("relife", 0, null);
                 Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + eat_page_activity.selectdate + "'", null);
                 if(c.moveToFirst()) {
                     cc = c.getInt(1);

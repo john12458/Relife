@@ -1,11 +1,10 @@
 package com.mis.relife.pages;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +37,9 @@ import com.mis.relife.pages.sleep.viewPager.sleep_tab_viewpager;
 import com.mis.relife.pages.sport.ViewPager.sport_tab_viewpager;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements sleep_tab_viewpager.OnFragmentInteractionListener , sport_tab_viewpager.OnFragmentInteractionListener{
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements sleep_tab_viewpager.OnFragmentInteractionListener , sport_tab_viewpager.OnFragmentInteractionListener {
 
     private FragmentManager fManager;
     private sport_tab_viewpager sport_tab_viewpager;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     SQLiteDatabase db;
 
     int first = 0;
+    SensorManager mSensorManager;
+    Sensor stepCounter;
+    float mSteps = 0;
 
     @Override
     protected void onResume() {
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         main_constrain = findViewById(R.id.main_cons);
         System.out.println(first + "!!!!!!!!!aaaaaaa!!");
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
         String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
                 "(foodID INTEGER PRIMARY KEY)";
         db.execSQL(sql_recent);
-        //
+        db.close();
     }
     private void checkFirstLogin(){
         String id = getSharedPreferences("user", MODE_PRIVATE)
@@ -279,4 +285,5 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
