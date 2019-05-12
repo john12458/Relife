@@ -28,17 +28,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="65dp"
-                    android:layout_height="76dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/self"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView"-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="80dp"-->
+                    <!--android:layout_marginStart="12dp"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:layout_marginTop="4dp"-->
+                    <!--android:onClick="@{()->homeFragmentModel.onEnterUserInfo()}"-->
+                    <!--android:padding="3dp"-->
+                    <!--android:src="@drawable/hungry2"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
+                <ImageButton
+                    android:id="@+id/ibt_self"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/bg_border"
+                    android:padding="3dp"
+                    android:src="@drawable/hungry1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.25"
+                    android:onClick="@{()->homeFragmentModel.onEnterUserInfo()}"
+                    android:scaleType="centerInside"
+                    />
                 <ProgressBar
                     android:id="@+id/homeLifePb"
                     style="?android:attr/progressBarStyleHorizontal"
@@ -55,11 +75,19 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="21dp"
+                    android:layout_width="75dp"
+                    android:layout_height="30dp"
+
                     android:text="@{homeFragmentModel.account,default=User01}"
-                    app:layout_constraintStart_toStartOf="@+id/homeLifePb"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/homeLifePb"
+                    app:layout_constraintHorizontal_bias="0.2"
+                    app:layout_constraintLeft_toRightOf="@+id/ibt_self"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1"
+                     />
             </android.support.constraint.ConstraintLayout>
 
             <ImageButton
@@ -227,20 +255,20 @@
                 android:visibility="gone"
                 />
 
-            <Button
-                android:id="@+id/goToUserBtn"
-                android:layout_width="63dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="@{()->homeFragmentModel.onEnterUserInfo()}"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.887"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+            <!--<Button-->
+                <!--android:id="@+id/goToUserBtn"-->
+                <!--android:layout_width="63dp"-->
+                <!--android:layout_height="60dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+
+                <!--android:text="Button"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.887"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/constraintLayout"-->
+                <!--app:layout_constraintTop_toTopOf="@+id/constraintLayout" />-->
 
             <!--<ImageView-->
             <!--android:id="@+id/imageView2"-->

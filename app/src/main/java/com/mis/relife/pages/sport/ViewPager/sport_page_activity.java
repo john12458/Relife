@@ -269,7 +269,7 @@ public class sport_page_activity extends Fragment {
                 intent_sport_plus.putExtras(bundle);
 
                 startActivity(intent_sport_plus);
-                getActivity().overridePendingTransition(R.anim.in,R.anim.out);
+
             }
             else if(i == 2){
                 Intent intent_sport_plus = new Intent();

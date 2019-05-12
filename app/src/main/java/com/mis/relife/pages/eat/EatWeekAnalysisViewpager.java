@@ -2,6 +2,7 @@ package com.mis.relife.pages.eat;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -119,12 +120,14 @@ public class EatWeekAnalysisViewpager extends Fragment {
 
     private int first = 0;
     private int week_sport_time_cnt;
+    private Context context;
 
 
-    public EatWeekAnalysisViewpager(EatData eatData, SportData sportData) {
+    public EatWeekAnalysisViewpager(EatData eatData, SportData sportData,Context context) {
         // Required empty public constructor
         this.eatData = eatData;
         this.sportData = sportData;
+        this.context = context;
     }
 
 //    /**
@@ -192,8 +195,8 @@ public class EatWeekAnalysisViewpager extends Fragment {
             @Override
             public void onCallback(Map<String, Diet> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
                 if(!value.isEmpty()) {
-                    Drawable whiteDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle);
-                    Drawable grayDrawable = getContext().getResources().getDrawable(R.drawable.button_rectangle_gray);
+                    Drawable whiteDrawable = context.getResources().getDrawable(R.drawable.button_rectangle);
+                    Drawable grayDrawable = context.getResources().getDrawable(R.drawable.button_rectangle_gray);
                     btAllCal.setBackground(grayDrawable);
                     btLossCal.setBackground(whiteDrawable);
                     //繪製圖表
