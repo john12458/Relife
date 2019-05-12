@@ -2,6 +2,7 @@ package com.mis.relife.pages.eat;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
@@ -32,16 +33,18 @@ import java.util.Map;
 public class EatSearchData {
     private final FragmentActivity activity;
     private final LayoutInflater layoutInflater;
+    private final Context context;
     private ListView lv_new;
     private EditText ed_search;
     private Map<String, Food> foodCal;
     private ProgressDialog pd;
 
-    public EatSearchData(EditText ed_search, ListView lv_new, FragmentActivity activity, LayoutInflater layoutInflater) {
+    public EatSearchData(EditText ed_search, ListView lv_new, FragmentActivity activity, LayoutInflater layoutInflater, Context context) {
         this.activity = activity;
         this.ed_search = ed_search;
         this.layoutInflater = layoutInflater;
         this.lv_new = lv_new;
+        this.context = context;
         myInit();
     }
     private void myInit(){
@@ -59,8 +62,6 @@ public class EatSearchData {
     }
     private void onDataChange(){
         if(!checkSearchTableIsNewest()){
-            pd = ProgressDialog.show(activity,
-                    "資料上傳", "請等待...", true);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -69,18 +70,11 @@ public class EatSearchData {
                         Food value = foodCal.get(key);
                         insertIntoSQLite(Integer.parseInt(key),value.food,value.cal);
                     }
-                    pdHandler.sendEmptyMessage(0);
                 }
             }).start();
         }
         ed_search.addTextChangedListener(searchWatcher);
     }
-    private Handler pdHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            pd.dismiss();
-        }
-    };
     private boolean checkSearchTableIsNewest(){
         SQLiteDatabase db = activity.openOrCreateDatabase("relife",0,null);
         Cursor cursor = db.rawQuery("SELECT * FROM search", null);
@@ -103,7 +97,7 @@ public class EatSearchData {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            lv_new.setAdapter(new recipe_adapter(layoutInflater, getDictionary(s), activity.getApplicationContext(),(eat_new_activity) activity));
+            lv_new.setAdapter(new recipe_adapter(layoutInflater, getDictionary(s),context,(eat_new_activity) activity));
         }
         @Override
         public void afterTextChanged(Editable s) { }
@@ -119,7 +113,7 @@ public class EatSearchData {
     }
 
     public void notifyChange(){
-        lv_new.setAdapter(new recipe_adapter(layoutInflater, getDictionary(ed_search.getText().toString()), activity.getApplicationContext(),(eat_new_activity) activity));
+        lv_new.setAdapter(new recipe_adapter(layoutInflater, getDictionary(ed_search.getText().toString()), context,(eat_new_activity) activity));
     }
 
 }

@@ -81,17 +81,20 @@ public class InfoDialogFragment extends DialogFragment {
     }
     /**   event and Data handler ----------------------------------------------------------------------------------------------------------------------------------------- */
     public void goToFontPage(){ this.dismiss(); }
+    String gender;
+    float height, weight, goalWeight, goalWeekWeight;
+    int old;
     public void onRegisterClick(){
-        String gender = "其他";
+        gender = "其他";
             if(binding.gender.getCheckedRadioButtonId() == R.id.male)
                 gender = "男";
             else if(binding.gender.getCheckedRadioButtonId() == R.id.female)
                 gender = "女";
-        float height = Float.parseFloat(binding.height.getText().toString());
-        float weight = Float.parseFloat(binding.weight.getText().toString());
-        float goalWeight = Float.parseFloat(binding.goalWeight.getText().toString());
-        float goalWeekWeight = Float.parseFloat(binding.goalWeekWeight.getText().toString());
-        int old = Integer.parseInt(binding.old.getText().toString());
+        height = Float.parseFloat(binding.height.getText().toString());
+        weight = Float.parseFloat(binding.weight.getText().toString());
+        goalWeight = Float.parseFloat(binding.goalWeight.getText().toString());
+        goalWeekWeight = Float.parseFloat(binding.goalWeekWeight.getText().toString());
+        old = Integer.parseInt(binding.old.getText().toString());
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference userRef = db.getReference("user");
         String key = userRef.push().getKey();

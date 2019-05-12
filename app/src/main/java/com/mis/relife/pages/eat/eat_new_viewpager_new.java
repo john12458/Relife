@@ -45,7 +45,7 @@ public class eat_new_viewpager_new  extends Fragment {
         ed_search = view.findViewById(R.id.ed_search);
         lv_new = view.findViewById(R.id.listview_new);
         btn_detect =view.findViewById(R.id.btn_detect);
-        eatSearchData = new EatSearchData(ed_search,lv_new,getActivity(),getLayoutInflater());
+        eatSearchData = new EatSearchData(ed_search,lv_new,getActivity(),getLayoutInflater(),getContext());
         btn_detect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

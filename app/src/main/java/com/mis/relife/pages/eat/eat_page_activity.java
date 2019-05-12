@@ -25,6 +25,11 @@ import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.generated.callback.OnClickListener;
 import com.mis.relife.pages.MainActivity;
 import com.mis.relife.R;
@@ -56,10 +61,12 @@ public class eat_page_activity extends Fragment {
     LayoutInflater inflater;
     private SportData sportData;
     public int lossTotalCal = 0;
+    private Info info;
 
     public eat_page_activity(Context context,SportData sportData) {
         this.context = context;
         this.sportData = sportData;
+
     }
 
     @Nullable
@@ -83,35 +90,13 @@ public class eat_page_activity extends Fragment {
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy/MM/dd");
         selectdate = ft.format(dNow);
-        db = context.openOrCreateDatabase("relife", 0, null);
-        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
-                "(name VARCHAR(20) , " +
-                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "cal DOUBLE) ";
-        db.execSQL(sql_search);
-        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
-                "(name VARCHAR(20) , " +
-                "foodID INTEGER PRIMARY KEY ,"+
-                "cal DOUBLE) ";
-        db.execSQL(sql_recipe);
-        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
-                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "date VARCHAR(20), " +
-                "category VARCHAR(20),"+
-                "foodID INTEGER,"+
-                "number FLOAT) ";
-        db.execSQL(sql_record);
-        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
-                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "foodID INTEGER)";
-        db.execSQL(sql_love);
-        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
-                "(date VARCHAR(20) PRIMARY KEY,"+
-                "cc INTEGER)";
-        db.execSQL(sql_water);
-        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
-                "(foodID INTEGER PRIMARY KEY)";
-        db.execSQL(sql_recent);
+
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                info = value;
+            }
+        });
         return view;
     }
     TextView watercc;
@@ -137,6 +122,7 @@ public class eat_page_activity extends Fragment {
                 dialog.show();
                 watercc = dialog.findViewById(R.id.txv_watercc);
                 cc = 0;
+                db = getActivity().openOrCreateDatabase("relife", 0, null);
                 Cursor c = db.rawQuery("SELECT * FROM water WHERE date = '" + eat_page_activity.selectdate + "'", null);
                 if(c.moveToFirst()) {
                     cc = c.getInt(1);
@@ -212,8 +198,8 @@ public class eat_page_activity extends Fragment {
             }
         }
     };
-
     private void myInit(){
+
         for(int l = 0;l < sportData.sport_recordDate.size();l++){
             //比對到日期後做加總
             if(date.equals(sportData.sport_recordDate.get(l))){

@@ -1,14 +1,10 @@
 package com.mis.relife.pages;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     private int[] tab_layout={R.layout.test_badge,R.layout.test_badge2,R.layout.test_badge3,R.layout.test_badge4};
     private int[] iv_id = {R.id.iv_home,R.id.iv_eat,R.id.iv_sport,R.id.iv_sleep};
     private int[] iv_res = {R.drawable.house,R.drawable.lunch,R.drawable.running,R.drawable.bed};
+    SQLiteDatabase db;
 
     int first = 0;
     SensorManager mSensorManager;
@@ -79,9 +76,42 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
 
         checkFirstLogin(); //如果不是初次登入則會進入登入畫面
         //開啟service
-        service();
-        service_button();
+//        service();
+//        service_button();
 
+    }
+    private void sqliteCreateOrOpen(){
+        //
+        db = this.openOrCreateDatabase("relife", 0, null);
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_recipe);
+        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
+                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "date VARCHAR(20), " +
+                "category VARCHAR(20),"+
+                "foodID INTEGER,"+
+                "number FLOAT) ";
+        db.execSQL(sql_record);
+        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
+                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "foodID INTEGER)";
+        db.execSQL(sql_love);
+        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
+                "(date VARCHAR(20) PRIMARY KEY,"+
+                "cc INTEGER)";
+        db.execSQL(sql_water);
+        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
+                "(foodID INTEGER PRIMARY KEY)";
+        db.execSQL(sql_recent);
+        db.close();
     }
     private void checkFirstLogin(){
         String id = getSharedPreferences("user", MODE_PRIVATE)
@@ -94,8 +124,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
             myInitlize();
         }
     }
-    //方法區
-
+    //方法
     //開啟service
     private void service(){
         if(Build.VERSION.SDK_INT>=23)
@@ -139,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
     }
 
     public void myInitlize(){
+        sqliteCreateOrOpen();
         fManager = getSupportFragmentManager();
         //  Fragments - Home, Eat, Sport, Sleep
         homeFragment = new HomeFragment();
