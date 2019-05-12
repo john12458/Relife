@@ -237,8 +237,11 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                 }
 
 
-                // detect 那個頁面執行會崩掉
-                notifyDataSetChanged();
+                // detect 那個頁面執行會崩掉，排除掉
+                if(activity!=null || context.toString().matches("(.*)eat_new_second(.*)"))
+                    notifyDataSetChanged();
+
+
 
                 break;
             case R.id.information:
@@ -375,7 +378,9 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                      }).setNegativeButton("取消", null).show();
 
                 }
-                notifyDataSetChanged();
+                // detect 那個頁面執行會崩掉，排除掉
+                if(activity!=null || context.toString().matches("(.*)eat_new_second(.*)"))
+                    notifyDataSetChanged();
                 break;
         }
         if(activity!=null) activity.initAll();
