@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pages.sport.New_Delete.SportClockActivity"
+    android:background="@drawable/background_sport">
+
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/sport_clock_flip"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:flipOnTouch="false"
+        app:flipEnabled="true"
+        app:flipDuration="400">
+
+        <include layout="@layout/sport_clock_easy_back" />
+
+        <include layout="@layout/sport_clock_easy_front"/>
+
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/constrain"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="150dp"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.4"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:background="@drawable/edit_perfect">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recycler_sport_type"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:background="@drawable/bottom_button_home">-->
+
+        <!--</android.support.v7.widget.RecyclerView>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/sport_item"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/recycler_sport_type"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:textColor="#000"-->
+            <!--android:textSize="20dp"-->
+            <!--android:text="嗨~按左下角圓形按鈕選擇運動項目喔"/>-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/sport_item"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:text="start!!!"-->
+            <!--android:textSize="20dp"-->
+            <!--android:textColor="#ffa500"-->
+            <!--android:background="@drawable/card_view"/>-->
+
+
+    <!--</android.support.constraint.ConstraintLayout>-->
+
+    <ImageView
+        android:id="@+id/sport_pet"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@+id/sport_clock_flip"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/boom_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        android:layout_margin="20dp"
+        app:boom_inActionBar="false"
+        app:boom_button_color="#ff7f50"
+        />
+
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/boom_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        android:layout_margin="20dp"
+        app:boom_inActionBar="false"
+        app:boom_button_color="#7fffd4"
+        />
+
+</android.support.constraint.ConstraintLayout>

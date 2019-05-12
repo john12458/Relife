@@ -1,10 +1,12 @@
 package com.mis.relife.pages.home.userInfo.components;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mis.relife.R;
@@ -39,7 +41,10 @@ class BtnsGridAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.user_btns_grid,null);
         TextView userBtnTextView = convertView.findViewById(R.id.UserBtnTextView);
+        ImageView imageView = convertView.findViewById(R.id.UserIcon);
+        imageView.setImageResource(R.drawable.anim_shy);
         userBtnTextView.setText(btns[position]);
+        if(position==2)userBtnTextView.setTextColor(Color.RED);
         return convertView;
     }
 }

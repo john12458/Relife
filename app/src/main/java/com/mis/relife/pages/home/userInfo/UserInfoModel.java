@@ -1,6 +1,8 @@
 package com.mis.relife.pages.home.userInfo;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -20,7 +22,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.mis.relife.pages.MainActivity;
 import com.mis.relife.pages.home.userInfo.components.ReviceAccountDialogFragment;
+import com.mis.relife.test.imageDetect.CameraActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemClickListener,OnSuccessListener<Void>,OnFailureListener{
 
     private final Context context;
@@ -39,6 +45,7 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
 
     public final ObservableField<Integer> life = new ObservableField<>();
     public final ObservableField<String> account = new ObservableField<>();
+    public String[] btns={"帳戶設定","登出","重生"};
 
     public UserInfoModel(UserInfoActivity activity){
         super();
@@ -68,13 +75,27 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
             case 0: // 帳戶設定
                 onAccountChangeClick();
                 break;
-            case 1: // 重生
+            case 1: // 登出
+                onLogout();
+                break;
+            case 2: // 重生
                 onRelifeClick();
             break;
         }
     }
+    private void onLogout(){
+        Toast.makeText(context,"登出!!",Toast.LENGTH_SHORT).show();
+        SharedPreferences pref = activity.getSharedPreferences("user", MODE_PRIVATE);
+        pref.edit()
+                .putString("id","")
+                .commit();
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+    }
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(activity, CameraActivity.class);
+        activity.startActivity(intent);
 //        AppDbHelper.deleteAllInfoToFireBase();
 //        AppDbHelper.deleteAllDietToFireBase();
 //        AppDbHelper.deleteAllSleepToFireBase();

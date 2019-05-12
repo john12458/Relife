@@ -8,4 +8,5 @@
     <color name="colorLoginTitle">#334041</color>
     <color name="colorHomeStatus">#B2FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="littleWhite">#9CFFFFFF</color>
 </resources>

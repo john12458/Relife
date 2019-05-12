@@ -41,6 +41,7 @@ public class MyPieChart {
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setFormSize(18);
+        pieChart.getLegend().setTextColor(Color.WHITE);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawHoleEnabled(false);
         pieChart.setData(data);

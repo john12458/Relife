@@ -29,10 +29,10 @@ import com.mis.relife.pages.MainActivity;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class LoginDialogFragment extends DialogFragment {
+public class LoginDialogFragment extends DialogFragment implements DialogInterface.OnClickListener{
     private FragmentLoginDialogBinding binding;
     private InputMethodManager imm;
-
+    private DialogInterface.OnClickListener dismissClick=this;
     public LoginDialogFragment() { }
 
     @Override
@@ -84,20 +84,12 @@ public class LoginDialogFragment extends DialogFragment {
     }
 
     public void onRegisterClick(){
-        final String account = binding.account.getText().toString();
-        final String password = binding.password.getText().toString();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = db.getReference("user");
-        String key = userRef.push().getKey();
-        userRef.child(key).setValue(new MyUser(
-                new Info(key,account,password,0)
-        ));
+        new RegisterDialogFragment().show(getActivity().getSupportFragmentManager(), "Register");
     }
     public void onLoginClick() {
         final String account = binding.account.getText().toString();
         final String password = binding.password.getText().toString();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = db.getReference("user");
+        DatabaseReference userRef =AppDbHelper.mFirebase.getReference("user");
         final Query userQuery = userRef.orderByChild("info/account").equalTo(account);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -108,36 +100,40 @@ public class LoginDialogFragment extends DialogFragment {
                         Info info = data.child("info").getValue(Info.class);
                         if(info.password.equals(password)){
                             String id = info.id;
+                            // 存入偏好設定
                             SharedPreferences pref = getActivity().getSharedPreferences("user", MODE_PRIVATE);
                             pref.edit()
                                     .putString("id",id)
                                     .commit();
-                            new AlertDialog.Builder(getContext())
-                                    .setMessage("Sucess")
-                                    .setNegativeButton("Enter", null)
-                                    .create()
-                                    .show();
+                            alert("成功登入!!","確認",dismissClick);
                             new AppDbHelper(info.id); // 開啟資料庫
-                            //關閉鍵盤
+                            // 關閉鍵盤
                             imm = (InputMethodManager) getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getDialog().getWindow().peekDecorView().getWindowToken(), 0);
-                            getDialog().dismiss();
+                            // 初始化頁面
                             ((MainActivity)getActivity()).myInitlize();
                             return;
                         }
                     }
                 }
-                new AlertDialog.Builder(getContext())
-                        .setMessage("Login Failed")
-                        .setNegativeButton("Retry", null)
-                        .create()
-                        .show();
+                alert("帳號或密碼錯誤","確認",null);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
+    private void alert(String message, String btnTxt, DialogInterface.OnClickListener listener){
+        new AlertDialog.Builder(getContext())
+                .setMessage(message)
+                .setNegativeButton(btnTxt,listener)
+                .create()
+                .show();
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        this.dismiss();
+    }
 }
 
 

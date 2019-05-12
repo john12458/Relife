@@ -11,7 +11,7 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#50987654">
+    >
 
 
     <android.support.design.widget.AppBarLayout
@@ -53,7 +53,7 @@
                 android:onClick="@{()->dayModel.onDatePick()}"
                 android:text="@{dayModel.date}"
                 android:textSize="20dp"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:background="#00000000"
                 android:paddingBottom="10dp"
                 />
@@ -117,7 +117,7 @@
                 android:layout_height="18dp"
                 android:layout_marginTop="10dp"
                 android:text="@{dayModel.sleepClockTime,default=2700_2400}"
-                android:textColor="#000"
+                android:textColor="#fff"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -140,7 +140,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:text="@{dayModel.sleepTimeBetween,default=ohrmin}"
-                android:textColor="#000"
+                android:textColor="#fff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_sleep_clock_time" />
 
@@ -154,7 +154,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:text="夢的內容:  "
-                android:textColor="#000"
+                android:textColor="#fff"
                 app:layout_constraintHorizontal_bias="0.05"
                 android:layout_marginTop="10dp"/>
 

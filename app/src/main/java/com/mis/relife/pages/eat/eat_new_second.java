@@ -24,23 +24,27 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
     Spinner meal;
     String[] meals;
     ListView lv_record;
+    public static TextView cal;
+    int index;
+    String date;
     public static String category;
     SQLiteDatabase db;
     private List<eat_listview_recipe> mData; // 定義數據
-    TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_second);
-
+        Bundle bundle = getIntent().getExtras();
+        index = bundle.getInt("index");
         meal = (Spinner)findViewById(R.id.spinner);
         meals = getResources().getStringArray(R.array.meal);
-
+        meal.setSelection(index);
         lv_record = (ListView) findViewById(R.id.listview_record);
-        test = (TextView) findViewById(R.id.textView5);
+        date = bundle.getString("date");
         meal.setOnItemSelectedListener(this);
         db = this.openOrCreateDatabase("relife",0,null);
+        cal = (TextView) findViewById(R.id.tv_total_cal_num);
         //category = 點擊進來的那餐
         initData();
     }
@@ -53,28 +57,42 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
         it.putExtras(bundle);
         startActivityForResult(it, 0);
     }
-    Date date = new Date();
-    SimpleDateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
-
-    String choose_date = date_format.format(date);
-    private void initData() {
+    float total_cal;
+    public void initData() {
+        total_cal = 0;
         db = this.openOrCreateDatabase("relife", 0, null);
         mData = new ArrayList<eat_listview_recipe>();
-        Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + choose_date + "' AND category = '" + category + "'", null);
+        Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "' AND category = '" + category + "'", null);
         if(c.moveToFirst()){
             //test.setText(category);
             do {
                 eat_listview_recipe record  = new eat_listview_recipe(c.getInt(0), c.getString(2), c.getInt(3), c.getDouble(4));
                 mData.add(record);
+                Cursor cal_in_food = db.rawQuery("SELECT * FROM recipe WHERE foodID = " + c.getInt(3), null);
+                if (cal_in_food.moveToFirst()) {
+                    total_cal += cal_in_food.getFloat(2);// * cal_in_food.getFloat(4);
+                }
+                //search
+                Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + c.getInt(3), null);
+                if (cal_in_food2.moveToFirst()) {
+                    total_cal += cal_in_food2.getFloat(2);
+                }
+                //--------
             } while (c.moveToNext());
         }
-
+        cal.setText(String.valueOf((int) total_cal) + " 大卡");
 
         //  將布局添加到ListView中
         LayoutInflater layoutinflater =getLayoutInflater();
         // 創建自定義Adapter的對象
         recipe_adapter adapter = new recipe_adapter(layoutinflater,mData,this);
         lv_record.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 
     @Override

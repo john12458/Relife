@@ -8,7 +8,7 @@
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/cardview_color_change">
+        android:background="@drawable/rectangle_pressed_change">
 
         <TextView
             android:id="@+id/tv_day"
@@ -36,16 +36,17 @@
 
         <ImageView
             android:id="@+id/iv_img"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/image_rabbit"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/first4"
             android:background="#00000000"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintLeft_toRightOf="@+id/tv_day"
             app:layout_constraintRight_toLeftOf="@id/tv_get_up_time"
             app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.51" />
+            app:layout_constraintVertical_bias="0.51"
+            android:scaleType="centerInside"/>
 
         <TextView
             android:id="@+id/tv_go_bed"

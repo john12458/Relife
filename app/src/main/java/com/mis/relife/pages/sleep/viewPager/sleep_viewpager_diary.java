@@ -19,8 +19,12 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.R;
-import com.mis.relife.pages.sleep.ClockActivity;
+import com.mis.relife.data.AppDbHelper;
+import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Sleep;
 import com.mis.relife.pages.sleep.New_Delete.SleepDialogFragment_choose_way;
 import com.mis.relife.pages.sleep.New_Delete.SleepDialogFragment_delete;
 import com.mis.relife.pages.sleep.Adapter.recylerview_sleep_adapter;
@@ -35,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @SuppressLint("ValidFragment")
 public class sleep_viewpager_diary extends Fragment {
@@ -53,6 +58,7 @@ public class sleep_viewpager_diary extends Fragment {
     public List<String> recycler_mood = new ArrayList<>();
 
     private int mYear,mMonth,mDay;
+    private int recordMonth,recordYear;
     private String date,titledate;
     int i = 0;
     private int back = 0;
@@ -78,15 +84,6 @@ public class sleep_viewpager_diary extends Fragment {
         bt_clock = view.findViewById(R.id.bt_clock);
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
         recycler_View = view.findViewById(R.id.recyler_view);
-        bt_test = view.findViewById(R.id.bt_sleep_plus);
-        bt_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getContext(), ClockActivity.class);
-                startActivity(intent);
-            }
-        });
 
         Picasso
                 .with(context)
@@ -99,18 +96,27 @@ public class sleep_viewpager_diary extends Fragment {
         titledate = setdiarydateFormat(mYear, mMonth);
         bt_datepicker.setText(titledate);
 
-        getNowDate();
-        recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
         recycler_View.setLayoutManager(new LinearLayoutManager(context));
         recycler_View.addItemDecoration(new recyler_item_space(0, 30));
-        recycler_View.setAdapter(recylerview_sleep_adapter);
-        //設定點擊功能
-        recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
+        myInit();
         //如題
         bt_datepicker.setOnClickListener(date_pick);
         //去睡覺 設鬧鐘
         bt_clock.setOnClickListener(plus);
         return view;
+    }
+
+    private void myInit(){
+        AppDbHelper.getAllSleepFromFireBase(new MyCallBack<Map<String, Sleep>>() {
+            @Override
+            public void onCallback(Map<String, Sleep> value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                getNowDate();
+                recylerview_sleep_adapter = new recylerview_sleep_adapter(context,recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
+                recycler_View.setAdapter(recylerview_sleep_adapter);
+                //設定點擊功能
+                recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
+            }
+        });
     }
 
     //方法區
@@ -124,14 +130,13 @@ public class sleep_viewpager_diary extends Fragment {
         recycler_description.clear();
         recycler_mood.clear();
         //建立 比對的month 和 要存取切割字串的睡眠和起床時間
-        int recordMonth = 0;
         for(int i = 0;i < sleepData.record_date.size(); i++){
             //拿到month
-            recordMonth = getMonth(recordMonth,sleepData.record_date.get(i));
+            recordMonth = getMonth(sleepData.record_date.get(i));
             System.out.println("DATE!!!!!" + sleepData.record_date.get(i));
             System.out.println("recodeMonth!!!!!!!!!!!" + recordMonth);
             //比對到
-            if(recordMonth == mMonth){
+            if(recordMonth == mMonth && recordYear == mYear){
                 //新增
                 recycler_sleep_time.add(sleepData.sleep_time.get(i));
                 recycler_wake_time.add(sleepData.wake_time.get(i));
@@ -143,16 +148,17 @@ public class sleep_viewpager_diary extends Fragment {
     }
 
     //拿到轉換過後的月份
-    private int getMonth(int Month,String date){
+    private int getMonth(String date){
         try {
             Date recorDate = sdf_date.parse(date);
             cal = Calendar.getInstance();
             cal.setTime(recorDate);
-            Month = cal.get(Calendar.MONTH);
+            recordMonth = cal.get(Calendar.MONTH);
+            recordYear = cal.get(Calendar.YEAR);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return  Month;
+        return  recordMonth;
     }
 
     //選擇日記的輸入方式
@@ -187,10 +193,7 @@ public class sleep_viewpager_diary extends Fragment {
                         mYear = year;
                         mMonth = month;
                         mDay = day;
-                        getNowDate();
-                        recylerview_sleep_adapter = new recylerview_sleep_adapter(getContext(),recycler_recordate,recycler_sleep_time,recycler_wake_time,recycler_description,recycler_mood);
-                        recycler_View.setAdapter(recylerview_sleep_adapter);
-                        recylerview_sleep_adapter.setOnItemClickListener(sleep_diary_adapter_click);
+                        myInit();
                     }
                     else {
                         mYear = year;
@@ -224,6 +227,7 @@ public class sleep_viewpager_diary extends Fragment {
             String wakeTime = recylerview_sleep_adapter.wake_time.get(position);
             String recordDate = recylerview_sleep_adapter.recordDate.get(position);
             String description = recylerview_sleep_adapter.description.get(position);
+            String mood = recylerview_sleep_adapter.mood.get(position);
             String key = sleepData.get_key(sleepTime,wakeTime,recordDate,description);
 
             Intent sleep_edit = new Intent();
@@ -235,6 +239,7 @@ public class sleep_viewpager_diary extends Fragment {
             bundle.putString("get",wakeTime);
             bundle.putString("date",recordDate);
             bundle.putString("sleep_content",description);
+            bundle.putString("mood",mood);
             bundle.putString("key",key);
             sleep_edit.putExtras(bundle);
             startActivity(sleep_edit);
