@@ -245,7 +245,6 @@ public class EatDayAnalysisViewpager extends Fragment {
         }
         else {
             entries.add(new PieEntry((int)percent,meal));
-            System.out.println("!!!!!!!!!!!!!!!!!顏色"+rgb);
             color.add(rgb);
         }
     }

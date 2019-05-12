@@ -37,7 +37,8 @@ public class Sport_Plus_Activity extends AppCompatActivity {
     private  String[] sport_type = {"跑步","拍類","棒類","球類","武術","水上","健體","工作","騎車","其他"};
     private count_cal count_cal;
 
-    private TextView tv_sport_child_name,tv_cancel,tvSelf;
+    public TextView tv_sport_child_name;
+    private TextView tv_cancel,tvSelf;
     private Button bt_finish;
 
 //    static int choose_type = 0;
@@ -70,12 +71,13 @@ public class Sport_Plus_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.in,R.anim.out);
             }
         });
 
         //初始化下面提供使用者輸入資訊的地方
 
-        sport_recycler_record_adapter = new sport_recycler_record_adapter(this);
+        sport_recycler_record_adapter = new sport_recycler_record_adapter(this,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView_sport_record.setLayoutManager(linearLayoutManager);
         recyclerView_sport_record.addItemDecoration(new recyler_item_space(0,25));
@@ -239,6 +241,7 @@ public class Sport_Plus_Activity extends AppCompatActivity {
 
                 AppDbHelper.insertSportToFireBase(sport_insert);
                 finish();
+                overridePendingTransition(R.anim.in,R.anim.out);
             }
         }
     };
@@ -326,4 +329,10 @@ public class Sport_Plus_Activity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.in,R.anim.out);
+    }
 }

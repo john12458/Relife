@@ -29,6 +29,7 @@ import com.lilei.springactionmenu.OnActionItemClickListener;
 import com.mis.relife.R;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.Adapter.recylerview_sportpage_adapter;
 import com.mis.relife.pages.sport.New_Delete.SportClockActivity;
@@ -197,6 +198,12 @@ public class sport_page_activity extends Fragment {
 
     //設定建議的文字 已年齡做區分
     private void setTalkText(Random ran){
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                old = value.old;
+            }
+        });
         if(old == 0) {
 
         }
@@ -260,7 +267,9 @@ public class sport_page_activity extends Fragment {
                 bundle.putString("date", dateFormat);
                 intent_sport_plus.setClass(context, Sport_Plus_Activity.class);
                 intent_sport_plus.putExtras(bundle);
+
                 startActivity(intent_sport_plus);
+                getActivity().overridePendingTransition(R.anim.in,R.anim.out);
             }
             else if(i == 2){
                 Intent intent_sport_plus = new Intent();
