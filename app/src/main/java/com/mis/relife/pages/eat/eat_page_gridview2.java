@@ -74,6 +74,11 @@ public class eat_page_gridview2 extends BaseAdapter {
                             cal += cal_in_food2.getFloat(2) * food_num.getFloat(4);
                         }
                     }
+                    // search
+                    Cursor cal_in_food2 = db.rawQuery("SELECT * FROM search WHERE foodID = " + c.getInt(3), null);
+                    if (cal_in_food2.moveToFirst()) {
+                        cal += cal_in_food2.getFloat(2);
+                    }
                 } while (c.moveToNext());
             }
             tv_cal.setText((int) cal + "大卡");

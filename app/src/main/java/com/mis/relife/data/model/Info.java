@@ -17,16 +17,16 @@ public class Info {
     public String password;
     public int life;
 
-    public int height;
-    public int weight;
-    public int goalWeight;
-    public int goalWeekWeight;
+    public float height;
+    public float weight;
+    public float goalWeight;
+    public float goalWeekWeight;
     public int old;
     public String gender;
 
     public Info(){}
 
-    public Info(String id, String account, String password, int life, int height, int weight, int goalWeight, int goalWeekWeight, int old, String gender) {
+    public Info(String id, String account, String password, int life, float height, float weight, float goalWeight,float goalWeekWeight, int old, String gender) {
         this.id = id;
         this.account = account;
         this.password = password;
