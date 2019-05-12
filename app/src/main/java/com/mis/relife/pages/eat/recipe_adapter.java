@@ -232,6 +232,7 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                     eat_new_second.cal.setText("0 大卡");
                 }
 
+
                 // detect 那個頁面執行會崩掉
                 if(activity!=null)notifyDataSetChanged();
 
