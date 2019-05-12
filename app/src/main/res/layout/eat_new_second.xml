@@ -13,21 +13,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:background="#00000000"
         android:paddingBottom="10dp"
         android:text="今日攝取"
         android:textColor="#000"
         android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
     <View
         android:id="@+id/v_line2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="8dp"
         android:background="#000000"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -35,10 +36,8 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/v_line2"
         app:layout_constraintStart_toEndOf="@+id/bt_left"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/record" />
@@ -190,6 +189,7 @@
         android:id="@+id/bt_left"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/left_arrow"
         android:onClick="back"
         android:scaleType="fitXY"

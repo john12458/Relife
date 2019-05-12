@@ -30,6 +30,7 @@ public class eat_new_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_main);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         Bundle bundle = getIntent().getExtras();
         eat_name = bundle.getString("eat_name");
         initData_tablayout();

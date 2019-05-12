@@ -85,6 +85,7 @@ public class eat_page_gridview2 extends BaseAdapter {
                 tv_cal.setText(c.getInt(1) + "cc");
             }
             else {
+
                 tv_cal.setText("0 cc");
             }
         }

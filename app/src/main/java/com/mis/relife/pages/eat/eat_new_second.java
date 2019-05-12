@@ -35,6 +35,7 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_second);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         Bundle bundle = getIntent().getExtras();
         index = bundle.getInt("index");
         meal = (Spinner)findViewById(R.id.spinner);
