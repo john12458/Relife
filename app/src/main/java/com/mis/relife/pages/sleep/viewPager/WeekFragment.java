@@ -33,6 +33,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.data.model.Sleep;
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +52,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
 //    private LinearLayout test1,test2,test3;
 
     Context context;
-    private TextView tv_sleep_hour_average,tv_go_bed_average,tv_get_up_average;
+    private TextView tv_sleep_hour_average,tv_go_bed_average,tv_get_up_average,tvTalk;
     private ImageView iv_talk_pet,iv_talk_place;
     public AnimationDrawable anim;
     //圖表資料區
@@ -82,6 +83,10 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
     private HashMap<String, Sleep> sleepList;
     private ArrayList<Sleep> weekSleeps;
     private Button bt_datepicker;
+    private float sleepAvg = 0;
+    private int goBedHour =0;
+    private int wakeUpHour =0;
+    private int old = 27;
 
     public WeekFragment() {
 
@@ -91,11 +96,18 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sleep_viewpager_week_analysis,container,false);
+        barChart = view.findViewById(R.id.bar_chart);
+        tv_sleep_hour_average = view.findViewById(R.id.tv_sleep_time);
+        tv_go_bed_average = view.findViewById(R.id.tv_sleep_bed);
+        tv_get_up_average = view.findViewById(R.id.tv_sleep_get);
+        tvTalk = view.findViewById(R.id.tv_talk);
+        iv_talk_pet = view.findViewById(R.id.iv_talk_pet);
+        iv_talk_place = view.findViewById(R.id.iv_talk_place);
 
-            barChart = view.findViewById(R.id.bar_chart);
-            tv_sleep_hour_average = view.findViewById(R.id.tv_sleep_time);
-            tv_go_bed_average = view.findViewById(R.id.tv_sleep_bed);
-            tv_get_up_average = view.findViewById(R.id.tv_sleep_get);
+        Picasso
+                .with(context)
+                .load(R.drawable.blackboard)
+                .into(iv_talk_place);
 
         nowCalendar = Calendar.getInstance();
         bt_datepicker = view.findViewById(R.id.bt_datepicker);
@@ -115,8 +127,55 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
               sleepList = new HashMap<>();
               sleepList.putAll(value);
               onDataChange(pickDate);
+              AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+                  @Override
+                  public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                      old = value.old;
+                  }
+              });
+              iv_talk_pet.setImageResource(R.drawable.anim_teach);
+              anim = (AnimationDrawable) iv_talk_pet.getDrawable();
+              //setTalkText();
+              anim.start();
           }
       });
+    }
+
+    private void setTalkText(){
+        if(old > 13 && old < 29) {
+            if (goBedHour > 0 && goBedHour < 4 && sleepAvg < 8) {
+                tvTalk.setText("晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!\n" + "每天要睡8小時左右喔~");
+            } else if (goBedHour > 0 && goBedHour < 4 && sleepAvg > 8) {
+                tvTalk.setText("晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!");
+            } else if (sleepAvg < 8 && sleepAvg > 0) {
+                tvTalk.setText("每天要睡8小時左右喔~");
+            } else if(sleepAvg == 0){
+                tvTalk.setText("沒有資料喔~");
+            }else if(sleepAvg > 8){
+                tvTalk.setText("睡太多搂~睡太多的人容易感到昏沉、疲倦喔");
+            } else {
+                tvTalk.setText("睡的很好喔~~");
+            }
+        }
+        else if(old >= 29 && old < 60){
+            if (goBedHour > 0 && goBedHour < 3 && sleepAvg < 7) {
+                tvTalk.setText("晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!\n" + "成年男子需要6.49小時睡眠時間,婦女需要7.5小時左右喔");
+            } else if (goBedHour > 0 && goBedHour < 3 && sleepAvg > 8) {
+                tvTalk.setText("晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!");
+            } else if (sleepAvg < 7 && sleepAvg > 0) {
+                tvTalk.setText("成年男子需要6.49小時睡眠時間,婦女需要7.5小時左右喔");
+            } else if(sleepAvg == 0){
+                tvTalk.setText("沒有資料喔~");
+            }
+            else if(sleepAvg > 8){
+                tvTalk.setText("睡太多搂~睡太多的人容易感到昏沉、疲倦喔");
+            }else {
+                tvTalk.setText("昨天睡的怎麼樣呢~~");
+            }
+        }
+        else {
+
+        }
     }
 
     public void onDataChange(Date pDate){
@@ -160,9 +219,10 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
     }
     private void updateViewWithNoData(List<Sleep> weekSleeps) throws ParseException {
         barDataResume(weekSleeps);
-        tv_go_bed_average.setText("沒有資料");
-        tv_sleep_hour_average.setText("沒有資料");
-        tv_get_up_average.setText("沒有資料");
+        tv_go_bed_average.setText("");
+        tv_sleep_hour_average.setText("");
+        tv_get_up_average.setText("");
+        setTalkText();
     }
     private void updateView(List<Sleep> weekSleeps) throws ParseException { // 畫面更新
         calculateAvg(weekSleeps);
@@ -195,10 +255,10 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         setBarchar();
     }
     private void calculateAvg(List<Sleep> weekSleeps) throws ParseException {
-        float sleepAvg =0;
-        int goBedHour =0;
+        sleepAvg =0;
+        goBedHour =0;
         int goBedMin=0;
-        int wakeUpHour =0;
+        wakeUpHour =0;
         int wakeUpMin=0;
         int cnt =0;
         Calendar sleepCal = Calendar.getInstance();
@@ -234,6 +294,7 @@ public class WeekFragment extends Fragment implements Button.OnClickListener {
         tv_go_bed_average.setText(String.format("%02d", goBedHour) + ":" +  String.format("%02d", goBedMin));
         tv_sleep_hour_average.setText(String.format("%.1f", sleepAvg) + "小時");
         tv_get_up_average.setText(String.format("%02d", wakeUpHour) + ":" + String.format("%02d", wakeUpMin));
+        setTalkText();
     }
 
 

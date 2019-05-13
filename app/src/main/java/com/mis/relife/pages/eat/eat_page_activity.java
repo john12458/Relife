@@ -57,7 +57,7 @@ public class eat_page_activity extends Fragment {
     private int[] menu_img = {R.drawable.breakfast,R.drawable.lunch,R.drawable.dinner,R.drawable.corn
             ,R.drawable.pudding,R.drawable.water};
     public static String selectdate;
-    SQLiteDatabase db;
+    public static SQLiteDatabase db;
     LayoutInflater inflater;
     private SportData sportData;
     public int lossTotalCal = 0;
@@ -65,6 +65,7 @@ public class eat_page_activity extends Fragment {
     public static String gender;
     public static float height, weight, goalWeight, goalWeekWeight;
     public static int old;
+    public static TextView txv_remindcal, txv_remind_over;
 
 
     public eat_page_activity(Context context,SportData sportData) {
@@ -96,8 +97,8 @@ public class eat_page_activity extends Fragment {
                 myinit();
             }
         });
-
-
+        txv_remindcal = view.findViewById(R.id.txv_remindcal);
+        txv_remind_over = view.findViewById(R.id.txv_remind_over);
         return view;
     }
     private void myinit(){

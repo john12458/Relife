@@ -33,11 +33,17 @@ public class DayFragment extends Fragment {
     public AnimationDrawable anim;
     private int old = 27;
     private float sleeTime = 0;
-    private String[] teenSleepAdvice = {"每天要睡8小時左右喔~","睡覺時間過長，會打亂生理時鐘，導致精神不振，影響記憶力",
-    "晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!","充足睡眠可以消除疲勞，修補受傷的神經細胞","充足睡眠可以固定記憶喔"};
-    private String[] oldSleepAdvice = {"成年男子需要6.49小時睡眠時間,婦女需要7.5小時左右",
-    "晚上10點到早晨5點是「優質睡眠時間」,人在此時易達到深睡眠狀態，有助於緩解疲勞",
-            "充足睡眠可以消除疲勞，修補受傷的神經細胞","充足睡眠可以固定記憶喔"};
+    private String[] teenSleepAdvice = {"睡覺時間過長，會打亂生理時鐘，導致精神不振，影響記憶力","充足睡眠可以消除疲勞，修補受傷的神經細胞",
+            "充足睡眠可以固定記憶喔","免疫系統在睡眠中會自我進行修補及提升，以對抗病菌入侵身體。",
+            "睡太少時，饑餓素可能會增加，使人更容易感覺饑餓喔",
+            "睡飽了才有活力應對每一天喔~",
+            "晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!"};
+    private String[] oldSleepAdvice = {"晚上10點到早晨5點是「優質睡眠時間」,人在此時易達到深睡眠狀態，有助於緩解疲勞",
+            "充足睡眠可以消除疲勞，修補受傷的神經細胞","充足睡眠可以固定記憶喔",
+            "免疫系統在睡眠中會自我進行修補及提升，以對抗病菌入侵身體。",
+            "睡太少時，饑餓素可能會增加，使人更容易感覺饑餓喔",
+            "睡飽了才有活力應對每一天喔~",
+            "晚上十點至半夜兩點是生長激素分泌最旺盛的黃金時段喔!!"};
 
 
     public DayFragment() {}
@@ -52,6 +58,12 @@ public class DayFragment extends Fragment {
         iv_talk_pet = view.findViewById(R.id.iv_talk_pet);
         iv_talk_place = view.findViewById(R.id.iv_talk_place);
         tvTalk = view.findViewById(R.id.tv_talk);
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                old = value.old;
+            }
+        });
 
         iv_talk_pet.setOnClickListener(petClick);
         iv_talk_pet.setImageResource(R.drawable.anim_teach);
@@ -60,10 +72,7 @@ public class DayFragment extends Fragment {
                 .with(getContext())
                 .load(R.drawable.blackboard)
                 .into(iv_talk_place);
-//        if(vm.sleepPercent.get() != null) {
-//            sleeTime = vm.sleepPercent.get() / 100 * 24;
-//        }
-//        initText();
+
         return view;
     }
 
@@ -118,6 +127,12 @@ public class DayFragment extends Fragment {
             case 4:
                 tvTalk.setText(teenSleepAdvice[4]);
                 break;
+            case 5:
+                tvTalk.setText(teenSleepAdvice[5]);
+                break;
+            case 6:
+                tvTalk.setText(teenSleepAdvice[6]);
+                break;
         }
     }
 
@@ -135,6 +150,15 @@ public class DayFragment extends Fragment {
                 break;
             case 3:
                 tvTalk.setText(oldSleepAdvice[3]);
+                break;
+            case 4:
+                tvTalk.setText(oldSleepAdvice[4]);
+                break;
+            case 5:
+                tvTalk.setText(oldSleepAdvice[5]);
+                break;
+            case 6:
+                tvTalk.setText(teenSleepAdvice[6]);
                 break;
         }
     }

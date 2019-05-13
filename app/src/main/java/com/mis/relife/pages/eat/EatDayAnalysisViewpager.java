@@ -2,6 +2,9 @@ package com.mis.relife.pages.eat;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,6 +67,7 @@ public class EatDayAnalysisViewpager extends Fragment {
     private GridView gv_menu;
     private TextView tvCalAll;
     private TextView tvCalLoss;
+    TextView txv_daysuggest;
 
     //圖表區
     private PieChart pieChart = null;
@@ -87,12 +91,15 @@ public class EatDayAnalysisViewpager extends Fragment {
     private float nightSnackPercent;
     private float snackPercent;
     private SportData sportData;
+    Context context;
+    SQLiteDatabase db;
 
     private int first = 0;
-    public EatDayAnalysisViewpager(EatData eatData,SportData sportData) {
+    public EatDayAnalysisViewpager(EatData eatData,SportData sportData, Context context) {
         // Required empty public constructor
         this.eatData = eatData;
         this.sportData = sportData;
+        this.context = context;
     }
 
     @Override
@@ -114,6 +121,8 @@ public class EatDayAnalysisViewpager extends Fragment {
         btDatepicker = view.findViewById(R.id.bt_datepicker);
         tvCalAll = view.findViewById(R.id.tv_cal_all_num);
         tvCalLoss = view.findViewById(R.id.tv_cal_num);
+        txv_daysuggest = view.findViewById(R.id.txv_daysuggest);
+        db = context.openOrCreateDatabase("relife",0,null);
         //取得現在日期
         if(first == 0){
             nowdate();
@@ -130,9 +139,21 @@ public class EatDayAnalysisViewpager extends Fragment {
         //底下gridview區
         week_adapter = new eat_week_gridview(getActivity().getApplicationContext(),data,cal,percent);
         gv_menu.setAdapter(week_adapter);
-
+        //setsuggest();
         return view;
     }
+
+    ArrayList<String> suggest = new ArrayList<String>();
+    public void setsuggest(){
+        Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "'", null);
+            if (c.moveToFirst()) {
+                do {
+                    txv_daysuggest.setText(String.valueOf(c.getInt(0)));
+                } while (c.moveToNext());
+            }
+
+    }
+
 
     // 從資料庫取資料，這個會持續監聽新的資料，每當有資料改變，就會執行這個區塊
     private void myInit(){
@@ -149,7 +170,7 @@ public class EatDayAnalysisViewpager extends Fragment {
                     pie_initial();
 
                     tvCalAll.setText(String.valueOf((int)Totalcal) + "cal");
-                    tvCalLoss.setText(String.valueOf(lossTotalCal - Totalcal));
+                    tvCalLoss.setText(String.valueOf((int)Totalcal - (int)lossTotalCal) + "cal");
                     //底下gridview區
                     inidata();
                     if(week_adapter != null) {

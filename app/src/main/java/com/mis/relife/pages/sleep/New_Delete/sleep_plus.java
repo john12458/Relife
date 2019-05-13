@@ -43,7 +43,7 @@ public class sleep_plus extends AppCompatActivity {
     private String get_up_time = "";
     private String dream = "";
     private String date = "";
-    public String mood = "firt4";
+    public String mood = "first4";
     private int bool = 0,position;
     private int mYear,mMonth,mDay;
 
