@@ -22,11 +22,13 @@ public class Diet {
         String txt="\n----- Diet ------\n";
         txt += "category:\t"+ String.valueOf(category)+"\n"
                 +"eatDate:\t"+eatDate+"\n";
-        for (int i = 0; i<foods.size(); i++)
-            if(foods.get(i)!=null)
-                txt += ((Food)foods.get(i)).toString()+"\n";
-            else
-                txt+="null to get food"+"\n";
+        if(foods!=null){
+            for (int i = 0; i<foods.size(); i++)
+                if(foods.get(i)!=null)
+                    txt += ((Food)foods.get(i)).toString()+"\n";
+                else
+                    txt+="null to get food"+"\n";
+        }
         txt+="----------------\n";
         return txt;
     }

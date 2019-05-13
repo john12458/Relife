@@ -22,7 +22,7 @@ public class eat_new_recipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_recipe);
-
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         ed_food = (EditText)findViewById(R.id.ed_food);
         ed_cal = (EditText)findViewById(R.id.ed_cal);
         db = openOrCreateDatabase("relife",0,null);

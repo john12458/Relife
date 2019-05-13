@@ -53,6 +53,16 @@ public class eat_page_gridview extends BaseAdapter {
         TextView tv_top = convertView.findViewById(R.id.tv_top);
         TextView tv_data = convertView.findViewById(R.id.tv_data);
         switch(position) {
+            case 0:
+                tv_data.setText("1500 cal");
+                float normal_cal;
+                if(eat_page_activity.gender.equals("男")){
+                    //normal_cal = 66 + (9.6 * eat_page_activity.weight)
+                }
+                else if(eat_page_activity.gender.equals("女")){
+
+                }
+                break;
             case 1:
                 cal = 0;
                 Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "'", null);
@@ -68,12 +78,12 @@ public class eat_page_gridview extends BaseAdapter {
                                 cal += cal_in_food2.getFloat(2) * c.getFloat(4);
                         }
                     } while (c.moveToNext());
-                    tv_data.setText(String.valueOf((int) cal));
+                    tv_data.setText(String.valueOf((int) cal) + " cal");
                 }
-                else {tv_data.setText("0");}
+                else {tv_data.setText("0 cal");}
             break;
             case 2:
-                tv_data.setText(String.valueOf(eatPage.lossTotalCal) + "cal");
+                tv_data.setText(String.valueOf(eatPage.lossTotalCal) + " cal");
         }
         tv_top.setText(top[position]);
         return convertView;

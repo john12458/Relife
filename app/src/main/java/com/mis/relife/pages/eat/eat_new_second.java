@@ -44,6 +44,7 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eat_new_second);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         Bundle bundle = getIntent().getExtras();
         index = bundle.getInt("index");
         meal = (Spinner)findViewById(R.id.spinner);
@@ -114,7 +115,7 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
         //  將布局添加到ListView中
         LayoutInflater layoutinflater =getLayoutInflater();
         // 創建自定義Adapter的對象
-        recipe_adapter adapter = new recipe_adapter(layoutinflater,mData,this);
+        recipe_adapter adapter = new recipe_adapter(layoutinflater,mData,this,(eat_new_second)this);
         lv_record.setAdapter(adapter);
 
         if(category!=null && eat_page_activity.selectdate!=null){
@@ -137,8 +138,14 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
                         break;
                     }
                 }
-                if(rkey==null)AppDbHelper.insertDietToFireBase(diet);
-                else AppDbHelper.updateDietToFireBase(rkey,diet);
+                if(rkey==null){
+                    if(diet.foods.size() !=0)
+                        AppDbHelper.insertDietToFireBase(diet);
+                }else {
+                    if(diet.foods.size() !=0)
+                        AppDbHelper.updateDietToFireBase(rkey,diet);
+                    else AppDbHelper.deleteDietToFireBase(rkey);
+                }
             }
         });
     };
