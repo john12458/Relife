@@ -9,17 +9,18 @@
             type="com.mis.relife.pages.home.userInfo.UserInfoModel"/>
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorLoginbg"
+        android:background="@drawable/background_home"
         tools:context=".view.userInfo.UserInfoActivity">
 
         <android.support.constraint.ConstraintLayout
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp">
+            android:background="@color/littleWhite"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
                 android:id="@+id/UserInfoProgressBar"
@@ -36,28 +37,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userTv" />
 
-            <android.support.design.widget.FloatingActionButton
+            <Button
                 android:id="@+id/UserInfoBackFAB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="58dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:clickable="true"
+                android:layout_marginTop="16dp"
+                android:background="?attr/actionModeCloseDrawable"
                 android:onClick="@{()->userInfoModel.onBackButtonClick()}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="?attr/actionModeCloseDrawable" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
+                android:layout_width="127dp"
                 android:layout_height="127dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/self"
+                android:src="@drawable/shy2"
+                android:background="@drawable/button_cirle_normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,16 +67,14 @@
 
             <GridView
                 android:id="@+id/UserInfoBtns"
-                android:layout_width="222dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.439"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/UserInfoProgressBar"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/lifeTv"
                 app:layout_constraintTop_toBottomOf="@+id/UserInfoProgressBar" />
 
             <TextView
@@ -106,5 +106,5 @@
 
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

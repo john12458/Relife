@@ -3,6 +3,7 @@ package com.mis.relife.pages.home.userInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -94,10 +95,10 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     private void onRelifeClick(){
         Toast.makeText(context,"重生!!",Toast.LENGTH_SHORT).show();
         context.deleteDatabase("relife");
-//        AppDbHelper.deleteAllInfoToFireBase();
-//        AppDbHelper.deleteAllDietToFireBase();
-//        AppDbHelper.deleteAllSleepToFireBase();
-//        AppDbHelper.deleteAllSportToFireBase();
+        sqliteCreateOrOpen();
+        AppDbHelper.deleteAllDietToFireBase();
+        AppDbHelper.deleteAllSleepToFireBase();
+        AppDbHelper.deleteAllSportToFireBase();
     }
     private void onAccountChangeClick(){
         new ReviceAccountDialogFragment(this).show(activity.getSupportFragmentManager(),"Revice");
@@ -112,6 +113,39 @@ public class UserInfoModel extends BaseViewModel implements AdapterView.OnItemCl
     @Override
     public void onFailure(@NonNull Exception e) {
         Log.e("Error/Life","Error to change Life");
+    }
+
+    private void sqliteCreateOrOpen(){
+        SQLiteDatabase db = activity.openOrCreateDatabase("relife", 0, null);
+        String sql_search = "CREATE TABLE IF NOT EXISTS search " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_search);
+        String sql_recipe = "CREATE TABLE IF NOT EXISTS recipe " +
+                "(name VARCHAR(20) , " +
+                "foodID INTEGER PRIMARY KEY ,"+
+                "cal DOUBLE) ";
+        db.execSQL(sql_recipe);
+        String sql_record = "CREATE TABLE IF NOT EXISTS record " +
+                "(recordID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "date VARCHAR(20), " +
+                "category VARCHAR(20),"+
+                "foodID INTEGER,"+
+                "number FLOAT) ";
+        db.execSQL(sql_record);
+        String sql_love = "CREATE TABLE IF NOT EXISTS love " +
+                "(loveID INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "foodID INTEGER)";
+        db.execSQL(sql_love);
+        String sql_water = "CREATE TABLE IF NOT EXISTS water " +
+                "(date VARCHAR(20) PRIMARY KEY,"+
+                "cc INTEGER)";
+        db.execSQL(sql_water);
+        String sql_recent = "CREATE TABLE IF NOT EXISTS recent " +
+                "(foodID INTEGER PRIMARY KEY)";
+        db.execSQL(sql_recent);
+        db.close();
     }
 }
 
