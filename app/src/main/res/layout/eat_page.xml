@@ -190,17 +190,17 @@
                     app:srcCompat="@drawable/remindcal" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/txv_remind_over"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginBottom="24dp"
                     android:text="今日剩餘"
+                    android:textColor="#000088"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/bg_remind"
-                    app:layout_constraintStart_toStartOf="@+id/bg_remind"
-                    android:textColor="#000088"/>
+                    app:layout_constraintStart_toStartOf="@+id/bg_remind" />
 
                 <TextView
                     android:id="@+id/txv_remindcal"
@@ -208,12 +208,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:text="1000大卡"
+                    android:textColor="#800000"
                     android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/textView7"
-                    app:layout_constraintStart_toEndOf="@+id/textView7"
-                    app:layout_constraintTop_toTopOf="@id/textView7"
-                    android:textColor="#800000"/>
+                    app:layout_constraintBottom_toBottomOf="@id/txv_remind_over"
+                    app:layout_constraintEnd_toEndOf="@+id/bg_remind"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/txv_remind_over"
+                    app:layout_constraintTop_toTopOf="@id/txv_remind_over" />
 
 
             </android.support.constraint.ConstraintLayout>

@@ -21,6 +21,7 @@ public class eat_page_gridview extends BaseAdapter {
     private Context context;
     SQLiteDatabase db;
     private eat_page_activity eatPage;
+    public static int today_object, today_food_cal, today_sport_cal;
 
     public eat_page_gridview(MainActivity mainActivity, String[] data, String[] top, Context context,eat_page_activity eatPage) {
         myinflater = LayoutInflater.from(mainActivity);
@@ -55,13 +56,15 @@ public class eat_page_gridview extends BaseAdapter {
         switch(position) {
             case 0:
                 tv_data.setText("1500 cal");
-                float normal_cal;
+                double normal_cal = 0;
                 if(eat_page_activity.gender.equals("男")){
-                    //normal_cal = 66 + (9.6 * eat_page_activity.weight)
+                    normal_cal = 66 + (13.7 * eat_page_activity.weight) + (5 * eat_page_activity.height) - (6.8 * eat_page_activity.old);
                 }
                 else if(eat_page_activity.gender.equals("女")){
-
+                    normal_cal = 655 + (9.6 * eat_page_activity.weight) + (1.7 * eat_page_activity.height) - (4.7 * eat_page_activity.old);
                 }
+                today_object = (int)normal_cal;
+                tv_data.setText(String.valueOf(today_object) + " cal");
                 break;
             case 1:
                 cal = 0;
@@ -78,12 +81,23 @@ public class eat_page_gridview extends BaseAdapter {
                                 cal += cal_in_food2.getFloat(2) * c.getFloat(4);
                         }
                     } while (c.moveToNext());
+                    today_food_cal = (int)cal;
                     tv_data.setText(String.valueOf((int) cal) + " cal");
                 }
                 else {tv_data.setText("0 cal");}
             break;
             case 2:
+                today_sport_cal = eatPage.lossTotalCal;
                 tv_data.setText(String.valueOf(eatPage.lossTotalCal) + " cal");
+        }
+        int remind = today_object - today_food_cal + today_sport_cal;
+        if(remind >= 0){
+            eat_page_activity.txv_remind_over.setText("今日剩餘");
+            eat_page_activity.txv_remindcal.setText(remind + " cal");
+        }
+        else {
+            eat_page_activity.txv_remind_over.setText("今日超過");
+            eat_page_activity.txv_remindcal.setText(Math.abs(remind) + " cal");
         }
         tv_top.setText(top[position]);
         return convertView;
