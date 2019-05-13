@@ -22,6 +22,7 @@ public class eat_page_gridview extends BaseAdapter {
     SQLiteDatabase db;
     private eat_page_activity eatPage;
     public static int today_object, today_food_cal, today_sport_cal;
+    public static int remind_cal;
 
     public eat_page_gridview(MainActivity mainActivity, String[] data, String[] top, Context context,eat_page_activity eatPage) {
         myinflater = LayoutInflater.from(mainActivity);
@@ -91,6 +92,7 @@ public class eat_page_gridview extends BaseAdapter {
                 tv_data.setText(String.valueOf(eatPage.lossTotalCal) + " cal");
         }
         int remind = today_object - today_food_cal + today_sport_cal;
+        remind_cal = remind;
         if(remind >= 0){
             eat_page_activity.txv_remind_over.setText("今日剩餘");
             eat_page_activity.txv_remindcal.setText(remind + " cal");

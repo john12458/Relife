@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,7 +45,7 @@ import java.util.Map;
 // * create an instance of this fragment.
 // */
 @SuppressLint("ValidFragment")
-public class EatDayAnalysisViewpager extends Fragment {
+public class EatDayAnalysisViewpager extends Fragment implements View.OnClickListener, View.OnTouchListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -122,6 +124,8 @@ public class EatDayAnalysisViewpager extends Fragment {
         tvCalAll = view.findViewById(R.id.tv_cal_all_num);
         tvCalLoss = view.findViewById(R.id.tv_cal_num);
         txv_daysuggest = view.findViewById(R.id.txv_daysuggest);
+        txv_daysuggest.setMovementMethod(ScrollingMovementMethod.getInstance());
+        txv_daysuggest.setOnTouchListener(this);
         db = context.openOrCreateDatabase("relife",0,null);
         //取得現在日期
         if(first == 0){
@@ -139,19 +143,99 @@ public class EatDayAnalysisViewpager extends Fragment {
         //底下gridview區
         week_adapter = new eat_week_gridview(getActivity().getApplicationContext(),data,cal,percent);
         gv_menu.setAdapter(week_adapter);
-        //setsuggest();
+        setsuggest();
         return view;
     }
 
-    ArrayList<String> suggest = new ArrayList<String>();
     public void setsuggest(){
-        Cursor c = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "'", null);
-            if (c.moveToFirst()) {
+        String suggest = "嗨~\n";
+        boolean a = false;
+        boolean b = false;
+        boolean c = false;
+        boolean d = false;
+        if(eat_page_gridview.remind_cal > 0){
+            int sub = eat_page_gridview.remind_cal * 30 / 7700;
+            suggest += "如果按照今天的飲食攝取，一個月後約可以減重" + sub + "公斤!\n";
+        }
+        else if(eat_page_gridview.remind_cal < 0)
+        {
+            int sub = Math.abs(eat_page_gridview.remind_cal * 30 / 7700);
+            suggest += "如果按照今天的飲食攝取，一個月後約可以增重" + sub + "公斤!\n";
+        }
+        else if(eat_page_gridview.remind_cal == 0){
+            suggest += "如果按照今天的飲食攝取，你將可以維持目前的體重!\n";
+        }
+        Cursor record = db.rawQuery("SELECT * FROM record WHERE date = '" + eat_page_activity.selectdate + "'", null);
+            if (record.moveToFirst()) {
                 do {
-                    txv_daysuggest.setText(String.valueOf(c.getInt(0)));
-                } while (c.moveToNext());
+                    // 如果今天有吃宵夜
+                    if (record.getString(2).equals("宵夜")) {
+                        d = true;
+                    }
+                    //判斷有無吃三餐
+                    if (record.getString(2).equals("早餐")) {
+                        a = true;
+                    }
+                    if (record.getString(2).equals("午餐")) {
+                        b = true;
+                    }
+                    if (record.getString(2).equals("晚餐")) {
+                        c = true;
+                    }
+
+                } while (record.moveToNext());
+
+            }
+            else {
+                txv_daysuggest.setText("記得定時記錄自己的飲食狀況哦!");
+            }
+            //如果有吃宵夜
+            if(d == true){
+                suggest += "吃宵夜胃腸會得不到必要的休息容易引起肥胖或其他疾病，不要常吃哦!\n";
             }
 
+            //如果三餐中有一餐沒吃
+            if(a == false || b == false || c == false){
+                suggest += "不正常的飲食會讓腸道產生像是便祕胃痛的問題，不注意的話會影響你的生活，記得三餐要按時吃哦!\n";
+            }
+            Cursor water = db.rawQuery("SELECT * FROM water WHERE date = '" + eat_page_activity.selectdate + "'", null);
+            if(water.moveToFirst()){
+                if(water.getInt(1) < 2000){
+                    suggest += "今天的喝水量似乎不夠哦!水分不足，新陳代謝會出問題，要注意自己的健康哦!\n";
+                }
+            }
+            else {
+                suggest += "今天的喝水量似乎不夠哦!水分不足，新陳代謝會出問題，要注意自己的健康哦!\n";
+
+            }
+            if(suggest.equals("嗨~")){
+                suggest += "記錄狀況良好! 記得常常來追蹤飲食狀況哦!";
+            }
+            txv_daysuggest.setText(suggest);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+//        int index = (int) (Math.random()* (suggest.size() - 1));
+//        txv_daysuggest.setText(suggest.get(index));
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        // TODO Auto-generated method stub
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            //通知父控件不要干扰
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        if(event.getAction()==MotionEvent.ACTION_MOVE){
+            //通知父控件不要干扰
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        if(event.getAction()==MotionEvent.ACTION_UP){
+            v.getParent().requestDisallowInterceptTouchEvent(false);
+        }
+        return false;
     }
 
 
@@ -310,6 +394,7 @@ public class EatDayAnalysisViewpager extends Fragment {
         cal.add((int)dinnerCalTotal);
         cal.add((int)nightSnackCalTotal);
         cal.add((int)snackCalTotal);
+
     }
 
     private Button.OnClickListener datepicker = new Button.OnClickListener(){
@@ -369,6 +454,8 @@ public class EatDayAnalysisViewpager extends Fragment {
         mMonth = now.get(Calendar.MONTH);
         mDay = now.get(Calendar.DAY_OF_MONTH);
     }
+
+
 
 
     //無用的地方
