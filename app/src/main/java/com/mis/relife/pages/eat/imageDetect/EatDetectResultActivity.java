@@ -146,7 +146,7 @@ public class EatDetectResultActivity extends AppCompatActivity {
         classifier.close();
 
         Log.d("d",textToShow);
-        lv_detect.setAdapter(new recipe_adapter(getLayoutInflater(), getHandleText(textToShow), getApplicationContext()));
+        lv_detect.setAdapter(new recipe_adapter(getLayoutInflater(), getHandleText(textToShow), this));
     }
     private List<eat_listview_recipe> getHandleText(String textToShow){
         List<eat_listview_recipe>  resultList = new ArrayList<eat_listview_recipe>();

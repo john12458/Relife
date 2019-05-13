@@ -115,7 +115,7 @@ public class eat_new_second extends AppCompatActivity implements AdapterView.OnI
         //  將布局添加到ListView中
         LayoutInflater layoutinflater =getLayoutInflater();
         // 創建自定義Adapter的對象
-        recipe_adapter adapter = new recipe_adapter(layoutinflater,mData,this);
+        recipe_adapter adapter = new recipe_adapter(layoutinflater,mData,this,(eat_new_second)this);
         lv_record.setAdapter(adapter);
 
         if(category!=null && eat_page_activity.selectdate!=null){
