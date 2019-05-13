@@ -149,7 +149,7 @@ public class EatDayAnalysisViewpager extends Fragment {
                     pie_initial();
 
                     tvCalAll.setText(String.valueOf((int)Totalcal) + "cal");
-                    tvCalLoss.setText(String.valueOf(lossTotalCal - Totalcal));
+                    tvCalLoss.setText(String.valueOf((int)Totalcal - (int)lossTotalCal));
                     //底下gridview區
                     inidata();
                     if(week_adapter != null) {

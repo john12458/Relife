@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
+import com.mis.relife.data.model.Info;
 import com.mis.relife.data.model.Sleep;
 import com.mis.relife.databinding.SleepDayFragmentBinding;
 
@@ -124,6 +125,12 @@ public class DayModel {
                     sleepTimeBetween.set(message);
                     float sleepTotal = hour + min / 60;
                     System.out.println("!!!!!!!!!!!!!!!!!!" + sleepTotal);
+                    AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+                        @Override
+                        public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                            old = value.old;
+                        }
+                    });
                     initText(sleepTotal);
                     float clearTotal = 24 - sleepTotal;
                     sleepPercent.set(sleepTotal / 24 * 100);
@@ -140,10 +147,10 @@ public class DayModel {
             } else if (sleeTime >= 8 && sleeTime <= 9) {
                 sleepTime.set("睡眠充足~讚讚");
             } else if(sleeTime < 8){
-                sleepTime.set("要睡飽一點喔~我會擔心~");
+                sleepTime.set("要睡飽一點喔~我會擔心~ \n" + "睡太少時，饑餓素可能會增加，使人更容易感覺饑餓喔");
             }
             else if(sleeTime > 9){
-                sleepTime.set("睡太多搂~小豬");
+                sleepTime.set("睡太多搂~小豬\n" + "睡太多的人容易感到昏沉、疲倦喔");
             }
         }
         else if(old >= 29 && old < 60){
@@ -152,7 +159,10 @@ public class DayModel {
             } else if (sleeTime > 7 && sleeTime < 8) {
                 sleepTime.set("睡眠充足~讚讚");
             } else if(sleeTime < 7){
-                sleepTime.set("要睡飽一點喔~我會擔心~");
+                sleepTime.set("要睡飽一點喔~我會擔心~\n" + "睡太少時，饑餓素可能會增加，使人更容易感覺饑餓喔");
+            }
+            else if(sleeTime > 9){
+                sleepTime.set("睡太多搂~小豬 \n" + "睡太多的人容易感到昏沉、疲倦喔");
             }
         }
     }
