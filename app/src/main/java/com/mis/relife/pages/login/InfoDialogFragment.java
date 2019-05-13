@@ -99,7 +99,7 @@ public class InfoDialogFragment extends DialogFragment {
         DatabaseReference userRef = db.getReference("user");
         String key = userRef.push().getKey();
         userRef.child(key).setValue(new MyUser(
-                new Info(key,account,password,0,height,weight,goalWeight,goalWeekWeight,old,gender)
+                new Info(key,account,password,100,height,weight,goalWeight,goalWeekWeight,old,gender)
         ));
         alert("成功註冊 ! ! 請重新登入頁面","確認");
         fontPage.dismiss();
