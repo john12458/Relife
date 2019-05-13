@@ -280,9 +280,9 @@ public class EatWeekAnalysisViewpager extends Fragment {
                 sportBarEntry.setY(0);
             }
             else {
-                sportBarEntry.setY(totalLossCal - dayTotalCal);
+                sportBarEntry.setY(dayTotalCal - totalLossCal);
                 //算出淨值卡路里總量
-                dayAvgLossCal += totalLossCal - dayTotalCal;
+                dayAvgLossCal += dayTotalCal - totalLossCal;
                 //加總有幾條淨值bar
                 LossHave ++;
                 System.out.println("!!!!!!!!!!!Loss" + totalLossCal);
