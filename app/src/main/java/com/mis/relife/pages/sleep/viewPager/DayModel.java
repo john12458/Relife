@@ -94,12 +94,14 @@ public class DayModel {
     }
 
     public void onDataChange(Date date){
-        for (String key : sleepList.keySet()) { //走遍睡眠
-            Sleep value = sleepList.get(key);
-            if (dateSdf.format(date).equals(value.recordDate)) { //找到選擇的日期就更新畫面
-                try { updateView(value); }
-                catch (ParseException e) { e.printStackTrace(); }
-                return;
+        if(sleepList != null){
+            for (String key : sleepList.keySet()) { //走遍睡眠
+                Sleep value = sleepList.get(key);
+                if (dateSdf.format(date).equals(value.recordDate)) { //找到選擇的日期就更新畫面
+                    try { updateView(value); }
+                    catch (ParseException e) { e.printStackTrace(); }
+                    return;
+                }
             }
         }
         updateViewWithNoData();

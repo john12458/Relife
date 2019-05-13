@@ -433,8 +433,11 @@ public class sport_page_activity extends Fragment implements SensorEventListener
                     else bt_datepicker.setText(dateFormat);
                     getNowDate();
                     iniTalkText();
-                    sportpage_adapter.notifyDataSetChanged();
-                    totalcal();
+                    if(sportpage_adapter!=null){
+                        sportpage_adapter.notifyDataSetChanged();
+                        totalcal();
+                    }
+
                     mYear = year;
                     mMonth = month;
                     mDay = day;

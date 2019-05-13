@@ -1,10 +1,14 @@
 package com.mis.relife.pages.eat;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +53,6 @@ public class EatTabViewpagerFragment extends Fragment {
     public eat_viewpager_adapter eat_adapter = null;
     private EatData eatData;
     private SportData sportData;
-
 
 
     public EatTabViewpagerFragment() {
