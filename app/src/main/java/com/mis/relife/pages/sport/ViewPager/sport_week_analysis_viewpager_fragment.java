@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -36,6 +38,7 @@ import com.mis.relife.data.AppDbHelper;
 import com.mis.relife.data.MyCallBack;
 import com.mis.relife.data.model.Sport;
 import com.mis.relife.pages.sport.SportData;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -71,7 +75,8 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
 
     Context context;
     private SportData sportData;
-    private TextView tvSportAvgTime,tvSportAvgCal,tvUnit;
+    private TextView tvSportAvgTime,tvSportAvgCal,tvUnit,tvTalk;
+    private ImageView iv_talk_pet,iv_talk_place;
     private Button btTime,btCal;
     private Button btPicker;
 
@@ -101,6 +106,7 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
     private Date date,bar_date;
     private Calendar cal;
 
+    public AnimationDrawable anim;
     private int first = 0;
 
 
@@ -119,12 +125,20 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
         tvUnit = view.findViewById(R.id.description);
         barChart = view.findViewById(R.id.bar_chart);
         btPicker = view.findViewById(R.id.bt_datepicker);
+        tvTalk = view.findViewById(R.id.tv_talk);
+        iv_talk_pet = view.findViewById(R.id.iv_talk_pet);
+        iv_talk_place = view.findViewById(R.id.iv_talk_place);
         btTime = view.findViewById(R.id.bt_time);
         btCal = view.findViewById(R.id.bt_cal);
 
         btTime.setOnClickListener(bt_time);
         btCal.setOnClickListener(bt_Cal);
         btPicker.setOnClickListener(datepicker);
+
+        Picasso
+                .with(context)
+                .load(R.drawable.blackboard)
+                .into(iv_talk_place);
 
         if(first == 0){
             nowdate();
@@ -158,8 +172,22 @@ public class sport_week_analysis_viewpager_fragment extends Fragment {
                 //計算平均time 和 cal
                 tvSportAvgTime.setText(String.format("%.1f", getAvgSportTime()) + "小時");
                 tvSportAvgCal.setText(String.valueOf((int)getAvgSportCal()) + "卡路里");
+
+                iv_talk_pet.setImageResource(R.drawable.anim_teach);
+                anim = (AnimationDrawable) iv_talk_pet.getDrawable();
+                setTalkText();
+                anim.start();
             }
         });
+    }
+
+    private void setTalkText(){
+        if(week_sport_time_cnt < 3){
+            tvTalk.setText("建議每週3次運動,一次為30分鐘喔");
+        }
+        else {
+            tvTalk.setText("運動身體好~~~");
+        }
     }
 
     //拿到平均運動時間

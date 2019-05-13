@@ -212,7 +212,7 @@ public class HomeFragment extends Fragment {
         drinkNum = cc / 100;
         drinkProgress.setProgress(countProgress(drinkNum,tvDrinkBadge) * 20);
         //--------------------為了與Info更新同步放在這裡---------------
-        if(mHour < 11 && breakShow <= 1){
+        if(mHour <= 10 && mHour >= 9 && breakShow <= 1){
             judgeBreakfast();
             breakShow++;
             anim_change(8);

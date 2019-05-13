@@ -59,18 +59,25 @@ public class sport_page_activity extends Fragment implements SensorEventListener
     //建議區
     private int old = 27;
     private int a = 0,b = 0;
+    private Boolean haveOTwo = false;
     private String[] sixTalkSport = {"騎自行車、跳繩","跳繩、各種球類、游泳、武術","伏地挺身、仰臥起坐、跳遠、跑步"};
     private String[] thirTalkSport = {"慢跑","爬山","有氧運動","肌力與重量訓練","瑜珈"};
     private String[] forTalkSport = {"慢走","騎自行車","健走"};
     private String[] sixTalkadvice = {"球類運動能提升反應速度、心肺耐力,有助於肌肉和骨骼發育",
             "體能消耗大的球類運動比較能滿足運動強度喔",
-            "每周至少150分鐘中等強度有氧活動"};
+            "每次有氧運動時最少都要控制在30分鐘左右的中低強度較好",
+    "運動時大腦也會產生腦內啡，除了心情變愉悅、有助於穩定情緒外，也能抒發壓力",
+    "運動有益活化腦力，讓海馬迴增厚進而延緩失智症狀","加油加油"};
     private String[] thirTalkadvice = {"年紀慢慢變大,新陳代謝會下降,肌肉量會逐漸流失喔",
-            "建議每週3次運動,一次為30分鐘",
             "適合有氧鍛鍊或重量訓練",
+            "每次有氧運動時最少都要控制在30分鐘左右的中低強度較好",
             "用稍微溫和的運動方式緩解壓力",
-            "工作或課業再忙也不要忘記和家人朋友出門散心喔","加油加油~"};
-    private String[] forTalkadvice = {"運動應以安全、簡便，同時還要能穩定肌肉群為主"};
+            "工作或課業再忙也不要忘記和家人朋友出門散心喔","加油加油~",
+            "運動時大腦也會產生腦內啡，除了心情變愉悅、有助於穩定情緒外，也能抒發壓力",
+            "運動有益活化腦力，讓海馬迴增厚進而延緩失智症狀"};
+    private String[] forTalkadvice = {"運動應以安全、簡便，同時還要能穩定肌肉群為主",
+            "運動時大腦也會產生腦內啡，除了心情變愉悅、有助於穩定情緒外，也能抒發壓力",
+            "運動有益活化腦力，讓海馬迴增厚進而延緩失智症狀"};
     private String notSport = "今天還沒運動喔";
     private String notenoughSport = "運動量不太夠喔~";
 
@@ -128,6 +135,13 @@ public class sport_page_activity extends Fragment implements SensorEventListener
         iv_talk_pet = view.findViewById(R.id.iv_talk_pet);
         iv_talk_place = view.findViewById(R.id.iv_talk_place);
         tvWalkCount = view.findViewById(R.id.tv_sport_count);
+
+        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
+            @Override
+            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
+                old = value.old;
+            }
+        });
 
         //計步器
         // 获取SensorManager管理器实例
@@ -225,19 +239,18 @@ public class sport_page_activity extends Fragment implements SensorEventListener
                 tvTalk.setText(notenoughSport);
             }
             else {
-                tvTalk.setText("運動充足~讚讚~");
+                if(haveOTwo == true){
+                    tvTalk.setText("每次有氧運動時最少都要控制在30分鐘左右的中低強度較好喔");
+                }
+                else {
+                    tvTalk.setText("運動充足~讚讚~");
+                }
             }
         }
     }
 
     //設定建議的文字 已年齡做區分
     private void setTalkText(Random ran){
-        AppDbHelper.getAllInfoFromFireBase(new MyCallBack<Info>() {
-            @Override
-            public void onCallback(Info value, DatabaseReference dataRef, ValueEventListener vlistenr) {
-                old = value.old;
-            }
-        });
         if(old == 0) {
 
         }
@@ -262,7 +275,7 @@ public class sport_page_activity extends Fragment implements SensorEventListener
             b++;
         }
         if (a == 3) {a = 0;}
-        if (b == 3) {b = 0;}
+        if (b == 6) {b = 0;}
     }
 
     private void thir(Random ran){
@@ -275,7 +288,7 @@ public class sport_page_activity extends Fragment implements SensorEventListener
             b++;
         }
         if(a == 5){a = 0;}
-        if(b == 5){b = 0;}
+        if(b == 8){b = 0;}
     }
 
     private void forty(Random ran){
@@ -288,7 +301,7 @@ public class sport_page_activity extends Fragment implements SensorEventListener
             b++;
         }
         if(a == 3){a = 0;}
-        if(b == 1){b = 0;}
+        if(b == 3){b = 0;}
     }
 
     private OnActionItemClickListener action_click = new OnActionItemClickListener() {
@@ -383,11 +396,23 @@ public class sport_page_activity extends Fragment implements SensorEventListener
             if(sportData.sport_recordDate.get(i).equals(dateFormat)){
                 System.out.println("right!!!!!!!!!" + date);
                 recycler_sport_name.add(sportData.sport_name.get(i));
+                judgeHaveOTwo(sportData.sport_name.get(i));
                 recycler_sport_StartTime.add(sportData.sport_StartTime.get(i));
                 recycler_sport_time.add(sportData.sport_time.get(i));
                 recycler_sport_cal.add(sportData.sport_cal.get(i));
                 recycler_sport_recordDate.add(sportData.sport_recordDate.get(i));
             }
+        }
+    }
+
+    private void judgeHaveOTwo(String name){
+        if(name.equals("慢走") || name.equals("健走") || name.equals("慢跑") ||name.equals("快跑") ||name.equals("桌球") ||
+                name.equals("羽毛球") ||name.equals("健走") ||name.equals("網球") ||name.equals("棒壘球") ||name.equals("排球") ||
+                name.equals("籃球(半場)  ") ||name.equals("籃球(全場)  ") ||name.equals("足球") ||name.equals("游泳(較快)") ||name.equals("游泳(較慢)") ||
+                name.equals("瑜珈") ||name.equals("跳舞(慢)") ||name.equals("跳舞(快)") ||name.equals("國標舞") ||name.equals("有氧舞蹈") ||
+                name.equals("健康操") ||name.equals("腳踏車 10km/時  ") ||name.equals("腳踏車 30km/時") ||name.equals("腳踏車 20km/時  ") ||name.equals("國標舞") ||
+                name.equals("溜直排輪") ||name.equals("跳繩") ||name.equals("溜冰刀") ||name.equals("滑雪") ||name.equals("攀岩")){
+            haveOTwo = true;
         }
     }
 

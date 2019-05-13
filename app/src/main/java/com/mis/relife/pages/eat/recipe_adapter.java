@@ -32,6 +32,7 @@ import java.util.List;
 
 public class recipe_adapter extends BaseAdapter implements View.OnClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
+    private eat_new_second eat_new_activity;
     private eat_new_activity activity;
     private Context context;
     private List<eat_listview_recipe> mData; // 定義數據
@@ -49,12 +50,19 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
 
     }
 
+    public recipe_adapter(LayoutInflater inflater,List<eat_listview_recipe> data,Context context,eat_new_second activity){
+        mInflater = inflater;
+        mData = data;
+        this.context = context;
+        this.eat_new_activity = activity;
+        db = context.openOrCreateDatabase("relife",0,null);
+
+    }
     public recipe_adapter(LayoutInflater inflater,List<eat_listview_recipe> data,Context context){
         mInflater = inflater;
         mData = data;
         this.context = context;
         db = context.openOrCreateDatabase("relife",0,null);
-
     }
 
     @Override
@@ -240,6 +248,9 @@ public class recipe_adapter extends BaseAdapter implements View.OnClickListener,
                 // detect 那個頁面執行會崩掉，排除掉
                 if(activity!=null || context.toString().matches("(.*)eat_new_second(.*)"))
                     notifyDataSetChanged();
+                if(context.toString().matches("(.*)eat_new_second(.*)")){
+                    if(eat_new_activity!=null)eat_new_activity.initData();
+                }
 
 
 
