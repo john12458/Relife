@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements sleep_tab_viewpag
 
         checkFirstLogin(); //如果不是初次登入則會進入登入畫面
         //開啟service
-//        service();
-//        service_button();
+        service();
+        service_button();
 
     }
     private void sqliteCreateOrOpen(){
